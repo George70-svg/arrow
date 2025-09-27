@@ -28,6 +28,7 @@ export default defineConfig([
       'react-hooks/exhaustive-deps': 'error',
       'react/react-in-jsx-scope': 'off',
       'react/prop-types': 'off',
+      "semi": ["warn", "never"]
     },
   },
 ])
