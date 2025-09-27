@@ -1,5 +1,5 @@
 #!/bin/sh
-# .git-hooks/pre-commit
+# ..git-hooks/pre-commit
 
 echo "Running ESLint..."
 yarn lint
