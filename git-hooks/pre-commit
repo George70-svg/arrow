@@ -1,25 +1,22 @@
 #!/bin/sh
-# pre-commit
+# .git-hooks/pre-commit
 
-# 1. Запуск ESLint
 echo "Running ESLint..."
-npx eslint . --ext .js,.ts,.tsx
+yarn lint
 if [ $? -ne 0 ]; then
   echo "ESLint failed!"
   exit 1
 fi
 
-# 2. Запуск Prettier
 echo "Checking code format with Prettier..."
-npx prettier --check .
+yarn format --check
 if [ $? -ne 0 ]; then
   echo "Code formatting check failed!"
   exit 1
 fi
 
-# 3. Запуск тестов
 echo "Running tests..."
-npm test
+yarn test
 if [ $? -ne 0 ]; then
   echo "Tests failed!"
   exit 1
