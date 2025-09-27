@@ -10,7 +10,7 @@
     "lint": "eslint .",
     "format": "prettier --write .",
     "preview": "vite preview",
-    "prepare": "git config core.hooksPath .git-hooks || echo 'Not in a git repo'"
+    "prepare": "git config core.hooksPath git-hooks || echo 'Not in a git repo'"
   },
   "dependencies": {
     "react": "^19.1.1",
