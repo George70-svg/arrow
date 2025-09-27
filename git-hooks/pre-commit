@@ -1,0 +1,29 @@
+#!/bin/sh
+# pre-commit
+
+# 1. Запуск ESLint
+echo "Running ESLint..."
+npx eslint . --ext .js,.ts,.tsx
+if [ $? -ne 0 ]; then
+  echo "ESLint failed!"
+  exit 1
+fi
+
+# 2. Запуск Prettier
+echo "Checking code format with Prettier..."
+npx prettier --check .
+if [ $? -ne 0 ]; then
+  echo "Code formatting check failed!"
+  exit 1
+fi
+
+# 3. Запуск тестов
+echo "Running tests..."
+npm test
+if [ $? -ne 0 ]; then
+  echo "Tests failed!"
+  exit 1
+fi
+
+echo "All checks passed!"
+exit 0
