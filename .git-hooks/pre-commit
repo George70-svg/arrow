@@ -1,0 +1,26 @@
+#!/bin/sh
+# ..git-hooks/pre-commit
+
+echo "Running ESLint..."
+yarn lint
+if [ $? -ne 0 ]; then
+  echo "ESLint failed!"
+  exit 1
+fi
+
+echo "Checking code format with Prettier..."
+yarn format --check
+if [ $? -ne 0 ]; then
+  echo "Code formatting check failed!"
+  exit 1
+fi
+
+echo "Running tests..."
+yarn test
+if [ $? -ne 0 ]; then
+  echo "Tests failed!"
+  exit 1
+fi
+
+echo "All checks passed!"
+exit 0
