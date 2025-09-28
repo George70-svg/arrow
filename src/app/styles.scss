@@ -1,26 +1,28 @@
 // CSS переменные
 :root {
-  --text-color: #1E1E1E;
+  --text-color: #1e1e1e;
   --secondary-text-color: #999;
   --text-light-color: #fff;
-  --background-color: #FFF;
-  --grey-color: #FBFBFB;
-  --blue-color: #3369F3;
+  --background-color: #fff;
+  --grey-color: #fbfbfb;
+  --blue-color: #3369f3;
   --blue-hover-color: #225df3;
-  --blue-light-hover-color: #E4EDFD;
+  --blue-light-hover-color: #e4edfd;
   --blue-light-color: #93b7ff;
-  --red-color: #FF2F2F;
+  --red-color: #ff2f2f;
   --border-radius-xxs: 0.25rem;
   --border-radius-xs: 0.5rem;
   --border-radius-s: 1rem;
   --border-radius-m: 1.5rem;
   --border-radius-l: 2rem;
-  --border-shadow: 0 0 6px 0 rgb(0 0 0 / 14%)
+  --border-shadow: 0 0 6px 0 rgb(0 0 0 / 14%);
 }
 
 @font-face {
   font-family: NunitoSans;
-  src: local('NunitoSans'), url('/src/assets/fonts/NunitoSans.ttf') format('truetype');
+  src:
+    local('NunitoSans'),
+    url('/src/assets/fonts/NunitoSans.ttf') format('truetype');
 }
 
 * {
@@ -55,7 +57,10 @@ body {
   }
 }
 
-h1, h2, h3, p {
+h1,
+h2,
+h3,
+p {
   margin: 0;
   padding: 0;
 }
