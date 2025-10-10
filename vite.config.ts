@@ -10,6 +10,7 @@ export default defineConfig({
       '@entities': path.resolve(__dirname, './src/entities'),
       '@pages': path.resolve(__dirname, './src/pages'),
       '@shared': path.resolve(__dirname, './src/shared'),
+      '@images': path.resolve(__dirname, './src/assets/images'),
     },
   },
   plugins: [react()],

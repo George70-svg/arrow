@@ -1,57 +1,82 @@
+import controller from '@entities/game/Conroller.ts'
+import runSprite from '@images/player/Run.png'
 import { Shape } from './Shape.ts'
 import type { Coordinate } from '../types.ts'
-import eventBus from '@entities/game/EventBus.ts'
 
-export type TankProps = {
+export type PlayerProps = {
   id: string
   context: CanvasRenderingContext2D
   startPosition: Coordinate
   width: number
   height: number
-  delta: number
   speed: number
 }
 
 export class Player extends Shape {
   speed: number = 0
+  runSprite: HTMLImageElement = new Image()
 
-  constructor(props: TankProps) {
+  frame: number = 0
+  currentRender = 0
+  frameRate: number = 30
+
+  constructor(props: PlayerProps) {
     super({
       id: props.id,
       context: props.context,
       position: props.startPosition,
       width: props.width,
       height: props.height,
-      delta: props.delta,
     })
 
     this.speed = props.speed
-
-    eventBus.on('KeyW', this.moveUp.bind(this))
-    eventBus.on('KeyA', this.moveRight.bind(this))
-    eventBus.on('KeyS', this.moveDown.bind(this))
-    eventBus.on('KeyD', this.moveLeft.bind(this))
+    this.runSprite.src = runSprite
+    console.log(this.runSprite)
   }
 
-  moveUp() {
-    this.position.y = this.position.y - this.speed * this.delta
+  getFrame(positionX: number, positionY: number): [number, number, number, number, number, number, number, number] {
+    const fullWidth = 1024
+    const fullHeight = 128
+    const frameWidth = fullWidth / 8
+    const frameHeight = fullHeight
+
+    if (this.frame > 7) {
+      this.frame = 0
+    }
+
+    return [
+      frameWidth * this.frame, // sx — смещение по X в спрайте
+      0, // sy — смещение по Y в спрайте
+      frameWidth, // sWidth — ширина кадра
+      frameHeight, // sHeight — высота кадра
+      positionX, // dx — куда рисовать по X
+      positionY, // dy — куда рисовать по Y
+      frameWidth, // dWidth — ширина отрисовки
+      frameHeight, // dHeight — высота отрисовки
+    ]
   }
 
-  moveRight() {
-    this.position.x = this.position.x - this.speed * this.delta
-  }
+  update(delta: number) {
+    const pressedKeys = controller.getPressedKeys()
+    const distance = this.speed * delta
 
-  moveDown() {
-    this.position.y = this.position.y + this.speed * this.delta
-  }
-
-  moveLeft() {
-    this.position.x = this.position.x + this.speed * this.delta
+    if (pressedKeys['KeyW']) this.position.y -= distance
+    if (pressedKeys['KeyA']) this.position.x -= distance
+    if (pressedKeys['KeyS']) this.position.y += distance
+    if (pressedKeys['KeyD']) this.position.x += distance
   }
 
   render() {
-    console.log('position', this.position)
-    this.context.fillStyle = '#62f35c'
-    this.context.fillRect(this.position.x, this.position.y, this.width, this.height)
+    if (this.currentRender === 0) {
+      this.frame += 1
+    }
+
+    // drawImage(image, sx, sy, sWidth, sHeight, dx, dy, dWidth, dHeight)
+    this.context.drawImage(this.runSprite, ...this.getFrame(this.position.x, this.position.y))
+    this.currentRender++
+
+    if (this.currentRender > this.frameRate) {
+      this.currentRender = 0
+    }
   }
 }

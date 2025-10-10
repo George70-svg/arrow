@@ -21,8 +21,7 @@ export const initializeObjects = (context: CanvasRenderingContext2D | null) => {
       startPosition: { x: 200, y: 630 },
       width: 20,
       height: 20,
-      speed: 2,
-      delta: 1,
+      speed: 0.15,
     }),
   }
 }

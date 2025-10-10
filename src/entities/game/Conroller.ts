@@ -1,17 +1,24 @@
-import eventBus from '@entities/game/EventBus.ts'
-
 const availableButtonCodes = ['KeyA', 'KeyD', 'KeyW', 'KeyS']
 
 class Controller {
+  private pressedKeys: Record<string, boolean> = {}
+
   constructor() {
-    window.addEventListener('keydown', (event: KeyboardEvent) => this.handleButton(true, event))
-    //window.addEventListener('keyup', (event: KeyboardEvent) => this.handleButton(false, event))
+    window.addEventListener('keydown', (event: KeyboardEvent) => {
+      if (availableButtonCodes.includes(event.code)) {
+        this.pressedKeys[event.code] = true
+      }
+    })
+
+    window.addEventListener('keyup', (event: KeyboardEvent) => {
+      if (availableButtonCodes.includes(event.code)) {
+        this.pressedKeys[event.code] = false
+      }
+    })
   }
 
-  handleButton(isDown: boolean, event: KeyboardEvent) {
-    if (availableButtonCodes.includes(event.code)) {
-      eventBus.emit(event.code, isDown)
-    }
+  public getPressedKeys() {
+    return this.pressedKeys
   }
 }
 

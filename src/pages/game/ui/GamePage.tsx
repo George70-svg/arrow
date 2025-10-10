@@ -19,7 +19,7 @@ export const GamePage = () => {
   return (
     <div className={styles.gamePage}>
       <p>Game page</p>
-      <canvas ref={canvasRef} id="game-canvas" width={1200} height={650} />
+      <canvas ref={canvasRef} id="game-canvas" width={1500} height={800} />
     </div>
   )
 }

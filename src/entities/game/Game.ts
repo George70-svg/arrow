@@ -1,6 +1,6 @@
 import { initializeObjects } from '@entities/config/gameConfig.ts'
 import { render } from '@entities/utils/render.ts'
-//import controller from '@entities/game/Conroller.ts'
+import { update } from '@entities/utils/update.ts'
 
 export class Game {
   private context: CanvasRenderingContext2D | null = null
@@ -13,7 +13,6 @@ export class Game {
   }
 
   private loop(timestamp: number) {
-    //console.log('loop')
     if (!this.context) {
       throw new Error("Can't find a context")
     }
@@ -21,14 +20,14 @@ export class Game {
     const delta = timestamp - this.lastTimestamp
     this.lastTimestamp = timestamp
 
-    this.context.clearRect(0, 0, 1200, 650) // Очистка холста
-    render(delta)
+    this.context.clearRect(0, 0, 1500, 800) // Очистка холста
+    update(delta)
+    render()
 
     this.frameCb = requestAnimationFrame(this.boundLoop)
   }
 
   public start() {
-    //controller
     initializeObjects(this.context)
     this.frameCb = requestAnimationFrame(this.boundLoop)
   }
