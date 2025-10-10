@@ -31,12 +31,11 @@ export class Player extends Shape {
 
     this.speed = props.speed
     this.runSprite.src = runSprite
-    console.log(this.runSprite)
   }
 
   getFrame(positionX: number, positionY: number): [number, number, number, number, number, number, number, number] {
-    const fullWidth = 1024
-    const fullHeight = 128
+    const fullWidth = this.runSprite.width
+    const fullHeight = this.runSprite.height
     const frameWidth = fullWidth / 8
     const frameHeight = fullHeight
 
@@ -51,8 +50,8 @@ export class Player extends Shape {
       frameHeight, // sHeight — высота кадра
       positionX, // dx — куда рисовать по X
       positionY, // dy — куда рисовать по Y
-      frameWidth, // dWidth — ширина отрисовки
-      frameHeight, // dHeight — высота отрисовки
+      frameWidth * 1.5, // dWidth — ширина отрисовки
+      frameHeight * 1.5, // dHeight — высота отрисовки
     ]
   }
 
