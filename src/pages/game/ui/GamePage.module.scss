@@ -1,10 +1,18 @@
-.game-page {
+.page {
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  position: relative;
+}
+
+.header {
+  position: absolute;
+  top: 0;
+  left: 0;
 }
 
 canvas {
-  width: 1500px;
-  height: 800px;
-  border: 2px dashed var(--blue-light-color);
+  border: 3px dashed var(--blue-light-color);
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;

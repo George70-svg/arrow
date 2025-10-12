@@ -1,24 +1,28 @@
+import { getDrawParams } from '@entities/utils/render.ts'
+import { playerSprites } from '@entities/config/spriteConfig.ts'
 import controller from '@entities/game/Conroller.ts'
-import runSprite from '@images/player/Run.png'
 import { Shape } from './Shape.ts'
-import type { Coordinate } from '../types.ts'
+import type { Coordinate, Direction, DrawImageParams, SpriteConfig } from '../types.ts'
 
-export type PlayerProps = {
+type PlayerProps = {
   id: string
   context: CanvasRenderingContext2D
   startPosition: Coordinate
   width: number
   height: number
   speed: number
+  startDirection: Direction
 }
 
 export class Player extends Shape {
+  currentSprite: SpriteConfig = playerSprites.idle
   speed: number = 0
-  runSprite: HTMLImageElement = new Image()
-
   frame: number = 0
-  currentRender = 0
-  frameRate: number = 30
+  frameDelayCount: number = 0 // Счетчик для проверки показа следующего кадра
+  isMoving = false
+  direction: Direction = 'right'
+  scaleWidth = 1
+  scaleHeight = 1
 
   constructor(props: PlayerProps) {
     super({
@@ -30,52 +34,76 @@ export class Player extends Shape {
     })
 
     this.speed = props.speed
-    this.runSprite.src = runSprite
+    this.direction = props.startDirection
   }
 
-  getFrame(positionX: number, positionY: number): [number, number, number, number, number, number, number, number] {
-    const fullWidth = this.runSprite.width
-    const fullHeight = this.runSprite.height
-    const frameWidth = fullWidth / 8
-    const frameHeight = fullHeight
-
-    if (this.frame > 7) {
+  private getCurrentImage(sprite: HTMLImageElement, framesInSprite: number): DrawImageParams {
+    if (this.frame >= framesInSprite) {
       this.frame = 0
     }
 
+    return getDrawParams(sprite, this.frame, framesInSprite, this.position.x, this.position.y)
+  }
+
+  private getRotatedDrawParams(): DrawImageParams {
+    this.context.translate(this.position.x, this.position.y) // Настраиваем точку вращения (центр объекта)
+
+    if (this.direction === 'left') {
+      this.context.scale(-1, 1)
+    } // Отразить по оси X
+
+    const [sprite, sx, sy, sWidth, sHeight, , , frameWidth, frameHeight] = this.getCurrentImage(this.currentSprite.image, 8)
+    this.scaleWidth = this.width / frameWidth
+    this.scaleHeight = this.height / frameHeight
+
     return [
-      frameWidth * this.frame, // sx — смещение по X в спрайте
-      0, // sy — смещение по Y в спрайте
-      frameWidth, // sWidth — ширина кадра
-      frameHeight, // sHeight — высота кадра
-      positionX, // dx — куда рисовать по X
-      positionY, // dy — куда рисовать по Y
-      frameWidth * 1.5, // dWidth — ширина отрисовки
-      frameHeight * 1.5, // dHeight — высота отрисовки
+      sprite,
+      sx, // sx — смещение по X в спрайте
+      sy, // sy — смещение по Y в спрайте
+      sWidth, // sWidth — ширина кадра
+      sHeight, // sHeight — высота кадра
+      (-sWidth * this.scaleWidth) / 2, // dx — куда рисовать по X
+      -sprite.height * this.scaleHeight, // dy — куда рисовать по Y
+      frameWidth * this.scaleWidth, // dWidth — ширина отрисовки
+      frameHeight * this.scaleHeight, // dHeight — высота отрисовки
     ]
   }
 
-  update(delta: number) {
-    const pressedKeys = controller.getPressedKeys()
-    const distance = this.speed * delta
+  // Устанавливаем задержку между сменами кадров
+  private updateAnimationDelay() {
+    this.frameDelayCount += 1
 
-    if (pressedKeys['KeyW']) this.position.y -= distance
-    if (pressedKeys['KeyA']) this.position.x -= distance
-    if (pressedKeys['KeyS']) this.position.y += distance
-    if (pressedKeys['KeyD']) this.position.x += distance
+    if (this.frameDelayCount >= this.currentSprite.frameDelay) {
+      this.frame++
+      this.frameDelayCount = 0
+    }
   }
 
-  render() {
-    if (this.currentRender === 0) {
-      this.frame += 1
+  public update(delta: number) {
+    const pressedKeys = controller.getPressedKeys()
+    const distance = this.speed * delta
+    this.isMoving = false
+
+    if (pressedKeys['KeyA']) {
+      this.position.x -= distance
+      this.isMoving = true
+      this.direction = 'left'
     }
 
-    // drawImage(image, sx, sy, sWidth, sHeight, dx, dy, dWidth, dHeight)
-    this.context.drawImage(this.runSprite, ...this.getFrame(this.position.x, this.position.y))
-    this.currentRender++
-
-    if (this.currentRender > this.frameRate) {
-      this.currentRender = 0
+    if (pressedKeys['KeyD']) {
+      this.position.x += distance
+      this.isMoving = true
+      this.direction = 'right'
     }
+
+    this.currentSprite = this.isMoving ? playerSprites.run : playerSprites.idle
+  }
+
+  public render() {
+    this.updateAnimationDelay()
+    this.context.save() // Сохраняем текущее состояние Canvas
+    const params = this.getRotatedDrawParams()
+    this.context.drawImage(...params) // Теперь рисуем относительно новой системы координат, dx и dy будут равны 0 (центр от translate)
+    this.context.restore() // Восстанавливаем состояние (отменяем translate, rotate и т.д.)
   }
 }

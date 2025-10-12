@@ -17,8 +17,8 @@ export abstract class Shape {
     this.context = props.context
     this.id = props.id
     this.position = props.position
-    this.width = props.width
-    this.height = props.height
+    this.width = props.width ?? 0
+    this.height = props.height ?? 0
   }
 
   abstract update?(delta: number): void

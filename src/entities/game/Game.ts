@@ -1,4 +1,4 @@
-import { initializeObjects } from '@entities/config/gameConfig.ts'
+import { config, initializeObjects } from '@entities/config/gameConfig.ts'
 import { render } from '@entities/utils/render.ts'
 import { update } from '@entities/utils/update.ts'
 
@@ -20,7 +20,7 @@ export class Game {
     const delta = timestamp - this.lastTimestamp
     this.lastTimestamp = timestamp
 
-    this.context.clearRect(0, 0, 1500, 800) // Очистка холста
+    this.context.clearRect(0, 0, config.width, config.height) // Очистка холста
     update(delta)
     render()
 
