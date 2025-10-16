@@ -19,3 +19,9 @@ export type DrawImageParams = [
   dw: number,
   dh: number,
 ]
+
+export type ArrowPath = {
+  angleCoefficient: number
+  maxPathLength: number
+  maxPathHeight: number
+}

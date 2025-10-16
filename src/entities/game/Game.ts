@@ -1,6 +1,5 @@
-import { config, initializeObjects } from '@entities/config/gameConfig.ts'
-import { render } from '@entities/utils/render.ts'
-import { update } from '@entities/utils/update.ts'
+import config, { initializeObjects } from '@entities/config/gameConfig.ts'
+import { render, update } from '@entities/utils/utils.ts'
 
 export class Game {
   private context: CanvasRenderingContext2D | null = null

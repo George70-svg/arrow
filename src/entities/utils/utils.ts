@@ -1,10 +1,21 @@
-import { config } from '@entities/config/gameConfig.ts'
+import config from '@entities/config/gameConfig.ts'
 import type { DrawImageParams } from '@entities/types.ts'
 
 export const render = () => {
   const shapes = Object.values(config.objects)
   shapes.forEach((shape) => {
-    shape.render()
+    if (shape) {
+      shape.render()
+    }
+  })
+}
+
+export const update = (delta: number) => {
+  const shapes = Object.values(config.objects)
+  shapes.forEach((shape) => {
+    if (shape && shape.update) {
+      shape.update(delta)
+    }
   })
 }
 

@@ -1,4 +1,4 @@
-import { getDrawParams } from '@entities/utils/render.ts'
+import { getDrawParams } from '@entities/utils/utils.ts'
 import { playerSprites } from '@entities/config/spriteConfig.ts'
 import controller from '@entities/game/Conroller.ts'
 import { Shape } from './Shape.ts'
@@ -7,20 +7,20 @@ import type { Coordinate, Direction, DrawImageParams, SpriteConfig } from '../ty
 type PlayerProps = {
   id: string
   context: CanvasRenderingContext2D
+  imgWidth: number
+  imgHeight: number
   startPosition: Coordinate
-  width: number
-  height: number
-  speed: number
   startDirection: Direction
+  speed: number
 }
 
 export class Player extends Shape {
-  currentSprite: SpriteConfig = playerSprites.idle
   speed: number = 0
+  direction: Direction = 'right'
+  currentSprite: SpriteConfig = playerSprites.idle
   frame: number = 0
   frameDelayCount: number = 0 // Счетчик для проверки показа следующего кадра
   isMoving = false
-  direction: Direction = 'right'
   scaleWidth = 1
   scaleHeight = 1
 
@@ -29,8 +29,8 @@ export class Player extends Shape {
       id: props.id,
       context: props.context,
       position: props.startPosition,
-      width: props.width,
-      height: props.height,
+      imgWidth: props.imgWidth,
+      imgHeight: props.imgHeight,
     })
 
     this.speed = props.speed
@@ -46,15 +46,15 @@ export class Player extends Shape {
   }
 
   private getRotatedDrawParams(): DrawImageParams {
-    this.context.translate(this.position.x, this.position.y) // Настраиваем точку вращения (центр объекта)
+    this.context.translate(this.position.x, this.position.y) // настраиваем точку вращения (центр объекта)
 
     if (this.direction === 'left') {
       this.context.scale(-1, 1)
-    } // Отразить по оси X
+    } // отразить по оси X
 
     const [sprite, sx, sy, sWidth, sHeight, , , frameWidth, frameHeight] = this.getCurrentImage(this.currentSprite.image, 8)
-    this.scaleWidth = this.width / frameWidth
-    this.scaleHeight = this.height / frameHeight
+    this.scaleWidth = this.imgWidth / frameWidth
+    this.scaleHeight = this.imgHeight / frameHeight
 
     return [
       sprite,
@@ -69,7 +69,7 @@ export class Player extends Shape {
     ]
   }
 
-  // Устанавливаем задержку между сменами кадров
+  // устанавливаем задержку между сменами кадров
   private updateAnimationDelay() {
     this.frameDelayCount += 1
 
@@ -96,14 +96,14 @@ export class Player extends Shape {
       this.direction = 'right'
     }
 
-    this.currentSprite = this.isMoving ? playerSprites.run : playerSprites.idle
+    this.currentSprite = this.isMoving ? playerSprites.walk : playerSprites.idle
   }
 
   public render() {
     this.updateAnimationDelay()
-    this.context.save() // Сохраняем текущее состояние Canvas
+    this.context.save() // сохраняем текущее состояние Canvas
     const params = this.getRotatedDrawParams()
-    this.context.drawImage(...params) // Теперь рисуем относительно новой системы координат, dx и dy будут равны 0 (центр от translate)
-    this.context.restore() // Восстанавливаем состояние (отменяем translate, rotate и т.д.)
+    this.context.drawImage(...params) // теперь рисуем относительно новой системы координат, dx и dy будут равны 0 (центр от translate)
+    this.context.restore() // восстанавливаем состояние (отменяем translate, rotate и т.д.)
   }
 }

@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react'
+import config from '@entities/config/gameConfig.ts'
 import { Game } from '@entities/game/Game.ts'
-import { config } from '@entities/config/gameConfig.ts'
 import styles from './GamePage.module.scss'
 
 export const GamePage = () => {
