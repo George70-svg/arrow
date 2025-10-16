@@ -61,6 +61,7 @@ export class Arrow extends Shape {
     this.context.save() // сохраняем текущее состояние Canvas
     this.context.translate(this.position.x, this.position.y) // настраиваем точку вращения (центр объекта)
     this.context.rotate(this.angle)
+    // По дефолту drawImage ставит левый верхний угол картинки в заданную точку, поэтому смещаем на половину размера
     this.context.drawImage(this.arrowImg, -this.imgWidth / 2, -this.imgHeight / 2, this.imgWidth, this.imgHeight)
     this.context.restore() // восстанавливаем состояние (отменяем translate, rotate)
   }

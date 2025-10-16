@@ -110,6 +110,7 @@ export class Bow extends Shape {
       points.push({ x, y })
     }
 
+    // TODO: Вынести внешнюю настройку траектории в конфиг
     this.context.fillStyle = '#454545'
 
     for (const p of points) {
@@ -123,6 +124,7 @@ export class Bow extends Shape {
     this.context.save() // сохраняем текущее состояние Canvas
     this.context.translate(this.position.x, this.position.y) // настраиваем точку вращения (центр объекта)
     this.context.rotate(this.angle)
+    // По дефолту drawImage ставит левый верхний угол картинки в заданную точку, поэтому смещаем на половину размера
     this.context.drawImage(this.fullBowImg, -this.imgWidth / 2, -this.imgHeight / 2, this.imgWidth, this.imgHeight)
     this.context.restore() // восстанавливаем состояние (отменяем translate, rotate)
   }
