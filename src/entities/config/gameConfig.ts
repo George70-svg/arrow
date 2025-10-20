@@ -18,7 +18,7 @@ const config: Config = {
   height: 0,
   objects: {},
   arrow: {
-    heightCoeff: 0.5, // коэффициент высоты полета
+    heightCoeff: 4, // коэффициент высоты полета
     widthCoeff: 0.4, // коэффициент длины полета
     speed: 0.25,
   },

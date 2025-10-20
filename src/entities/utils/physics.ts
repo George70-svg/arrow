@@ -17,7 +17,7 @@ export const getNextPositionY = (
   // angleCoefficient ~ от 0.9 до 0.18 (результат деления текущего угла на максимальный)
   // TODO: Магическое число
   const coeff = arrowPath.angleCoefficient < 0.4 ? 0.4 : arrowPath.angleCoefficient
-  const a = (-4 * arrowPath.maxPathHeight) / Math.pow(arrowPath.maxPathLength - startPosition.x, 2)
+  const a = -arrowPath.maxPathHeight / Math.pow(arrowPath.maxPathLength - startPosition.x, 2)
   const x = currentX + speed * (delta / coeff)
   const y = startPosition.y - a * (x - startPosition.x) * (currentX - arrowPath.maxPathLength)
 
@@ -43,7 +43,7 @@ export const normalizeRadianAngle = (angle: number) => {
 export const getArrowPath = (context: CanvasRenderingContext2D, startAngle: number, maxAngle: number): ArrowPath => {
   const angleCoefficient = normalizeRadianAngle(startAngle) / maxAngle
   const maxPathLength = (context.canvas.clientWidth * config.arrow.widthCoeff) / angleCoefficient
-  const maxPathHeight = context.canvas.clientWidth * config.arrow.heightCoeff * angleCoefficient
+  const maxPathHeight = context.canvas.clientHeight * config.arrow.heightCoeff * angleCoefficient
 
   return {
     angleCoefficient,
