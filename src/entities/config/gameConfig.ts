@@ -9,6 +9,7 @@ type Config = {
   arrow: {
     heightCoeff: number
     widthCoeff: number
+    speed: number
   }
 }
 
@@ -19,6 +20,7 @@ const config: Config = {
   arrow: {
     heightCoeff: 0.5, // коэффициент высоты полета
     widthCoeff: 0.4, // коэффициент длины полета
+    speed: 0.25,
   },
 }
 
@@ -47,7 +49,7 @@ export const initializeObjects = (context: CanvasRenderingContext2D | null) => {
       startDirection: 'right',
       startAngle: -0.75,
       maxAngle: -85,
-      minAngle: -5,
+      minAngle: -20,
     }),
     arrow: null,
   }

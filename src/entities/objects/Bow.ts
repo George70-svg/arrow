@@ -44,6 +44,7 @@ export class Bow extends Shape {
     this.fullBowImg.src = fullBow
   }
 
+  //TODO: Скорость стрелы брать из конфига
   private shot() {
     if (!config.objects.arrow) {
       const startArrowPosition = { ...this.position }
@@ -53,7 +54,7 @@ export class Bow extends Shape {
         imgWidth: 45,
         imgHeight: 13,
         startPosition: startArrowPosition,
-        speed: 0.35,
+        speed: config.arrow.speed,
         startAngle: this.angle,
         maxAngle: this.maxAngle,
         minAngle: this.minAngle,
@@ -86,7 +87,7 @@ export class Bow extends Shape {
       }
 
       if (mousePressedTime && mousePressedTime > 200) {
-        this.drawTrajectory()
+        this.drawTrajectory(delta)
       }
     }
 
@@ -99,18 +100,18 @@ export class Bow extends Shape {
     }
   }
 
-  private drawTrajectory() {
+  private drawTrajectory(delta: number) {
     const step = 10
     const pointRadius = 1
     const points: Coordinate[] = []
-    const arrowPath = getArrowPath(this.context, this.angle, this.maxAngle, this.minAngle)
+    const arrowPath = getArrowPath(this.context, this.angle, this.maxAngle)
 
     for (let x = this.position.x; x <= arrowPath.maxPathLength; x += step) {
-      const y = this.position.y - getNextPositionY(x, this.position.x, arrowPath.maxPathLength, arrowPath.maxPathHeight)
-      points.push({ x, y })
+      const point = getNextPositionY(this.position, x, arrowPath, delta, 0.5)
+      points.push(point)
     }
 
-    // TODO: Вынести внешнюю настройку траектории в конфиг
+    // TODO: Вынести настройку внешнего вида траектории в конфиг
     this.context.fillStyle = '#454545'
 
     for (const p of points) {
@@ -124,7 +125,8 @@ export class Bow extends Shape {
     this.context.save() // сохраняем текущее состояние Canvas
     this.context.translate(this.position.x, this.position.y) // настраиваем точку вращения (центр объекта)
     this.context.rotate(this.angle)
-    // По дефолту drawImage ставит левый верхний угол картинки в заданную точку, поэтому смещаем на половину размера
+    // рисуем изображение так, чтобы его центр совпал с (0,0) — точкой вращения стрелы
+    // по дефолту drawImage ставит левый верхний угол картинки в заданную точку, поэтому смещаем на половину размера
     this.context.drawImage(this.fullBowImg, -this.imgWidth / 2, -this.imgHeight / 2, this.imgWidth, this.imgHeight)
     this.context.restore() // восстанавливаем состояние (отменяем translate, rotate)
   }

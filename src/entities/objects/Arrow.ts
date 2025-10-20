@@ -20,11 +20,11 @@ export class Arrow extends Shape {
   speed: number = 0
   arrowImg = new Image()
   startPosition: Coordinate = { x: 0, y: 0 }
-  angle: number = 0 // угол в радианах
-  startAngle: number = 0 // угол в радианах
-  maxAngle = -85 // угол в градусах
-  minAngle = 5 // угол в градусах
   arrowPath: ArrowPath = { angleCoefficient: 0, maxPathLength: 0, maxPathHeight: 0 }
+  angle: number = 0 // угол в радианах
+  startAngle // угол в радианах
+  maxAngle // угол в градусах
+  minAngle // угол в градусах
 
   constructor(props: ArrowProps) {
     super({
@@ -40,18 +40,15 @@ export class Arrow extends Shape {
     this.startAngle = props.startAngle
     this.maxAngle = props.maxAngle
     this.minAngle = props.minAngle
-    this.arrowPath = getArrowPath(this.context, this.startAngle, this.maxAngle, this.minAngle)
+    this.arrowPath = getArrowPath(this.context, this.startAngle, this.maxAngle)
     this.arrowImg.src = arrow
   }
 
   public update(delta: number) {
-    const distance = this.speed * delta - this.arrowPath.angleCoefficient * 1.5
-    this.position.x += distance
-    this.position.y =
-      this.startPosition.y -
-      getNextPositionY(this.position.x, this.startPosition.x, this.arrowPath.maxPathLength, this.arrowPath.maxPathHeight)
+    this.position = getNextPositionY(this.startPosition, this.position.x, this.arrowPath, delta, this.speed)
     this.angle = this.startAngle - getNextAngle(this.position.x, this.arrowPath.maxPathLength, this.startAngle)
 
+    // Удаляем стрелу по достижению границ карты
     if (this.position.x > this.context.canvas.clientWidth || this.position.y > this.context.canvas.clientWidth) {
       config.objects.arrow = null
     }
@@ -61,7 +58,8 @@ export class Arrow extends Shape {
     this.context.save() // сохраняем текущее состояние Canvas
     this.context.translate(this.position.x, this.position.y) // настраиваем точку вращения (центр объекта)
     this.context.rotate(this.angle)
-    // По дефолту drawImage ставит левый верхний угол картинки в заданную точку, поэтому смещаем на половину размера
+    // рисуем изображение так, чтобы его центр совпал с (0,0) — точкой вращения стрелы
+    // по дефолту drawImage ставит левый верхний угол картинки в заданную точку, поэтому смещаем на половину размера
     this.context.drawImage(this.arrowImg, -this.imgWidth / 2, -this.imgHeight / 2, this.imgWidth, this.imgHeight)
     this.context.restore() // восстанавливаем состояние (отменяем translate, rotate)
   }

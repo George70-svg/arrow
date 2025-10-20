@@ -1,4 +1,4 @@
-import type { Coordinate } from '@entities/types.ts'
+import type { ArrowPath, Coordinate } from '@entities/types.ts'
 import config from '@entities/config/gameConfig.ts'
 
 /*const g = 9.81 / 1000000
@@ -7,9 +7,21 @@ export const getNextPosition = (startPosition: Coordinate, currentPosition: Coor
   return -currentPosition.x * Math.tan(angle) - (g * Math.pow(currentPosition.x, 2)) / (2 * Math.pow(speed * Math.cos(angle), 2))
 }*/
 
-export const getNextPositionY = (currentX: number, startX: number, maxWidth: number, maxHeight: number) => {
-  const a = (-4 * maxHeight) / Math.pow(maxWidth - startX, 2)
-  return a * (currentX - startX) * (currentX - maxWidth)
+export const getNextPositionY = (
+  startPosition: Coordinate,
+  currentX: number,
+  arrowPath: ArrowPath,
+  delta: number,
+  speed: number,
+): Coordinate => {
+  // angleCoefficient ~ от 0.9 до 0.18 (результат деления текущего угла на максимальный)
+  // TODO: Магическое число
+  const coeff = arrowPath.angleCoefficient < 0.4 ? 0.4 : arrowPath.angleCoefficient
+  const a = (-4 * arrowPath.maxPathHeight) / Math.pow(arrowPath.maxPathLength - startPosition.x, 2)
+  const x = currentX + speed * (delta / coeff)
+  const y = startPosition.y - a * (x - startPosition.x) * (currentX - arrowPath.maxPathLength)
+
+  return { x, y }
 }
 
 export const getNextAngle = (currentX: number, maxWidth: number, startAngle: number) => {
@@ -28,8 +40,8 @@ export const normalizeRadianAngle = (angle: number) => {
   return angle * (180 / Math.PI)
 }
 
-export const getArrowPath = (context: CanvasRenderingContext2D, startAngle: number, maxAngle: number, minAngle: number) => {
-  const angleCoefficient = normalizeRadianAngle(startAngle) / (maxAngle - minAngle)
+export const getArrowPath = (context: CanvasRenderingContext2D, startAngle: number, maxAngle: number): ArrowPath => {
+  const angleCoefficient = normalizeRadianAngle(startAngle) / maxAngle
   const maxPathLength = (context.canvas.clientWidth * config.arrow.widthCoeff) / angleCoefficient
   const maxPathHeight = context.canvas.clientWidth * config.arrow.heightCoeff * angleCoefficient
 
