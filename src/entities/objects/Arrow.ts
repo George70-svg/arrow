@@ -40,13 +40,13 @@ export class Arrow extends Shape {
     this.startAngle = props.startAngle
     this.maxAngle = props.maxAngle
     this.minAngle = props.minAngle
-    this.arrowPath = getArrowPath(this.context, this.startAngle, this.maxAngle)
+    this.arrowPath = getArrowPath(this.context, this.startPosition, this.startAngle, this.maxAngle)
     this.arrowImg.src = arrow
   }
 
   public update(delta: number) {
     this.position = getNextPosition(this.startPosition, this.position.x, this.arrowPath, delta, this.speed)
-    this.angle = this.startAngle - getNextAngle(this.position.x, this.arrowPath.maxPathLength, this.startAngle)
+    this.angle = getNextAngle(this.startPosition.x, this.position.x, this.arrowPath.maxPathLength, this.startAngle)
 
     // Удаляем стрелу по достижению границ карты
     if (this.position.x > this.context.canvas.clientWidth || this.position.y > this.context.canvas.clientWidth) {

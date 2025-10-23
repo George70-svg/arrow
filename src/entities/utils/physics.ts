@@ -24,8 +24,9 @@ export const getNextPosition = (
   return { x, y }
 }
 
-export const getNextAngle = (currentX: number, maxWidth: number, startAngle: number) => {
-  return ((startAngle * currentX) / maxWidth) * 2
+export const getNextAngle = (startX: number, currentX: number, maxWidth: number, startAngle: number) => {
+  const dx = (currentX - startX) / (maxWidth - startX)
+  return startAngle - startAngle * dx * 2
 }
 
 // Возвращает угол в радианах (от −π до π, т.е. −3.14159 до +3.14159)
@@ -40,9 +41,14 @@ export const normalizeRadianAngle = (angle: number) => {
   return angle * (180 / Math.PI)
 }
 
-export const getArrowPath = (context: CanvasRenderingContext2D, startAngle: number, maxAngle: number): ArrowPath => {
+export const getArrowPath = (
+  context: CanvasRenderingContext2D,
+  startPosition: Coordinate,
+  startAngle: number,
+  maxAngle: number,
+): ArrowPath => {
   const angleCoefficient = normalizeRadianAngle(startAngle) / maxAngle
-  const maxPathLength = (context.canvas.clientWidth * config.arrow.widthCoeff) / angleCoefficient
+  const maxPathLength = (context.canvas.clientWidth * config.arrow.widthCoeff) / angleCoefficient + startPosition.x
   const maxPathHeight = context.canvas.clientHeight * config.arrow.heightCoeff * angleCoefficient
 
   return {

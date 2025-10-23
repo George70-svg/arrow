@@ -104,7 +104,7 @@ export class Bow extends Shape {
     const step = 10
     const pointRadius = 1
     const points: Coordinate[] = []
-    const arrowPath = getArrowPath(this.context, this.angle, this.maxAngle)
+    const arrowPath = getArrowPath(this.context, this.position, this.angle, this.maxAngle)
 
     for (let x = this.position.x; x <= arrowPath.maxPathLength; x += step) {
       const point = getNextPosition(this.position, x, arrowPath, delta, 0.5)
