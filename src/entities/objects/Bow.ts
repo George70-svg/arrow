@@ -1,6 +1,6 @@
 import config from '@entities/config/gameConfig.ts'
 import controller from '@entities/game/Conroller.ts'
-import { getAngleRadian, getArrowPath, getNextPositionY, normalizeRadianAngle } from '@entities/utils/physics.ts'
+import { getAngleRadian, getArrowPath, getNextPosition, normalizeRadianAngle } from '@entities/utils/physics.ts'
 import { Shape } from '@entities/objects/Shape.ts'
 import type { Coordinate, Direction } from '@entities/types.ts'
 import fullBow from '@/assets/images/bow/fullBow.png'
@@ -107,7 +107,7 @@ export class Bow extends Shape {
     const arrowPath = getArrowPath(this.context, this.angle, this.maxAngle)
 
     for (let x = this.position.x; x <= arrowPath.maxPathLength; x += step) {
-      const point = getNextPositionY(this.position, x, arrowPath, delta, 0.5)
+      const point = getNextPosition(this.position, x, arrowPath, delta, 0.5)
       points.push(point)
     }
 

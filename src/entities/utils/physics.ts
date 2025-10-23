@@ -7,7 +7,7 @@ export const getNextPosition = (startPosition: Coordinate, currentPosition: Coor
   return -currentPosition.x * Math.tan(angle) - (g * Math.pow(currentPosition.x, 2)) / (2 * Math.pow(speed * Math.cos(angle), 2))
 }*/
 
-export const getNextPositionY = (
+export const getNextPosition = (
   startPosition: Coordinate,
   currentX: number,
   arrowPath: ArrowPath,
@@ -15,7 +15,7 @@ export const getNextPositionY = (
   speed: number,
 ): Coordinate => {
   // angleCoefficient ~ от 0.9 до 0.18 (результат деления текущего угла на максимальный)
-  // TODO: Магическое число
+  // TODO: Магическое число, вынести в конфиг
   const coeff = arrowPath.angleCoefficient < 0.4 ? 0.4 : arrowPath.angleCoefficient
   const a = -arrowPath.maxPathHeight / Math.pow(arrowPath.maxPathLength - startPosition.x, 2)
   const x = currentX + speed * (delta / coeff)

@@ -1,5 +1,5 @@
 import config from '@entities/config/gameConfig.ts'
-import { getArrowPath, getNextAngle, getNextPositionY } from '@entities/utils/physics.ts'
+import { getArrowPath, getNextAngle, getNextPosition } from '@entities/utils/physics.ts'
 import { Shape } from '@entities/objects/Shape.ts'
 import type { ArrowPath, Coordinate } from '@entities/types.ts'
 import arrow from '@/assets/images/bow/arrow.png'
@@ -45,7 +45,7 @@ export class Arrow extends Shape {
   }
 
   public update(delta: number) {
-    this.position = getNextPositionY(this.startPosition, this.position.x, this.arrowPath, delta, this.speed)
+    this.position = getNextPosition(this.startPosition, this.position.x, this.arrowPath, delta, this.speed)
     this.angle = this.startAngle - getNextAngle(this.position.x, this.arrowPath.maxPathLength, this.startAngle)
 
     // Удаляем стрелу по достижению границ карты
