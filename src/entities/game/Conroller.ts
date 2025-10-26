@@ -1,3 +1,4 @@
+import config from '@entities/config/gameConfig.ts'
 import type { Coordinate } from '@entities/types.ts'
 
 const availableButtonCodes = ['KeyA', 'KeyD', 'KeyW', 'KeyS', 'LBM']
@@ -8,7 +9,6 @@ class Controller {
   private startDate: Date | null = null
   private mousePressedTimeMs: number | null = null
   private updateIntervalMs = 20
-  private maxTimerMs = 1000
   private intervalId: ReturnType<typeof setInterval> | undefined = undefined
 
   constructor() {
@@ -40,7 +40,7 @@ class Controller {
       if (this.startDate) {
         const startDate = this.startDate
         this.intervalId = setInterval(() => {
-          if (!this.mousePressedTimeMs || this.mousePressedTimeMs < this.maxTimerMs) {
+          if (!this.mousePressedTimeMs || this.mousePressedTimeMs < config.arrow.maxTensionTimeMs) {
             this.mousePressedTimeMs = Date.now() - startDate.getTime()
           }
         }, this.updateIntervalMs)

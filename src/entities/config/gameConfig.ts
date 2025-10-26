@@ -10,7 +10,8 @@ type Config = {
     speed: number
     heightCoeff: number
     widthCoeff: number
-    tensionCoeff: number
+    startTensionTimeMs: number
+    maxTensionTimeMs: number
   }
 }
 
@@ -20,9 +21,10 @@ const config: Config = {
   objects: {},
   arrow: {
     speed: 0.25,
-    heightCoeff: 3, // коэффициент высоты полета
+    heightCoeff: 4, // коэффициент высоты полета
     widthCoeff: 0.4, // коэффициент длины полета
-    tensionCoeff: 400, // коэффициент после которого срабатывает расчет натяжения (мс)
+    startTensionTimeMs: 400, // время после которого срабатывает расчет натяжения (мс)
+    maxTensionTimeMs: 1500, // максимальное время натяжение, после которого оно уже не влияет на траекторию (мс)
   },
 }
 

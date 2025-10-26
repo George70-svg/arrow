@@ -86,7 +86,7 @@ export class Bow extends Shape {
         this.angle = getAngleRadian(this.position, mouseCoordinates)
       }
 
-      if (mousePressedTime && mousePressedTime > config.arrow.tensionCoeff) {
+      if (mousePressedTime && mousePressedTime > config.arrow.startTensionTimeMs) {
         this.drawTrajectory(delta, mousePressedTime)
       }
     }

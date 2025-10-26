@@ -48,7 +48,7 @@ export const getArrowPath = (
   maxAngle: number,
   tensionTimeMs: number,
 ): ArrowPath => {
-  const tensionMs = tensionTimeMs > config.arrow.tensionCoeff ? tensionTimeMs / 1000 : 1
+  const tensionMs = tensionTimeMs > config.arrow.startTensionTimeMs ? tensionTimeMs / 1000 : 1
   const angleCoefficient = normalizeRadianAngle(startAngle) / maxAngle
   const maxPathLength = (context.canvas.clientWidth * config.arrow.widthCoeff * tensionMs) / angleCoefficient + startPosition.x
   const maxPathHeight = context.canvas.clientHeight * config.arrow.heightCoeff * tensionMs * angleCoefficient
