@@ -44,8 +44,7 @@ export class Bow extends Shape {
     this.fullBowImg.src = fullBow
   }
 
-  //TODO: Скорость стрелы брать из конфига
-  private shot() {
+  private shot(mousePressedTime: number) {
     if (!config.objects.arrow) {
       const startArrowPosition = { ...this.position }
       config.objects.arrow = new Arrow({
@@ -55,6 +54,7 @@ export class Bow extends Shape {
         imgHeight: 13,
         startPosition: startArrowPosition,
         speed: config.arrow.speed,
+        tensionTimeMs: mousePressedTime,
         startAngle: this.angle,
         maxAngle: this.maxAngle,
         minAngle: this.minAngle,
@@ -86,25 +86,26 @@ export class Bow extends Shape {
         this.angle = getAngleRadian(this.position, mouseCoordinates)
       }
 
-      if (mousePressedTime && mousePressedTime > 200) {
-        this.drawTrajectory(delta)
+      if (mousePressedTime && mousePressedTime > config.arrow.tensionCoeff) {
+        this.drawTrajectory(delta, mousePressedTime)
       }
     }
 
-    // сбрасываю таймер именно здесь, поскольку условие - кнопка отпущена и таймер идет
-    // если сбросить таймер на момент отпускания кнопки, то условие бессмысленно
-    // поэтому сначал нужно выполнить метод и только потом сбросить таймер
     if (!pressedKeys['LBM'] && mousePressedTime && mousePressedTime > 0) {
-      this.shot()
+      this.shot(mousePressedTime)
+
+      // сбрасываю таймер именно здесь, поскольку условие - кнопка отпущена и таймер идет
+      // если сбросить таймер на момент отпускания кнопки, то условие бессмысленно
+      // поэтому сначал нужно выполнить метод и только потом сбросить таймер
       controller.resetTimer()
     }
   }
 
-  private drawTrajectory(delta: number) {
+  private drawTrajectory(delta: number, mousePressedTime: number) {
     const step = 10
     const pointRadius = 1
     const points: Coordinate[] = []
-    const arrowPath = getArrowPath(this.context, this.position, this.angle, this.maxAngle)
+    const arrowPath = getArrowPath(this.context, this.position, this.angle, this.maxAngle, mousePressedTime)
 
     for (let x = this.position.x; x <= arrowPath.maxPathLength; x += step) {
       const point = getNextPosition(this.position, x, arrowPath, delta, 0.5)

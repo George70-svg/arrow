@@ -11,6 +11,7 @@ type ArrowProps = {
   imgHeight: number
   startPosition: Coordinate
   speed: number
+  tensionTimeMs: number
   startAngle: number // начальный угол (в радианах)
   maxAngle: number // максимальный угол направения стрелы (в градусах)
   minAngle: number // минимальный угол направления стрелы (в градусах)
@@ -22,6 +23,7 @@ export class Arrow extends Shape {
   startPosition: Coordinate = { x: 0, y: 0 }
   arrowPath: ArrowPath = { angleCoefficient: 0, maxPathLength: 0, maxPathHeight: 0 }
   angle: number = 0 // угол в радианах
+  tensionTimeMs: number
   startAngle // угол в радианах
   maxAngle // угол в градусах
   minAngle // угол в градусах
@@ -36,11 +38,12 @@ export class Arrow extends Shape {
     })
 
     this.speed = props.speed
+    this.tensionTimeMs = props.tensionTimeMs
     this.startPosition = props.startPosition
     this.startAngle = props.startAngle
     this.maxAngle = props.maxAngle
     this.minAngle = props.minAngle
-    this.arrowPath = getArrowPath(this.context, this.startPosition, this.startAngle, this.maxAngle)
+    this.arrowPath = getArrowPath(this.context, this.startPosition, this.startAngle, this.maxAngle, this.tensionTimeMs)
     this.arrowImg.src = arrow
   }
 

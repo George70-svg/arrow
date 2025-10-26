@@ -7,9 +7,10 @@ type Config = {
   height: number
   objects: Record<string, Shape | null>
   arrow: {
+    speed: number
     heightCoeff: number
     widthCoeff: number
-    speed: number
+    tensionCoeff: number
   }
 }
 
@@ -18,9 +19,10 @@ const config: Config = {
   height: 0,
   objects: {},
   arrow: {
-    heightCoeff: 4, // коэффициент высоты полета
-    widthCoeff: 0.4, // коэффициент длины полета
     speed: 0.25,
+    heightCoeff: 3, // коэффициент высоты полета
+    widthCoeff: 0.4, // коэффициент длины полета
+    tensionCoeff: 400, // коэффициент после которого срабатывает расчет натяжения (мс)
   },
 }
 

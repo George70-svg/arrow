@@ -7,7 +7,8 @@ class Controller {
   private mouseCoordinates: Coordinate | null = null
   private startDate: Date | null = null
   private mousePressedTimeMs: number | null = null
-  private updateIntervalMs = 200
+  private updateIntervalMs = 20
+  private maxTimerMs = 1000
   private intervalId: ReturnType<typeof setInterval> | undefined = undefined
 
   constructor() {
@@ -39,7 +40,9 @@ class Controller {
       if (this.startDate) {
         const startDate = this.startDate
         this.intervalId = setInterval(() => {
-          this.mousePressedTimeMs = Date.now() - startDate.getTime()
+          if (!this.mousePressedTimeMs || this.mousePressedTimeMs < this.maxTimerMs) {
+            this.mousePressedTimeMs = Date.now() - startDate.getTime()
+          }
         }, this.updateIntervalMs)
       }
     })
