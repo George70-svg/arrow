@@ -22,8 +22,8 @@ export class Arrow extends Shape {
   arrowImg = new Image()
   startPosition: Coordinate = { x: 0, y: 0 }
   arrowPath: ArrowPath = { angleCoefficient: 0, maxPathLength: 0, maxPathHeight: 0 }
-  angle: number = 0 // угол в радианах
   tensionTimeMs: number
+  angle: number = 0 // угол в радианах
   startAngle // угол в радианах
   maxAngle // угол в градусах
   minAngle // угол в градусах

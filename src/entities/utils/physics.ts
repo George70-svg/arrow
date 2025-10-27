@@ -1,11 +1,5 @@
-import type { ArrowPath, Coordinate } from '@entities/types.ts'
 import config from '@entities/config/gameConfig.ts'
-
-/*const g = 9.81 / 1000000
-
-export const getNextPosition = (startPosition: Coordinate, currentPosition: Coordinate, speed: number, angle: number): number => {
-  return -currentPosition.x * Math.tan(angle) - (g * Math.pow(currentPosition.x, 2)) / (2 * Math.pow(speed * Math.cos(angle), 2))
-}*/
+import type { ArrowPath, Coordinate } from '@entities/types.ts'
 
 export const getNextPosition = (
   startPosition: Coordinate,
@@ -15,8 +9,7 @@ export const getNextPosition = (
   speed: number,
 ): Coordinate => {
   // angleCoefficient ~ от 0.9 до 0.18 (результат деления текущего угла на максимальный)
-  // TODO: Магическое число, вынести в конфиг
-  const coeff = arrowPath.angleCoefficient < 0.4 ? 0.4 : arrowPath.angleCoefficient
+  const coeff = arrowPath.angleCoefficient < config.arrow.angleStartCoeff ? config.arrow.angleStartCoeff : arrowPath.angleCoefficient
   const a = -arrowPath.maxPathHeight / Math.pow(arrowPath.maxPathLength - startPosition.x, 2)
   const x = currentX + speed * (delta / coeff)
   const y = startPosition.y - a * (x - startPosition.x) * (currentX - arrowPath.maxPathLength)

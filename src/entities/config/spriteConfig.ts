@@ -8,22 +8,22 @@ export const playerSprites: Record<string, SpriteConfig> = {
   idle: {
     image: new Image(),
     frames: 8,
-    frameDelay: 20,
+    frameDelay: 150,
   },
   walk: {
     image: new Image(),
     frames: 8,
-    frameDelay: 20,
+    frameDelay: 150,
   },
   run: {
     image: new Image(),
     frames: 8,
-    frameDelay: 20,
+    frameDelay: 150,
   },
   jump: {
     image: new Image(),
     frames: 8,
-    frameDelay: 20,
+    frameDelay: 150,
   },
 }
 

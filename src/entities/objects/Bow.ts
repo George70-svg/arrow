@@ -112,7 +112,6 @@ export class Bow extends Shape {
       points.push(point)
     }
 
-    // TODO: Вынести настройку внешнего вида траектории в конфиг
     this.context.fillStyle = '#454545'
 
     for (const p of points) {

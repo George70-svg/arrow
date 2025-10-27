@@ -1,6 +1,7 @@
 import { getDrawParams } from '@entities/utils/utils.ts'
 import { playerSprites } from '@entities/config/spriteConfig.ts'
 import controller from '@entities/game/Conroller.ts'
+import { FrameDelay } from '@entities/game/FrameDelay.ts'
 import { Shape } from './Shape.ts'
 import type { Coordinate, Direction, DrawImageParams, SpriteConfig } from '../types.ts'
 
@@ -16,10 +17,9 @@ type PlayerProps = {
 
 export class Player extends Shape {
   speed: number = 0
-  direction: Direction = 'right'
+  direction: Direction
   currentSprite: SpriteConfig = playerSprites.idle
   frame: number = 0
-  frameDelayCount: number = 0 // Счетчик для проверки показа следующего кадра
   isMoving = false
   scaleWidth = 1
   scaleHeight = 1
@@ -37,7 +37,7 @@ export class Player extends Shape {
     this.direction = props.startDirection
   }
 
-  private getCurrentImage(sprite: HTMLImageElement, framesInSprite: number): DrawImageParams {
+  private getCurrentImageFromSprite(sprite: HTMLImageElement, framesInSprite: number): DrawImageParams {
     if (this.frame >= framesInSprite) {
       this.frame = 0
     }
@@ -46,13 +46,11 @@ export class Player extends Shape {
   }
 
   private getRotatedDrawParams(): DrawImageParams {
-    this.context.translate(this.position.x, this.position.y) // настраиваем точку вращения (центр объекта)
-
     if (this.direction === 'left') {
       this.context.scale(-1, 1)
     } // отразить по оси X
 
-    const [sprite, sx, sy, sWidth, sHeight, , , frameWidth, frameHeight] = this.getCurrentImage(this.currentSprite.image, 8)
+    const [sprite, sx, sy, sWidth, sHeight, , , frameWidth, frameHeight] = this.getCurrentImageFromSprite(this.currentSprite.image, 8)
     this.scaleWidth = this.imgWidth / frameWidth
     this.scaleHeight = this.imgHeight / frameHeight
 
@@ -69,15 +67,7 @@ export class Player extends Shape {
     ]
   }
 
-  // устанавливаем задержку между сменами кадров
-  private updateAnimationDelay() {
-    this.frameDelayCount += 1
-
-    if (this.frameDelayCount >= this.currentSprite.frameDelay) {
-      this.frame++
-      this.frameDelayCount = 0
-    }
-  }
+  private frameDelay = new FrameDelay(this.currentSprite)
 
   public update(delta: number) {
     const pressedKeys = controller.getPressedKeys()
@@ -97,11 +87,13 @@ export class Player extends Shape {
     }
 
     this.currentSprite = this.isMoving ? playerSprites.walk : playerSprites.idle
+    this.frameDelay.update(delta)
+    this.frame = this.frameDelay.frame
   }
 
   public render() {
-    this.updateAnimationDelay()
     this.context.save() // сохраняем текущее состояние Canvas
+    this.context.translate(this.position.x, this.position.y) // настраиваем точку вращения (центр объекта)
     const params = this.getRotatedDrawParams()
     this.context.drawImage(...params) // теперь рисуем относительно новой системы координат, dx и dy будут равны 0 (центр от translate)
     this.context.restore() // восстанавливаем состояние (отменяем translate, rotate и т.д.)

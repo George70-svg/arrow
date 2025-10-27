@@ -7,11 +7,11 @@ export type ShapeProps = {
 }
 
 export abstract class Shape {
+  id
   context: CanvasRenderingContext2D
-  id = ''
-  position: { x: number; y: number } = { x: 0, y: 0 }
-  imgWidth = 0
-  imgHeight = 0
+  position: { x: number; y: number }
+  imgWidth
+  imgHeight
 
   protected constructor(props: ShapeProps) {
     this.context = props.context
