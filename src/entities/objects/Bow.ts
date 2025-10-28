@@ -26,6 +26,7 @@ export class Bow extends Shape {
   angle: number = 0 // угол в радианах
   maxAngle = 0 // угол в градусах
   minAngle = 0 // угол в градусах
+  trajectoryColor = '#454545'
 
   constructor(props: BowProps) {
     super({
@@ -44,6 +45,7 @@ export class Bow extends Shape {
     this.fullBowImg.src = fullBow
   }
 
+  //TODO: Вынести настройку конфига, здесь метод для выстрела должен быть проще
   private shot(mousePressedTime: number) {
     if (!config.objects.arrow) {
       const startArrowPosition = { ...this.position }
@@ -107,12 +109,13 @@ export class Bow extends Shape {
     const points: Coordinate[] = []
     const arrowPath = getArrowPath(this.context, this.position, this.angle, this.maxAngle, mousePressedTime)
 
+    // Если нужно изменить длинну отображаемой траектории, то нужно влиять на x <= arrowPath.maxPathLength
     for (let x = this.position.x; x <= arrowPath.maxPathLength; x += step) {
       const point = getNextPosition(this.position, x, arrowPath, delta, 0.5)
       points.push(point)
     }
 
-    this.context.fillStyle = '#454545'
+    this.context.fillStyle = this.trajectoryColor
 
     for (const p of points) {
       this.context.beginPath()

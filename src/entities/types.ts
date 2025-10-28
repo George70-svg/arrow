@@ -20,6 +20,14 @@ export type DrawImageParams = [
   dh: number,
 ]
 
+export type SpriteFrame = {
+  image: HTMLImageElement
+  sx: number
+  sy: number
+  sw: number
+  sh: number
+}
+
 export type ArrowPath = {
   angleCoefficient: number
   maxPathLength: number

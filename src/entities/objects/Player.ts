@@ -1,4 +1,4 @@
-import { getDrawParams } from '@entities/utils/utils.ts'
+import { getFrameFromSprite } from '@entities/utils/utils.ts'
 import { playerSprites } from '@entities/config/spriteConfig.ts'
 import controller from '@entities/game/Conroller.ts'
 import { FrameDelay } from '@entities/game/FrameDelay.ts'
@@ -37,33 +37,37 @@ export class Player extends Shape {
     this.direction = props.startDirection
   }
 
-  private getCurrentImageFromSprite(sprite: HTMLImageElement, framesInSprite: number): DrawImageParams {
-    if (this.frame >= framesInSprite) {
-      this.frame = 0
-    }
-
-    return getDrawParams(sprite, this.frame, framesInSprite, this.position.x, this.position.y)
-  }
-
+  // TODO: Этот метод должен стать классом
   private getRotatedDrawParams(): DrawImageParams {
+    // 1) Разворот картинки
     if (this.direction === 'left') {
       this.context.scale(-1, 1)
     } // отразить по оси X
 
-    const [sprite, sx, sy, sWidth, sHeight, , , frameWidth, frameHeight] = this.getCurrentImageFromSprite(this.currentSprite.image, 8)
-    this.scaleWidth = this.imgWidth / frameWidth
-    this.scaleHeight = this.imgHeight / frameHeight
+    // 2) Смена кадров из спрайта
+    if (this.frame >= this.currentSprite.frames) {
+      this.frame = 0
+    }
 
+    // 3) Получение парамтров для рисования
+    //const [sprite, sx, sy, sWidth, sHeight, , , frameWidth, frameHeight] = this.getCurrentImageFromSprite(this.currentSprite.image, 8)
+    const frameFromSprite = getFrameFromSprite(this.currentSprite.image, this.currentSprite.frames, this.frame)
+
+    // 4) Масштабирование исходного изображение под настроенное для объекта
+    this.scaleWidth = this.imgWidth / frameFromSprite.sw
+    this.scaleHeight = this.imgHeight / frameFromSprite.sh
+
+    // 5) Возвращение параметров с учетом передвижения и направления для рисования
     return [
-      sprite,
-      sx, // sx — смещение по X в спрайте
-      sy, // sy — смещение по Y в спрайте
-      sWidth, // sWidth — ширина кадра
-      sHeight, // sHeight — высота кадра
-      (-sWidth * this.scaleWidth) / 2, // dx — куда рисовать по X
-      -sprite.height * this.scaleHeight, // dy — куда рисовать по Y
-      frameWidth * this.scaleWidth, // dWidth — ширина отрисовки
-      frameHeight * this.scaleHeight, // dHeight — высота отрисовки
+      frameFromSprite.image,
+      frameFromSprite.sx, // sx — смещение по X в спрайте
+      frameFromSprite.sy, // sy — смещение по Y в спрайте
+      frameFromSprite.sw, // sWidth — ширина кадра
+      frameFromSprite.sw, // sHeight — высота кадра
+      (-frameFromSprite.sw * this.scaleWidth) / 2, // dx — куда рисовать по X
+      -frameFromSprite.sh * this.scaleHeight, // dy — куда рисовать по Y
+      frameFromSprite.sw * this.scaleWidth, // dWidth — ширина отрисовки
+      frameFromSprite.sh * this.scaleHeight, // dHeight — высота отрисовки
     ]
   }
 

@@ -1,5 +1,5 @@
 import config from '@entities/config/gameConfig.ts'
-import type { DrawImageParams } from '@entities/types.ts'
+import type { SpriteFrame } from '@entities/types.ts'
 
 export const render = () => {
   const shapes = Object.values(config.objects)
@@ -19,27 +19,18 @@ export const update = (delta: number) => {
   })
 }
 
-export const getDrawParams = (
-  sprite: HTMLImageElement,
-  currentFrame: number,
-  framesInSprite: number,
-  nextPositionX: number,
-  nextPositionY: number,
-): DrawImageParams => {
+// Метод для спрайтов, когда все изображения в спрайте идут в одну строку
+export const getFrameFromSprite = (sprite: HTMLImageElement, framesInSprite: number, currentFrame: number): SpriteFrame => {
   const fullWidth = sprite.width
   const fullHeight = sprite.height
   const frameWidth = fullWidth / framesInSprite
-  const frameHeight = fullHeight
+  const frameHeigth = fullHeight
 
-  return [
-    sprite,
-    frameWidth * currentFrame, // sx — смещение по X в спрайте
-    0, // sy — смещение по Y в спрайте
-    frameWidth, // sWidth — ширина кадра
-    frameHeight, // sHeight — высота кадра
-    nextPositionX, // dx — куда рисовать по X
-    nextPositionY, // dy — куда рисовать по Y
-    frameWidth, // dWidth — ширина отрисовки
-    frameHeight, // dHeight — высота отрисовки
-  ]
+  return {
+    image: sprite,
+    sx: frameWidth * currentFrame, // sx — смещение по X в спрайте
+    sy: 0, // sy — смещение по Y в спрайте
+    sw: frameWidth, // sWidth — ширина кадра
+    sh: frameHeigth, // sHeight — высота кадра
+  }
 }

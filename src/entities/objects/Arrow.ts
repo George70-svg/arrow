@@ -51,6 +51,7 @@ export class Arrow extends Shape {
     this.position = getNextPosition(this.startPosition, this.position.x, this.arrowPath, delta, this.speed)
     this.angle = getNextAngle(this.startPosition.x, this.position.x, this.arrowPath.maxPathLength, this.startAngle)
 
+    // TODO: Потом должно работать за счет отдельной реализации колизии
     // Удаляем стрелу по достижению границ карты
     if (this.position.x > this.context.canvas.clientWidth || this.position.y > this.context.canvas.clientWidth) {
       config.objects.arrow = null
