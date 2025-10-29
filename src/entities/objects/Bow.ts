@@ -109,6 +109,7 @@ export class Bow extends Shape {
     const points: Coordinate[] = []
     const arrowPath = getArrowPath(this.context, this.position, this.angle, this.maxAngle, mousePressedTime)
 
+    // TODO: Вынести коэффициент для длины дуги в конфиг
     // Если нужно изменить длинну отображаемой траектории, то нужно влиять на x <= arrowPath.maxPathLength
     for (let x = this.position.x; x <= arrowPath.maxPathLength; x += step) {
       const point = getNextPosition(this.position, x, arrowPath, delta, 0.5)
