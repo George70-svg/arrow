@@ -1,9 +1,7 @@
 import type { Shape } from '@entities/objects/Shape.ts'
 import { Player } from '../objects/Player.ts'
 import { Bow } from '@entities/objects/Bow.ts'
-import { Object } from '@entities/objects/Object.ts'
-
-import groundImg from '@images/environment/ground.png'
+import { initializeDecoration } from '@entities/config/decorationConfig.ts'
 
 type Config = {
   width: number
@@ -42,22 +40,6 @@ export const initializeObjects = (context: CanvasRenderingContext2D | null) => {
     return
   }
 
-  for (let i = -1; i <= 20; i++) {
-    config.decorations.push(
-      new Object({
-        context: context,
-        id: crypto.randomUUID(),
-        startPosition: { x: 90 * i, y: config.height - 35 },
-        framePosition: { x: 0, y: 380 },
-        imgWidth: 100,
-        imgHeight: 35,
-        frameWidth: 100,
-        frameHeight: 35,
-        sprite: groundImg,
-      }),
-    )
-  }
-
   config.objects = {
     player: new Player({
       context: context,
@@ -83,7 +65,7 @@ export const initializeObjects = (context: CanvasRenderingContext2D | null) => {
     arrow: null,
   }
 
-  console.log('config', config)
+  initializeDecoration(context)
 }
 
 export default config
