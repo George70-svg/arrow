@@ -27,7 +27,7 @@ export class Bow extends Shape {
   angle: number = 0 // угол в радианах
   maxAngle = 0 // угол в градусах
   minAngle = 0 // угол в градусах
-  trajectoryColor = '#3a3a3a'
+  trajectoryColor = '#ffffff'
 
   constructor(props: BowProps) {
     super({

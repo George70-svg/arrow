@@ -148,7 +148,7 @@ const createTown = (context: CanvasRenderingContext2D) => {
 
 // создаем поле
 const createField = (context: CanvasRenderingContext2D) => {
-  const startX = 600
+  const startX = 500
   const startY = config.height - 95
 
   // трава
@@ -157,7 +157,7 @@ const createField = (context: CanvasRenderingContext2D) => {
       new Object({
         context: context,
         id: crypto.randomUUID(),
-        startPosition: { x: startX - 150 + 90 * i, y: startY + 50 },
+        startPosition: { x: startX - 50 + 90 * i, y: startY + 50 },
         framePosition: { x: 387, y: 497 },
         imgWidth: 87,
         imgHeight: 15,
@@ -213,15 +213,30 @@ const createField = (context: CanvasRenderingContext2D) => {
     }),
   )
 
-  // сено
+  // среднее сено
   config.decorations.push(
     new Object({
       context: context,
       id: crypto.randomUUID(),
-      startPosition: { x: startX + 500, y: startY + 19 },
+      startPosition: { x: startX + 450, y: startY + 33 },
+      framePosition: { x: 284, y: 251 },
+      imgWidth: 35,
+      imgHeight: 32,
+      frameWidth: 40,
+      frameHeight: 37,
+      sprite: itemsImg,
+    }),
+  )
+
+  // большое сено
+  config.decorations.push(
+    new Object({
+      context: context,
+      id: crypto.randomUUID(),
+      startPosition: { x: startX + 500, y: startY + 10 },
       framePosition: { x: 189, y: 251 },
-      imgWidth: 86,
-      imgHeight: 50,
+      imgWidth: 99,
+      imgHeight: 60,
       frameWidth: 66,
       frameHeight: 40,
       sprite: itemsImg,
@@ -272,17 +287,49 @@ const createField = (context: CanvasRenderingContext2D) => {
       sprite: itemsImg,
     }),
   )
-}
 
-// первый ящик
-/*new Object({
-  context: context,
-  id: crypto.randomUUID(),
-  startPosition: { x: startX, y: startY + 50 },
-  framePosition: { x: 42, y: 20 },
-  imgWidth: 45,
-  imgHeight: 45,
-  frameWidth: 45,
-  frameHeight: 45,
-  sprite: itemsImg,
-})*/
+  // куст
+  config.decorations.push(
+    new Object({
+      context: context,
+      id: crypto.randomUUID(),
+      startPosition: { x: startX + 1100, y: startY + 25 },
+      framePosition: { x: 355, y: 569 },
+      imgWidth: 55,
+      imgHeight: 42,
+      frameWidth: 55,
+      frameHeight: 42,
+      sprite: itemsImg,
+    }),
+  )
+
+  // куст
+  config.decorations.push(
+    new Object({
+      context: context,
+      id: crypto.randomUUID(),
+      startPosition: { x: startX + 1220, y: startY + 25 },
+      framePosition: { x: 455, y: 569 },
+      imgWidth: 98,
+      imgHeight: 42,
+      frameWidth: 98,
+      frameHeight: 42,
+      sprite: itemsImg,
+    }),
+  )
+
+  // большое дерево
+  config.decorations.push(
+    new Object({
+      context: context,
+      id: crypto.randomUUID(),
+      startPosition: { x: startX + 1250, y: startY - 100 },
+      framePosition: { x: 832, y: 443 },
+      imgWidth: 152,
+      imgHeight: 168,
+      frameWidth: 152,
+      frameHeight: 168,
+      sprite: itemsImg,
+    }),
+  )
+}
