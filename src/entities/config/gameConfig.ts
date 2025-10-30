@@ -44,7 +44,7 @@ export const initializeObjects = (context: CanvasRenderingContext2D | null) => {
     player: new Player({
       context: context,
       id: crypto.randomUUID(),
-      startPosition: { x: 40, y: config.height - 32 },
+      startPosition: { x: 140, y: config.height - 32 },
       imgWidth: 150,
       imgHeight: 150,
       speed: 0.15,
@@ -53,7 +53,7 @@ export const initializeObjects = (context: CanvasRenderingContext2D | null) => {
     bow: new Bow({
       context: context,
       id: crypto.randomUUID(),
-      startPosition: { x: 70, y: config.height - 70 },
+      startPosition: { x: 170, y: config.height - 70 },
       imgWidth: 45,
       imgHeight: 45,
       speed: 0.15,

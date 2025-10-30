@@ -3,7 +3,7 @@ import type { Coordinate } from '@entities/types.ts'
 import { Arrow } from '@entities/objects/Arrow.ts'
 
 export const render = () => {
-  const shapes = [...Object.values(config.objects), ...config.decorations]
+  const shapes = [...config.decorations, ...Object.values(config.objects)]
   shapes.forEach((shape) => {
     if (shape) {
       shape.render()
