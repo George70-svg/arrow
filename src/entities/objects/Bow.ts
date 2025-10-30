@@ -1,10 +1,11 @@
+// TODO: Плохо импортировать конфиг для класса
 import config from '@entities/config/gameConfig.ts'
 import controller from '@entities/game/Conroller.ts'
+import { createArrow } from '@entities/utils/utils.ts'
 import { getAngleRadian, getArrowPath, getNextPosition, normalizeRadianAngle } from '@entities/utils/physics.ts'
 import { Shape } from '@entities/objects/Shape.ts'
 import type { Coordinate, Direction } from '@entities/types.ts'
 import fullBow from '@/assets/images/bow/fullBow.png'
-import { Arrow } from '@entities/objects/Arrow.ts'
 
 type BowProps = {
   id: string
@@ -26,7 +27,7 @@ export class Bow extends Shape {
   angle: number = 0 // угол в радианах
   maxAngle = 0 // угол в градусах
   minAngle = 0 // угол в градусах
-  trajectoryColor = '#454545'
+  trajectoryColor = '#3a3a3a'
 
   constructor(props: BowProps) {
     super({
@@ -40,28 +41,13 @@ export class Bow extends Shape {
     this.speed = props.speed
     this.direction = props.startDirection
     this.angle = props.startAngle
-    this.maxAngle = props.maxAngle
     this.minAngle = props.minAngle
+    this.maxAngle = props.maxAngle
     this.fullBowImg.src = fullBow
   }
 
-  //TODO: Вынести настройку конфига, здесь метод для выстрела должен быть проще
   private shot(mousePressedTime: number) {
-    if (!config.objects.arrow) {
-      const startArrowPosition = { ...this.position }
-      config.objects.arrow = new Arrow({
-        id: crypto.randomUUID(),
-        context: this.context,
-        imgWidth: 45,
-        imgHeight: 13,
-        startPosition: startArrowPosition,
-        speed: config.arrow.speed,
-        tensionTimeMs: mousePressedTime,
-        startAngle: this.angle,
-        maxAngle: this.maxAngle,
-        minAngle: this.minAngle,
-      })
-    }
+    createArrow(this.context, this.position, mousePressedTime, this.angle, this.minAngle, this.maxAngle)
   }
 
   public update(delta: number) {
@@ -109,9 +95,10 @@ export class Bow extends Shape {
     const points: Coordinate[] = []
     const arrowPath = getArrowPath(this.context, this.position, this.angle, this.maxAngle, mousePressedTime)
 
-    // TODO: Вынести коэффициент для длины дуги в конфиг
-    // Если нужно изменить длинну отображаемой траектории, то нужно влиять на x <= arrowPath.maxPathLength
-    for (let x = this.position.x; x <= arrowPath.maxPathLength; x += step) {
+    // Если нужно изменить длинну отображаемой траектории, то нужно влиять на trajectoryLengthCoeff
+    const trajectoryLength = arrowPath.maxPathLength * config.arrow.trajectoryLengthCoeff
+
+    for (let x = this.position.x; x <= trajectoryLength; x += step) {
       const point = getNextPosition(this.position, x, arrowPath, delta, 0.5)
       points.push(point)
     }

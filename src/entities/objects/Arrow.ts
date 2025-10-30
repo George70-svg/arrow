@@ -1,3 +1,4 @@
+// TODO: Плохо импортировать конфиг для класса
 import config from '@entities/config/gameConfig.ts'
 import { getArrowPath, getNextAngle, getNextPosition } from '@entities/utils/physics.ts'
 import { Shape } from '@entities/objects/Shape.ts'

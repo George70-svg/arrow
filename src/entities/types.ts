@@ -20,7 +20,7 @@ export type DrawImageParams = [
   dh: number,
 ]
 
-export type SpriteFrame = {
+export type SpriteFrameParams = {
   image: HTMLImageElement
   sx: number
   sy: number

@@ -1,4 +1,4 @@
-import type { DrawImageParams, SpriteConfig } from '@entities/types.ts'
+import type { DrawImageParams, SpriteConfig, SpriteFrameParams } from '@entities/types.ts'
 
 // Класс для спрайтов, когда все изображения в спрайте идут в одну строку
 export class SpriteFrame {
@@ -35,7 +35,7 @@ export class SpriteFrame {
     }
   }
 
-  private frameFromSprite(frame: number) {
+  private frameFromSprite(frame: number): SpriteFrameParams {
     const fullWidth = this.sprite.image.width
     const fullHeight = this.sprite.image.height
     const frameWidth = fullWidth / this.sprite.frames

@@ -12,9 +12,6 @@
 }
 
 canvas {
-  border: 3px dashed var(--blue-light-color);
-  background-position: center;
-  background-repeat: no-repeat;
   background-size: cover;
-  background-clip: border-box;
+  background-image: url('../../../assets/images/background/background.webp');
 }
