@@ -213,21 +213,6 @@ const createField = (context: CanvasRenderingContext2D) => {
     }),
   )
 
-  // среднее сено
-  config.decorations.push(
-    new Object({
-      context: context,
-      id: crypto.randomUUID(),
-      startPosition: { x: startX + 450, y: startY + 33 },
-      framePosition: { x: 284, y: 251 },
-      imgWidth: 35,
-      imgHeight: 32,
-      frameWidth: 40,
-      frameHeight: 37,
-      sprite: itemsImg,
-    }),
-  )
-
   // большое сено
   config.decorations.push(
     new Object({
