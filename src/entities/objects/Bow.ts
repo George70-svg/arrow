@@ -6,6 +6,8 @@ import { getAngleRadian, getArrowPath, getNextPosition, normalizeRadianAngle } f
 import { Shape } from '@entities/objects/Shape.ts'
 import type { Coordinate, Direction } from '@entities/types.ts'
 import fullBow from '@/assets/images/bow/fullBow.png'
+import tensionBow from '@/assets/images/bow/tensionBow.png'
+import bow from '@/assets/images/bow/bow.png'
 
 type BowProps = {
   id: string
@@ -23,7 +25,7 @@ type BowProps = {
 export class Bow extends Shape {
   speed: number = 0
   direction: Direction = 'right'
-  fullBowImg = new Image()
+  bowImg = new Image()
   angle: number = 0 // угол в радианах
   maxAngle = 0 // угол в градусах
   minAngle = 0 // угол в градусах
@@ -43,7 +45,7 @@ export class Bow extends Shape {
     this.angle = props.startAngle
     this.minAngle = props.minAngle
     this.maxAngle = props.maxAngle
-    this.fullBowImg.src = fullBow
+    this.bowImg.src = tensionBow
   }
 
   private shot(mousePressedTime: number) {
@@ -81,6 +83,7 @@ export class Bow extends Shape {
 
     if (!pressedKeys['LBM'] && mousePressedTime && mousePressedTime > 0) {
       this.shot(mousePressedTime)
+      this.bowImg.src = bow
 
       // сбрасываю таймер именно здесь, поскольку условие - кнопка отпущена и таймер идет
       // если сбросить таймер на момент отпускания кнопки, то условие бессмысленно
@@ -118,7 +121,7 @@ export class Bow extends Shape {
     this.context.rotate(this.angle)
     // рисуем изображение так, чтобы его центр совпал с (0,0) — точкой вращения стрелы
     // по дефолту drawImage ставит левый верхний угол картинки в заданную точку, поэтому смещаем на половину размера
-    this.context.drawImage(this.fullBowImg, -this.imgWidth / 2, -this.imgHeight / 2, this.imgWidth, this.imgHeight)
+    this.context.drawImage(this.bowImg, -this.imgWidth / 2, -this.imgHeight / 2, this.imgWidth, this.imgHeight)
     this.context.restore() // восстанавливаем состояние (отменяем translate, rotate)
   }
 }
