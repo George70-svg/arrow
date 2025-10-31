@@ -25,7 +25,7 @@ type BowProps = {
 export class Bow extends Shape {
   speed: number = 0
   direction: Direction = 'right'
-  bowImg = new Image()
+  currentBowImg = new Image()
   angle: number = 0 // угол в радианах
   maxAngle = 0 // угол в градусах
   minAngle = 0 // угол в градусах
@@ -45,11 +45,13 @@ export class Bow extends Shape {
     this.angle = props.startAngle
     this.minAngle = props.minAngle
     this.maxAngle = props.maxAngle
-    this.bowImg.src = tensionBow
+    this.currentBowImg.src = fullBow
   }
 
   private shot(mousePressedTime: number) {
-    createArrow(this.context, this.position, mousePressedTime, this.angle, this.minAngle, this.maxAngle)
+    if (!config.objects.arrow) {
+      createArrow(this.context, this.position, mousePressedTime, this.angle, this.minAngle, this.maxAngle)
+    }
   }
 
   public update(delta: number) {
@@ -68,6 +70,12 @@ export class Bow extends Shape {
       this.direction = 'right'
     }
 
+    if (!config.objects.arrow) {
+      this.currentBowImg.src = fullBow
+    } else {
+      this.currentBowImg.src = bow
+    }
+
     if (mouseCoordinates) {
       const angle = getAngleRadian(this.position, mouseCoordinates)
       const normalAngle = normalizeRadianAngle(angle)
@@ -78,12 +86,12 @@ export class Bow extends Shape {
 
       if (mousePressedTime && mousePressedTime > config.arrow.startTensionTimeMs) {
         this.drawTrajectory(delta, mousePressedTime)
+        this.currentBowImg.src = tensionBow
       }
     }
 
     if (!pressedKeys['LBM'] && mousePressedTime && mousePressedTime > 0) {
       this.shot(mousePressedTime)
-      this.bowImg.src = bow
 
       // сбрасываю таймер именно здесь, поскольку условие - кнопка отпущена и таймер идет
       // если сбросить таймер на момент отпускания кнопки, то условие бессмысленно
@@ -121,7 +129,7 @@ export class Bow extends Shape {
     this.context.rotate(this.angle)
     // рисуем изображение так, чтобы его центр совпал с (0,0) — точкой вращения стрелы
     // по дефолту drawImage ставит левый верхний угол картинки в заданную точку, поэтому смещаем на половину размера
-    this.context.drawImage(this.bowImg, -this.imgWidth / 2, -this.imgHeight / 2, this.imgWidth, this.imgHeight)
+    this.context.drawImage(this.currentBowImg, -this.imgWidth / 2, -this.imgHeight / 2, this.imgWidth, this.imgHeight)
     this.context.restore() // восстанавливаем состояние (отменяем translate, rotate)
   }
 }
