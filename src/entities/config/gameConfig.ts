@@ -1,6 +1,7 @@
 import type { Shape } from '@entities/objects/Shape.ts'
 import { Player } from '../objects/Player.ts'
 import { Bow } from '@entities/objects/Bow.ts'
+import { Sun } from '@entities/objects/Sun.ts'
 import { initializeDecoration } from '@entities/config/decorationConfig.ts'
 
 type Config = {
@@ -35,8 +36,8 @@ const config: Config = {
   },
 }
 
-export const initializeObjects = (context: CanvasRenderingContext2D | null) => {
-  if (!context) {
+export const initializeObjects = (context: CanvasRenderingContext2D | null, backgroundContext: CanvasRenderingContext2D | null) => {
+  if (!context || !backgroundContext) {
     return
   }
 
@@ -61,6 +62,15 @@ export const initializeObjects = (context: CanvasRenderingContext2D | null) => {
       startAngle: -0.75,
       maxAngle: -85,
       minAngle: -20,
+    }),
+    sun: new Sun({
+      context: backgroundContext,
+      id: crypto.randomUUID(),
+      imgWidth: 45,
+      imgHeight: 45,
+      startPosition: { x: config.width / 2, y: config.height / 2 },
+      radiusX: config.width / 2 + 100,
+      radiusY: config.height / 2 - 20,
     }),
     arrow: null,
   }

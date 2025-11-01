@@ -40,18 +40,6 @@ export class Object extends Shape {
 
   public update() {}
 
-  /*return [
-    frameFromSprite.image,
-    frameFromSprite.sx, // sx — смещение по X в спрайте
-    frameFromSprite.sy, // sy — смещение по Y в спрайте
-    frameFromSprite.sw, // sWidth — ширина кадра
-    frameFromSprite.sw, // sHeight — высота кадра
-    (-frameFromSprite.sw * this.scale.width) / 2, // dx — куда рисовать по X
-    -frameFromSprite.sh * this.scale.height, // dy — куда рисовать по Y
-    frameFromSprite.sw * this.scale.width, // dWidth — ширина отрисовки
-    frameFromSprite.sh * this.scale.height, // dHeight — высота отрисовки
-  ]*/
-
   public render() {
     const params = this.spriteImage.imageFromSprite()
 
