@@ -13,12 +13,17 @@ export const render = () => {
 
 export const update = (delta: number) => {
   const shapes = Object.values(config.objects)
+  const dayPeriod = config.dayPeriod
 
   shapes.forEach((shape) => {
     if (shape && shape.update) {
       shape.update(delta)
     }
   })
+
+  if (dayPeriod) {
+    dayPeriod.update()
+  }
 }
 
 export const createArrow = (

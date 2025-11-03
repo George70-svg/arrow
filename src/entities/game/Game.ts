@@ -1,4 +1,4 @@
-import config, { initializeObjects } from '@entities/config/gameConfig.ts'
+import config, { initializeGame } from '@entities/config/gameConfig.ts'
 import { render, update } from '@entities/utils/utils.ts'
 
 export class Game {
@@ -30,7 +30,7 @@ export class Game {
   }
 
   public start() {
-    initializeObjects(this.context, this.backgroundContext)
+    initializeGame(this.context, this.backgroundContext)
     this.frameCb = requestAnimationFrame(this.boundLoop)
   }
 }

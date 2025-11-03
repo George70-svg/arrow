@@ -21,7 +21,7 @@ export abstract class Shape {
     this.imgHeight = props.imgHeight
   }
 
-  abstract update?(delta: number): void
+  update?(delta: number): void
 
   abstract render(): void
 }

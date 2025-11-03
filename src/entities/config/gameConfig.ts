@@ -3,12 +3,15 @@ import { Player } from '../objects/Player.ts'
 import { Bow } from '@entities/objects/Bow.ts'
 import { Sun } from '@entities/objects/Sun.ts'
 import { initializeDecoration } from '@entities/config/decorationConfig.ts'
+import { DayPeriod } from '@entities/game/DayPeriod.ts'
+import { Background } from '@entities/objects/Background.ts'
 
 type Config = {
   width: number
   height: number
   objects: Record<string, Shape | null>
   decorations: Shape[]
+  dayPeriod: DayPeriod | null
   arrow: {
     speed: number
     heightCoeff: number
@@ -25,6 +28,7 @@ const config: Config = {
   height: 0,
   objects: {},
   decorations: [],
+  dayPeriod: null,
   arrow: {
     speed: 0.25,
     heightCoeff: 4, // коэффициент высоты полета
@@ -36,10 +40,18 @@ const config: Config = {
   },
 }
 
-export const initializeObjects = (context: CanvasRenderingContext2D | null, backgroundContext: CanvasRenderingContext2D | null) => {
+export const initializeGame = (context: CanvasRenderingContext2D | null, backgroundContext: CanvasRenderingContext2D | null) => {
   if (!context || !backgroundContext) {
     return
   }
+
+  // Запускаем класс с расчетом параметров смены дня/ночи
+  config.dayPeriod = new DayPeriod({
+    speed: 0.0025,
+    center: { x: config.width / 2, y: config.height / 2 },
+    radiusX: config.width / 2 + 50,
+    radiusY: config.height / 2 - 50,
+  })
 
   config.objects = {
     player: new Player({
@@ -63,14 +75,18 @@ export const initializeObjects = (context: CanvasRenderingContext2D | null, back
       maxAngle: -85,
       minAngle: -20,
     }),
+    background: new Background({
+      id: crypto.randomUUID(),
+      context: context,
+      backgroundContext: backgroundContext,
+      dayPeriod: config.dayPeriod,
+    }),
     sun: new Sun({
       context: backgroundContext,
       id: crypto.randomUUID(),
       imgWidth: 45,
       imgHeight: 45,
-      startPosition: { x: config.width / 2, y: config.height / 2 },
-      radiusX: config.width / 2 + 50,
-      radiusY: config.height / 2 - 50,
+      dayPeriod: config.dayPeriod,
     }),
     arrow: null,
   }
