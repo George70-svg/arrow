@@ -22,7 +22,6 @@ export class Game {
     this.lastTimestamp = timestamp
 
     this.context.clearRect(0, 0, config.width, config.height) // Очистка холста
-    this.backgroundContext.clearRect(0, 0, config.width, config.height) // Очистка холста
     update(delta)
     render()
 
