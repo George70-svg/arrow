@@ -6,11 +6,14 @@ import { initializeDecoration } from '@entities/config/decorationConfig.ts'
 import { DayPeriod } from '@entities/game/DayPeriod.ts'
 import { Background } from '@entities/objects/Background.ts'
 
+// Важно что background, decorations и objects в отдельных объектах
+// Это влияет на поряд отрисовки на канвасе, потому что потом идет деструктуризация для общего render()
 type Config = {
   width: number
   height: number
-  objects: Record<string, Shape | null>
+  background: Shape | null
   decorations: Shape[]
+  objects: Record<string, Shape | null>
   dayPeriod: DayPeriod | null
   arrow: {
     speed: number
@@ -26,8 +29,9 @@ type Config = {
 const config: Config = {
   width: 0,
   height: 0,
-  objects: {},
+  background: null,
   decorations: [],
+  objects: {},
   dayPeriod: null,
   arrow: {
     speed: 0.25,
@@ -47,10 +51,17 @@ export const initializeGame = (context: CanvasRenderingContext2D | null, backgro
 
   // Запускаем класс с расчетом параметров смены дня/ночи
   config.dayPeriod = new DayPeriod({
-    speed: 0.0025,
+    speed: 0.00025,
     center: { x: config.width / 2, y: config.height / 2 },
     radiusX: config.width / 2 + 50,
     radiusY: config.height / 2 - 50,
+  })
+
+  config.background = new Background({
+    id: crypto.randomUUID(),
+    context: context,
+    backgroundContext: backgroundContext,
+    dayPeriod: config.dayPeriod,
   })
 
   config.objects = {
@@ -74,12 +85,6 @@ export const initializeGame = (context: CanvasRenderingContext2D | null, backgro
       startAngle: -0.75,
       maxAngle: -85,
       minAngle: -20,
-    }),
-    background: new Background({
-      id: crypto.randomUUID(),
-      context: context,
-      backgroundContext: backgroundContext,
-      dayPeriod: config.dayPeriod,
     }),
     sun: new Sun({
       context: backgroundContext,

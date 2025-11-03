@@ -30,6 +30,7 @@ export class Bow extends Shape {
   maxAngle = 0 // угол в градусах
   minAngle = 0 // угол в градусах
   trajectoryColor = '#ffffff'
+  mousePressedTime = 0
 
   constructor(props: BowProps) {
     super({
@@ -85,8 +86,10 @@ export class Bow extends Shape {
       }
 
       if (mousePressedTime && mousePressedTime > config.arrow.startTensionTimeMs) {
-        this.drawTrajectory(delta, mousePressedTime)
+        this.mousePressedTime = mousePressedTime
         this.currentBowImg.src = tensionBow
+      } else {
+        this.mousePressedTime = 0
       }
     }
 
@@ -100,7 +103,7 @@ export class Bow extends Shape {
     }
   }
 
-  private drawTrajectory(delta: number, mousePressedTime: number) {
+  private drawTrajectory(mousePressedTime: number) {
     const step = 10
     const pointRadius = 1
     const points: Coordinate[] = []
@@ -110,7 +113,7 @@ export class Bow extends Shape {
     const trajectoryLength = arrowPath.maxPathLength * config.arrow.trajectoryLengthCoeff
 
     for (let x = this.position.x; x <= trajectoryLength; x += step) {
-      const point = getNextPosition(this.position, x, arrowPath, delta, 0.5)
+      const point = getNextPosition(this.position, x, arrowPath, 0, 0.5)
       points.push(point)
     }
 
@@ -124,6 +127,10 @@ export class Bow extends Shape {
   }
 
   public render() {
+    if (this.mousePressedTime && this.mousePressedTime > config.arrow.startTensionTimeMs) {
+      this.drawTrajectory(this.mousePressedTime)
+    }
+
     this.context.save() // сохраняем текущее состояние Canvas
     this.context.translate(this.position.x, this.position.y) // настраиваем точку вращения (центр объекта)
     this.context.rotate(this.angle)

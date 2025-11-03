@@ -33,7 +33,6 @@ export const GamePage = () => {
         height={windowHeight}
         style={{ width: windowWidth, height: windowHeight }}
       />
-      <div className={styles.backgroundImage} />
       <canvas
         ref={canvasRef}
         id="game-canvas"

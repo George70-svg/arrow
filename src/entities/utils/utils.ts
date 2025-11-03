@@ -3,7 +3,8 @@ import type { Coordinate } from '@entities/types.ts'
 import { Arrow } from '@entities/objects/Arrow.ts'
 
 export const render = () => {
-  const shapes = [...config.decorations, ...Object.values(config.objects)]
+  // Вахен порядок деструктуризация, т.к. от этого завист порядок наложения элементов друг на друга
+  const shapes = [config.background, ...config.decorations, ...Object.values(config.objects)]
   shapes.forEach((shape) => {
     if (shape) {
       shape.render()

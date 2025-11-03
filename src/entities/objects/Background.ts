@@ -43,13 +43,17 @@ export class Background extends Shape {
 
   get contrast() {
     const angleCoeff = this.dayPeriod.angleCoeff()
-    return `contrast(${angleCoeff}%)`
+    //return `contrast(${50 + angleCoeff * 50}%) brightness(${80 + angleCoeff * 20}%)`
+    return `contrast(${50 + angleCoeff * 50}%) brightness(${50 + angleCoeff * 30}%)`
   }
 
   render() {
     // Настройка background конеткста
     this.backgroundContext.fillStyle = this.color
     this.backgroundContext.fillRect(0, 0, this.contextWidth, this.contextHeight)
-    this.backgroundContext.drawImage(this.backgroundImage, 0, 0, this.contextWidth, this.contextHeight)
+
+    this.context.filter = this.contrast
+    this.context.drawImage(this.backgroundImage, 0, 0, this.contextWidth, this.contextHeight)
+    this.context.filter = 'none'
   }
 }

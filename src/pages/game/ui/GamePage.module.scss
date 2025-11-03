@@ -13,23 +13,9 @@
 
 .backgroundCanvas {
   position: absolute;
-  z-index: 0;
-  background-color: rgba(103, 230, 255, 0.5);
-}
-
-.backgroundImage {
-  position: absolute;
-  inset: 0;
-  //background-image: url('../../../assets/images/background/bg11.png');
-  background-size: cover;
-  background-position: center;
-  z-index: 1;
-  pointer-events: none;
 }
 
 .gameCanvas {
   position: absolute;
-  inset: 0;
-  z-index: 2;
   background: transparent;
 }
