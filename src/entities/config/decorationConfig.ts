@@ -65,7 +65,7 @@ const createWall = (context: CanvasRenderingContext2D) => {
   )
 }
 
-// создаем горор
+// создаем город
 const createTown = (context: CanvasRenderingContext2D) => {
   const startX = 15
   const startY = config.height - 124

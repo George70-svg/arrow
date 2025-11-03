@@ -1,5 +1,5 @@
 import config from '@entities/config/gameConfig.ts'
-import type { ArrowPath, Coordinate } from '@entities/types.ts'
+import type { ArrowPath, Coordinate, RGBObject } from '@entities/types.ts'
 
 export const getNextPosition = (
   startPosition: Coordinate,
@@ -51,4 +51,11 @@ export const getArrowPath = (
     maxPathLength,
     maxPathHeight,
   }
+}
+
+export const lerpColor = (rgbColor1: RGBObject, rgbColor2: RGBObject, coeff: number) => {
+  const red = rgbColor1.red + coeff * (rgbColor2.red - rgbColor1.red)
+  const green = rgbColor1.green + coeff * (rgbColor2.green - rgbColor1.green)
+  const blue = rgbColor1.blue + coeff * (rgbColor2.blue - rgbColor1.blue)
+  return `rgba(${red}, ${green}, ${blue}, 1)`
 }

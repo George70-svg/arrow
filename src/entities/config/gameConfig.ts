@@ -69,8 +69,8 @@ export const initializeObjects = (context: CanvasRenderingContext2D | null, back
       imgWidth: 45,
       imgHeight: 45,
       startPosition: { x: config.width / 2, y: config.height / 2 },
-      radiusX: config.width / 2 + 100,
-      radiusY: config.height / 2 - 20,
+      radiusX: config.width / 2 + 50,
+      radiusY: config.height / 2 - 50,
     }),
     arrow: null,
   }

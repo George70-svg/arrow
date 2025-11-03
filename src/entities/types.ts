@@ -33,3 +33,9 @@ export type ArrowPath = {
   maxPathLength: number
   maxPathHeight: number
 }
+
+export type RGBObject = {
+  red: number
+  green: number
+  blue: number
+}
