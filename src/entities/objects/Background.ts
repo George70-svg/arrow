@@ -3,6 +3,7 @@ import type { DayPeriod } from '@entities/game/DayPeriod.ts'
 import { lerpColor } from '@entities/utils/physics.ts'
 import type { RGBObject } from '@entities/types.ts'
 import backgroundImage from '../../assets/images/background/bg11.png'
+import startImage from '../../assets/images/environment/stars.png'
 
 type BackgroundProps = {
   id: string
@@ -15,6 +16,7 @@ export class Background extends Shape {
   private readonly dayPeriod
   backgroundContext: CanvasRenderingContext2D
   backgroundImage = new Image()
+  startImage = new Image()
   contextWidth: number
   contextHeight: number
   dayColor: RGBObject = { red: 135, green: 206, blue: 250 }
@@ -34,6 +36,7 @@ export class Background extends Shape {
     this.contextWidth = this.context.canvas.width
     this.contextHeight = this.context.canvas.height
     this.backgroundImage.src = backgroundImage
+    this.startImage.src = startImage
   }
 
   get color() {
@@ -51,6 +54,7 @@ export class Background extends Shape {
     // Настройка background конеткста
     this.backgroundContext.fillStyle = this.color
     this.backgroundContext.fillRect(0, 0, this.contextWidth, this.contextHeight)
+    this.backgroundContext.drawImage(this.startImage, 0, 0, this.contextWidth, this.contextHeight)
 
     this.context.filter = this.contrast
     this.context.drawImage(this.backgroundImage, 0, 0, this.contextWidth, this.contextHeight)
