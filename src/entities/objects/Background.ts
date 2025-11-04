@@ -2,7 +2,7 @@ import { Shape } from '@entities/objects/Shape.ts'
 import type { DayPeriod } from '@entities/game/DayPeriod.ts'
 import { lerpColor } from '@entities/utils/physics.ts'
 import type { RGBObject } from '@entities/types.ts'
-import backgroundImage from '../../assets/images/background/bg11.png'
+import backgroundImage from '@images/background/background.png'
 import startImage from '../../assets/images/environment/stars.png'
 
 type BackgroundProps = {
@@ -46,18 +46,35 @@ export class Background extends Shape {
 
   get contrast() {
     const angleCoeff = this.dayPeriod.angleCoeff()
-    //return `contrast(${50 + angleCoeff * 50}%) brightness(${80 + angleCoeff * 20}%)`
+    console.log(angleCoeff)
     return `contrast(${50 + angleCoeff * 50}%) brightness(${50 + angleCoeff * 30}%)`
   }
 
-  render() {
-    // Настройка background конеткста
+  starOpacity() {
+    return 1 - this.dayPeriod.angleCoeff()
+  }
+
+  drawBackgroundColor() {
     this.backgroundContext.fillStyle = this.color
     this.backgroundContext.fillRect(0, 0, this.contextWidth, this.contextHeight)
-    this.backgroundContext.drawImage(this.startImage, 0, 0, this.contextWidth, this.contextHeight)
+  }
 
+  drawStars() {
+    this.backgroundContext.save() // сохранить текущее состояние
+    this.backgroundContext.globalAlpha = this.starOpacity()
+    this.backgroundContext.drawImage(this.startImage, 0, 0, this.contextWidth, this.contextHeight)
+    this.backgroundContext.restore()
+  }
+
+  drawLandscape() {
     this.context.filter = this.contrast
     this.context.drawImage(this.backgroundImage, 0, 0, this.contextWidth, this.contextHeight)
     this.context.filter = 'none'
+  }
+
+  render() {
+    this.drawBackgroundColor()
+    this.drawStars()
+    this.drawLandscape()
   }
 }

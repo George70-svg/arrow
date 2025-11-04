@@ -1,6 +1,6 @@
 import { Shape } from '@entities/objects/Shape.ts'
 import type { DayPeriod } from '@entities/game/DayPeriod.ts'
-import moon from '@/assets/images/environment/moon1.png'
+import moon from '@/assets/images/environment/moon.png'
 
 type SunProps = {
   id: string
