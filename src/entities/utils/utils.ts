@@ -3,8 +3,9 @@ import type { Coordinate } from '@entities/types.ts'
 import { Arrow } from '@entities/objects/Arrow.ts'
 
 export const render = () => {
-  // Вахен порядок деструктуризация, т.к. от этого завист порядок наложения элементов друг на друга
-  const shapes = [config.background, ...config.decorations, ...Object.values(config.objects)]
+  // Важен порядок деструктуризация, т.к. от этого завист порядок наложения элементов друг на друга
+  const shapes = [...Object.values(config.background), ...config.decorations, ...Object.values(config.objects)]
+
   shapes.forEach((shape) => {
     if (shape) {
       shape.render()
@@ -13,7 +14,7 @@ export const render = () => {
 }
 
 export const update = (delta: number) => {
-  const shapes = Object.values(config.objects)
+  const shapes = [...Object.values(config.background), ...Object.values(config.objects)]
   const dayPeriod = config.dayPeriod
 
   shapes.forEach((shape) => {

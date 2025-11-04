@@ -46,11 +46,10 @@ export class Background extends Shape {
 
   get contrast() {
     const angleCoeff = this.dayPeriod.angleCoeff()
-    console.log(angleCoeff)
     return `contrast(${50 + angleCoeff * 50}%) brightness(${50 + angleCoeff * 30}%)`
   }
 
-  starOpacity() {
+  get starOpacity() {
     return 1 - this.dayPeriod.angleCoeff()
   }
 
@@ -61,7 +60,7 @@ export class Background extends Shape {
 
   drawStars() {
     this.backgroundContext.save() // сохранить текущее состояние
-    this.backgroundContext.globalAlpha = this.starOpacity()
+    this.backgroundContext.globalAlpha = this.starOpacity
     this.backgroundContext.drawImage(this.startImage, 0, 0, this.contextWidth, this.contextHeight)
     this.backgroundContext.restore()
   }

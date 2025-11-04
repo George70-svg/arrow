@@ -8,7 +8,8 @@ type DayPeriodProps = {
 }
 
 export class DayPeriod {
-  angle: number = Math.PI + Math.PI / 4
+  //angle: number = Math.PI + Math.PI / 4
+  angle: number = Math.PI / 2
   speed: number
   center: Coordinate
   radiusX: number

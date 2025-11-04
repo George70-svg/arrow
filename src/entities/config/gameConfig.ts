@@ -5,13 +5,14 @@ import { Sun } from '@entities/objects/Sun.ts'
 import { initializeDecoration } from '@entities/config/decorationConfig.ts'
 import { DayPeriod } from '@entities/game/DayPeriod.ts'
 import { Background } from '@entities/objects/Background.ts'
+import { Cloud } from '@entities/objects/Cloud.ts'
 
 // Важно что background, decorations и objects в отдельных объектах
 // Это влияет на поряд отрисовки на канвасе, потому что потом идет деструктуризация для общего render()
 type Config = {
   width: number
   height: number
-  background: Shape | null
+  background: Record<string, Shape | null>
   decorations: Shape[]
   objects: Record<string, Shape | null>
   dayPeriod: DayPeriod | null
@@ -29,7 +30,7 @@ type Config = {
 const config: Config = {
   width: 0,
   height: 0,
-  background: null,
+  background: {},
   decorations: [],
   objects: {},
   dayPeriod: null,
@@ -51,18 +52,36 @@ export const initializeGame = (context: CanvasRenderingContext2D | null, backgro
 
   // Запускаем класс с расчетом параметров смены дня/ночи
   config.dayPeriod = new DayPeriod({
-    speed: 0.00025,
+    speed: 0.00055,
     center: { x: config.width / 2, y: config.height / 2 },
     radiusX: config.width / 2 + 50,
     radiusY: config.height / 2 - 50,
   })
 
-  config.background = new Background({
-    id: crypto.randomUUID(),
-    context: context,
-    backgroundContext: backgroundContext,
-    dayPeriod: config.dayPeriod,
-  })
+  config.background = {
+    background: new Background({
+      id: crypto.randomUUID(),
+      context: context,
+      backgroundContext: backgroundContext,
+      dayPeriod: config.dayPeriod,
+    }),
+    sun: new Sun({
+      context: backgroundContext,
+      id: crypto.randomUUID(),
+      imgWidth: 45,
+      imgHeight: 45,
+      dayPeriod: config.dayPeriod,
+    }),
+    cloud: new Cloud({
+      context: backgroundContext,
+      id: crypto.randomUUID(),
+      imgWidth: 0,
+      imgHeight: 0,
+      speed: 0.05,
+      position: { x: 100, y: 200 },
+      dayPeriod: config.dayPeriod,
+    }),
+  }
 
   config.objects = {
     player: new Player({
@@ -85,13 +104,6 @@ export const initializeGame = (context: CanvasRenderingContext2D | null, backgro
       startAngle: -0.75,
       maxAngle: -85,
       minAngle: -20,
-    }),
-    sun: new Sun({
-      context: backgroundContext,
-      id: crypto.randomUUID(),
-      imgWidth: 45,
-      imgHeight: 45,
-      dayPeriod: config.dayPeriod,
     }),
     arrow: null,
   }
