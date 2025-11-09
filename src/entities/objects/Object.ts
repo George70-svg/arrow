@@ -27,6 +27,7 @@ export class Object extends Shape {
       position: props.startPosition,
       imgWidth: props.imgWidth,
       imgHeight: props.imgHeight,
+      markForDelete: false,
     })
 
     this.framePosition = props.framePosition

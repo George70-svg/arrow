@@ -21,6 +21,7 @@ export class Sun extends Shape {
       position: { x: 0, y: 0 },
       imgWidth: props.imgWidth,
       imgHeight: props.imgHeight,
+      markForDelete: false,
     })
 
     this.dayPeriod = props.dayPeriod

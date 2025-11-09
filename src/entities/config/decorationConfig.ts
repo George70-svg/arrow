@@ -13,7 +13,7 @@ export const initializeDecoration = (context: CanvasRenderingContext2D) => {
 // создаем объекты земли
 const createLand = (context: CanvasRenderingContext2D) => {
   for (let i = -1; i <= 25; i++) {
-    config.decorations.push(
+    config.objects.decorations.push(
       new Object({
         context: context,
         id: crypto.randomUUID(),
@@ -35,7 +35,7 @@ const createWall = (context: CanvasRenderingContext2D) => {
   const startY = config.height - 140
 
   // стена
-  config.decorations.push(
+  config.objects.decorations.push(
     new Object({
       context: context,
       id: crypto.randomUUID(),
@@ -50,7 +50,7 @@ const createWall = (context: CanvasRenderingContext2D) => {
   )
 
   // флаг
-  config.decorations.push(
+  config.objects.decorations.push(
     new Object({
       context: context,
       id: crypto.randomUUID(),
@@ -71,7 +71,7 @@ const createTown = (context: CanvasRenderingContext2D) => {
   const startY = config.height - 124
 
   // фонарь
-  config.decorations.push(
+  config.objects.decorations.push(
     new Object({
       context: context,
       id: crypto.randomUUID(),
@@ -86,7 +86,7 @@ const createTown = (context: CanvasRenderingContext2D) => {
   )
 
   // колодец
-  config.decorations.push(
+  config.objects.decorations.push(
     new Object({
       context: context,
       id: crypto.randomUUID(),
@@ -101,7 +101,7 @@ const createTown = (context: CanvasRenderingContext2D) => {
   )
 
   // прилавок
-  config.decorations.push(
+  config.objects.decorations.push(
     new Object({
       context: context,
       id: crypto.randomUUID(),
@@ -116,7 +116,7 @@ const createTown = (context: CanvasRenderingContext2D) => {
   )
 
   // мешок
-  config.decorations.push(
+  config.objects.decorations.push(
     new Object({
       context: context,
       id: crypto.randomUUID(),
@@ -131,7 +131,7 @@ const createTown = (context: CanvasRenderingContext2D) => {
   )
 
   // доска
-  config.decorations.push(
+  config.objects.decorations.push(
     new Object({
       context: context,
       id: crypto.randomUUID(),
@@ -153,7 +153,7 @@ const createField = (context: CanvasRenderingContext2D) => {
 
   // трава
   for (let i = 0; i <= 15; i++) {
-    config.decorations.push(
+    config.objects.decorations.push(
       new Object({
         context: context,
         id: crypto.randomUUID(),
@@ -169,7 +169,7 @@ const createField = (context: CanvasRenderingContext2D) => {
   }
 
   // подсолнух
-  config.decorations.push(
+  config.objects.decorations.push(
     new Object({
       context: context,
       id: crypto.randomUUID(),
@@ -184,7 +184,7 @@ const createField = (context: CanvasRenderingContext2D) => {
   )
 
   // подсолнух
-  config.decorations.push(
+  config.objects.decorations.push(
     new Object({
       context: context,
       id: crypto.randomUUID(),
@@ -199,7 +199,7 @@ const createField = (context: CanvasRenderingContext2D) => {
   )
 
   // пугало
-  config.decorations.push(
+  config.objects.decorations.push(
     new Object({
       context: context,
       id: crypto.randomUUID(),
@@ -214,7 +214,7 @@ const createField = (context: CanvasRenderingContext2D) => {
   )
 
   // большое сено
-  config.decorations.push(
+  config.objects.decorations.push(
     new Object({
       context: context,
       id: crypto.randomUUID(),
@@ -229,7 +229,7 @@ const createField = (context: CanvasRenderingContext2D) => {
   )
 
   // куст
-  config.decorations.push(
+  config.objects.decorations.push(
     new Object({
       context: context,
       id: crypto.randomUUID(),
@@ -244,7 +244,7 @@ const createField = (context: CanvasRenderingContext2D) => {
   )
 
   // среднее дерево
-  config.decorations.push(
+  config.objects.decorations.push(
     new Object({
       context: context,
       id: crypto.randomUUID(),
@@ -259,7 +259,7 @@ const createField = (context: CanvasRenderingContext2D) => {
   )
 
   // большое дерево
-  config.decorations.push(
+  config.objects.decorations.push(
     new Object({
       context: context,
       id: crypto.randomUUID(),
@@ -274,7 +274,7 @@ const createField = (context: CanvasRenderingContext2D) => {
   )
 
   // куст
-  config.decorations.push(
+  config.objects.decorations.push(
     new Object({
       context: context,
       id: crypto.randomUUID(),
@@ -289,7 +289,7 @@ const createField = (context: CanvasRenderingContext2D) => {
   )
 
   // куст
-  config.decorations.push(
+  config.objects.decorations.push(
     new Object({
       context: context,
       id: crypto.randomUUID(),
@@ -304,7 +304,7 @@ const createField = (context: CanvasRenderingContext2D) => {
   )
 
   // большое дерево
-  config.decorations.push(
+  config.objects.decorations.push(
     new Object({
       context: context,
       id: crypto.randomUUID(),

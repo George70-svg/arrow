@@ -39,6 +39,7 @@ export class Bow extends Shape {
       position: props.startPosition,
       imgWidth: props.imgWidth,
       imgHeight: props.imgHeight,
+      markForDelete: false,
     })
 
     this.speed = props.speed
@@ -50,7 +51,7 @@ export class Bow extends Shape {
   }
 
   private shot(mousePressedTime: number) {
-    if (!config.objects.arrow) {
+    if (!config.objects.arrows.length) {
       createArrow(this.context, this.position, mousePressedTime, this.angle, this.minAngle, this.maxAngle)
     }
   }
@@ -71,7 +72,7 @@ export class Bow extends Shape {
       this.direction = 'right'
     }
 
-    if (!config.objects.arrow) {
+    if (!config.objects.arrows.length) {
       this.currentBowImg.src = fullBow
     } else {
       this.currentBowImg.src = bow

@@ -6,16 +6,21 @@ import { initializeDecoration } from '@entities/config/decorationConfig.ts'
 import { DayPeriod } from '@entities/game/DayPeriod.ts'
 import { Background } from '@entities/objects/Background.ts'
 import { Cloud } from '@entities/objects/Cloud.ts'
+import { initializeClouds } from '@entities/config/cloudConfig.ts'
 
 // Важно что background, decorations и objects в отдельных объектах
 // Это влияет на поряд отрисовки на канвасе, потому что потом идет деструктуризация для общего render()
-type Config = {
+export type GameConfig = {
   width: number
   height: number
-  background: Record<string, Shape | null>
-  decorations: Shape[]
-  objects: Record<string, Shape | null>
   dayPeriod: DayPeriod | null
+  objects: {
+    background: Shape[]
+    decorations: Shape[]
+    clouds: Cloud[]
+    player: Shape[]
+    arrows: Shape[]
+  }
   arrow: {
     speed: number
     heightCoeff: number
@@ -27,15 +32,19 @@ type Config = {
   }
 }
 
-const config: Config = {
+const config: GameConfig = {
   width: 0,
   height: 0,
-  background: {},
-  decorations: [],
-  objects: {},
   dayPeriod: null,
+  objects: {
+    background: [],
+    decorations: [],
+    clouds: [],
+    player: [],
+    arrows: [],
+  },
   arrow: {
-    speed: 0.25,
+    speed: 0.5,
     heightCoeff: 4, // коэффициент высоты полета
     widthCoeff: 0.4, // коэффициент длины полета
     angleStartCoeff: 0.4, // начальный коэффициент результат деления текущего угла на максимальный
@@ -46,6 +55,7 @@ const config: Config = {
 }
 
 export const initializeGame = (context: CanvasRenderingContext2D | null, backgroundContext: CanvasRenderingContext2D | null) => {
+  console.log('initializeGame')
   if (!context || !backgroundContext) {
     return
   }
@@ -58,56 +68,47 @@ export const initializeGame = (context: CanvasRenderingContext2D | null, backgro
     radiusY: config.height / 2 - 50,
   })
 
-  config.background = {
-    background: new Background({
+  config.objects.background = [
+    new Background({
       id: crypto.randomUUID(),
       context: context,
       backgroundContext: backgroundContext,
       dayPeriod: config.dayPeriod,
     }),
-    sun: new Sun({
+    new Sun({
       context: backgroundContext,
       id: crypto.randomUUID(),
       imgWidth: 45,
       imgHeight: 45,
       dayPeriod: config.dayPeriod,
     }),
-    cloud: new Cloud({
-      context: backgroundContext,
-      id: crypto.randomUUID(),
-      imgWidth: 0,
-      imgHeight: 0,
-      speed: 0.05,
-      position: { x: 100, y: 200 },
-      dayPeriod: config.dayPeriod,
-    }),
-  }
+  ]
 
-  config.objects = {
-    player: new Player({
+  config.objects.player = [
+    new Player({
       context: context,
       id: crypto.randomUUID(),
       startPosition: { x: 140, y: config.height - 32 },
       imgWidth: 150,
       imgHeight: 150,
-      speed: 0.15,
+      speed: 0.3,
       startDirection: 'right',
     }),
-    bow: new Bow({
+    new Bow({
       context: context,
       id: crypto.randomUUID(),
       startPosition: { x: 170, y: config.height - 70 },
       imgWidth: 45,
       imgHeight: 45,
-      speed: 0.15,
+      speed: 0.3,
       startDirection: 'right',
       startAngle: -0.75,
       maxAngle: -85,
       minAngle: -20,
     }),
-    arrow: null,
-  }
+  ]
 
+  initializeClouds(backgroundContext)
   initializeDecoration(context)
 }
 

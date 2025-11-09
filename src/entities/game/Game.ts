@@ -1,5 +1,5 @@
 import config, { initializeGame } from '@entities/config/gameConfig.ts'
-import { render, update } from '@entities/utils/utils.ts'
+import { checkCollision, deleteObjects, render, update } from '@entities/utils/utils.ts'
 
 export class Game {
   protected context: CanvasRenderingContext2D | null = null
@@ -24,6 +24,8 @@ export class Game {
     this.context.clearRect(0, 0, config.width, config.height) // Очистка холста
     update(delta)
     render()
+    checkCollision()
+    deleteObjects()
 
     this.frameCb = requestAnimationFrame(this.boundLoop)
   }

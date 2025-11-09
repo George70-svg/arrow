@@ -1,6 +1,7 @@
 import { Shape } from '@entities/objects/Shape.ts'
 import type { DayPeriod } from '@entities/game/DayPeriod.ts'
 import { lerpColor } from '@entities/utils/physics.ts'
+import { createCloud } from '@entities/config/cloudConfig.ts'
 import type { RGBObject } from '@entities/types.ts'
 import backgroundImage from '@images/background/background.png'
 import startImage from '../../assets/images/environment/stars.png'
@@ -29,6 +30,7 @@ export class Background extends Shape {
       position: { x: 0, y: 0 },
       imgWidth: 0,
       imgHeight: 0,
+      markForDelete: false,
     })
 
     this.backgroundContext = props.backgroundContext
@@ -71,9 +73,14 @@ export class Background extends Shape {
     this.context.filter = 'none'
   }
 
+  addCloud() {
+    createCloud(this.backgroundContext)
+  }
+
   render() {
     this.drawBackgroundColor()
     this.drawStars()
     this.drawLandscape()
+    this.addCloud()
   }
 }

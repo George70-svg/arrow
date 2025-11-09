@@ -39,3 +39,5 @@ export type RGBObject = {
   green: number
   blue: number
 }
+
+export type CollisionMode = 'strict' | 'notStrict'

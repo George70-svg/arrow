@@ -29,6 +29,7 @@ export class Player extends Shape {
       position: props.startPosition,
       imgWidth: props.imgWidth,
       imgHeight: props.imgHeight,
+      markForDelete: false,
     })
 
     this.speed = props.speed

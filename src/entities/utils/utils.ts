@@ -1,10 +1,11 @@
 import config from '@entities/config/gameConfig.ts'
+import type { Shape } from '@entities/objects/Shape.ts'
 import type { Coordinate } from '@entities/types.ts'
 import { Arrow } from '@entities/objects/Arrow.ts'
+import { Collision } from '@entities/game/Collision.ts'
 
 export const render = () => {
-  // Важен порядок деструктуризация, т.к. от этого завист порядок наложения элементов друг на друга
-  const shapes = [...Object.values(config.background), ...config.decorations, ...Object.values(config.objects)]
+  const shapes = Object.values(config.objects).flat(Infinity) as Shape[]
 
   shapes.forEach((shape) => {
     if (shape) {
@@ -14,7 +15,7 @@ export const render = () => {
 }
 
 export const update = (delta: number) => {
-  const shapes = [...Object.values(config.background), ...Object.values(config.objects)]
+  const shapes = Object.values(config.objects).flat(Infinity) as Shape[]
   const dayPeriod = config.dayPeriod
 
   shapes.forEach((shape) => {
@@ -28,6 +29,29 @@ export const update = (delta: number) => {
   }
 }
 
+export const checkCollision = () => {
+  const collisions = new Collision()
+  const shapes = Object.values(config.objects).flat(Infinity) as Shape[]
+
+  shapes.forEach((shape) => {
+    if (shape && shape.canDelete && collisions.checkFrameCollision(shape)) {
+      shape.setMarkForDelete(true)
+    }
+  })
+}
+
+export const deleteObjects = () => {
+  const shapes = Object.values(config.objects).flat(Infinity) as Shape[]
+  const markedShapes = shapes.filter((shape) => shape.markForDelete)
+  const objectKeys = Object.keys(config.objects) as (keyof typeof config.objects)[]
+
+  if (markedShapes.length) {
+    for (const key of objectKeys) {
+      config.objects[key] = config.objects[key].filter((shape) => !shape.markForDelete)
+    }
+  }
+}
+
 export const createArrow = (
   context: CanvasRenderingContext2D,
   startArrowPosition: Coordinate,
@@ -36,20 +60,22 @@ export const createArrow = (
   minAngle: number,
   maxAngle: number,
 ) => {
-  if (config.objects.arrow) {
+  if (config.objects.arrows.length) {
     return
   }
 
-  config.objects.arrow = new Arrow({
-    id: crypto.randomUUID(),
-    context: context,
-    imgWidth: 45,
-    imgHeight: 13,
-    startPosition: startArrowPosition,
-    speed: config.arrow.speed,
-    tensionTimeMs: mousePressedTime,
-    startAngle: angle,
-    maxAngle: maxAngle,
-    minAngle: minAngle,
-  })
+  config.objects.arrows = [
+    new Arrow({
+      id: crypto.randomUUID(),
+      context: context,
+      imgWidth: 45,
+      imgHeight: 13,
+      startPosition: startArrowPosition,
+      speed: config.arrow.speed,
+      tensionTimeMs: mousePressedTime,
+      startAngle: angle,
+      maxAngle: maxAngle,
+      minAngle: minAngle,
+    }),
+  ]
 }

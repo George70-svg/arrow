@@ -1,14 +1,11 @@
 import { Shape } from '@entities/objects/Shape.ts'
 import type { DayPeriod } from '@entities/game/DayPeriod.ts'
 import type { Coordinate } from '@entities/types.ts'
-import cloudImg1 from '@/assets/images/clouds/Clouds_white/Shape1/cloud_shape1_1.png' // +
-import cloudImg2 from '@/assets/images/clouds/Clouds_white/Shape2/cloud_shape2_1.png' // +
-import cloudImg3 from '@/assets/images/clouds/Clouds_white/Shape3/cloud_shape3_1.png' // +
-import cloudImg4 from '@/assets/images/clouds/Clouds_white/Shape4/cloud_shape4_1.png' // +
-import cloudImg5 from '@/assets/images/clouds/Clouds_white/Shape5/cloud_shape5_1.png'
-import cloudImg6 from '@/assets/images/clouds/Clouds_white/Shape6/cloud_shape6_1.png'
-import cloudImg7 from '@/assets/images/clouds/Clouds_white/Shape7/cloud_shape7_1.png'
-import cloudImg8 from '@/assets/images/clouds/Clouds_white/Shape8/clouds_shape8_1.png'
+import cloudImg1 from '@/assets/images/clouds/Clouds_white/Shape1/cloud_shape1_1.png'
+import cloudImg2 from '@/assets/images/clouds/Clouds_white/Shape2/cloud_shape2_1.png'
+import cloudImg3 from '@/assets/images/clouds/Clouds_white/Shape3/cloud_shape3_1.png'
+import cloudImg4 from '@/assets/images/clouds/Clouds_white/Shape3/cloud_shape3_3.png'
+import cloudImg5 from '@/assets/images/clouds/Clouds_white/Shape4/cloud_shape4_1.png'
 
 type CloudProps = {
   id: string
@@ -19,6 +16,8 @@ type CloudProps = {
   imgHeight: number
   dayPeriod: DayPeriod
 }
+
+const cloudImages = [cloudImg1, cloudImg2, cloudImg3, cloudImg4, cloudImg5]
 
 export class Cloud extends Shape {
   private readonly dayPeriod
@@ -32,10 +31,12 @@ export class Cloud extends Shape {
       position: props.position,
       imgWidth: props.imgWidth,
       imgHeight: props.imgHeight,
+      markForDelete: false,
+      canDelete: true,
     })
 
     this.speed = props.speed
-    this.cloudImage.src = cloudImg4
+    this.cloudImage.src = cloudImages[Math.floor(Math.random() * 5)]
     this.dayPeriod = props.dayPeriod
   }
 
@@ -46,9 +47,7 @@ export class Cloud extends Shape {
 
   update(delta: number) {
     const distance = this.speed * delta
-    //console.log(distance)
     this.position.x += distance
-    console.log('this.position.x', this.position.x)
   }
 
   render() {

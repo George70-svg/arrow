@@ -1,5 +1,3 @@
-// TODO: Плохо импортировать конфиг для класса
-import config from '@entities/config/gameConfig.ts'
 import { getArrowPath, getNextAngle, getNextPosition } from '@entities/utils/physics.ts'
 import { Shape } from '@entities/objects/Shape.ts'
 import type { ArrowPath, Coordinate } from '@entities/types.ts'
@@ -36,6 +34,8 @@ export class Arrow extends Shape {
       position: { ...props.startPosition },
       imgWidth: props.imgWidth,
       imgHeight: props.imgHeight,
+      markForDelete: false,
+      canDelete: true,
     })
 
     this.speed = props.speed
@@ -51,12 +51,6 @@ export class Arrow extends Shape {
   public update(delta: number) {
     this.position = getNextPosition(this.startPosition, this.position.x, this.arrowPath, delta, this.speed)
     this.angle = getNextAngle(this.startPosition.x, this.position.x, this.arrowPath.maxPathLength, this.startAngle)
-
-    // TODO: Потом должно работать за счет отдельной реализации колизии
-    // Удаляем стрелу по достижению границ карты
-    if (this.position.x > this.context.canvas.clientWidth || this.position.y > this.context.canvas.clientWidth) {
-      config.objects.arrow = null
-    }
   }
 
   public render() {
