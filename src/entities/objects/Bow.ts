@@ -40,6 +40,7 @@ export class Bow extends Shape {
       imgWidth: props.imgWidth,
       imgHeight: props.imgHeight,
       markForDelete: false,
+      hasCollision: true,
     })
 
     this.speed = props.speed

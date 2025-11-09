@@ -5,7 +5,6 @@ import { Sun } from '@entities/objects/Sun.ts'
 import { initializeDecoration } from '@entities/config/decorationConfig.ts'
 import { DayPeriod } from '@entities/game/DayPeriod.ts'
 import { Background } from '@entities/objects/Background.ts'
-import { Cloud } from '@entities/objects/Cloud.ts'
 import { initializeClouds } from '@entities/config/cloudConfig.ts'
 
 // Важно что background, decorations и objects в отдельных объектах
@@ -17,7 +16,7 @@ export type GameConfig = {
   objects: {
     background: Shape[]
     decorations: Shape[]
-    clouds: Cloud[]
+    clouds: Shape[]
     player: Shape[]
     arrows: Shape[]
   }

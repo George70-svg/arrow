@@ -29,16 +29,24 @@ export class Collision {
     }
   }
 
-  checkFrameCollision(shape: Shape) {
+  checkFrameCollision(shape: Shape, strategy: 'all' | 'noTop' | 'noBottom') {
     const frameWidth = config.width
     const frameHeight = config.height
 
     const shapeCoordinates = this.getShapeCoordinates(shape)
 
-    const hasOutOfHorizontalRange = shapeCoordinates.xMin <= 0 || shapeCoordinates.xMax >= frameWidth
-    const hasOutOfVerticalRange = shapeCoordinates.yMin <= 0 || shapeCoordinates.yMax >= frameHeight
+    const hasOutOfMaxHorizontal = shapeCoordinates.xMax >= frameWidth
+    const hasOutOfMinHorizontal = shapeCoordinates.xMin <= 0
+    const hasOutOfMaxVertical = shapeCoordinates.yMax >= frameHeight
+    const hasOutOfMinVertical = shapeCoordinates.yMin <= 0
 
-    return hasOutOfHorizontalRange || hasOutOfVerticalRange
+    if (strategy === 'noTop') {
+      return hasOutOfMaxHorizontal || hasOutOfMinHorizontal || hasOutOfMaxVertical
+    } else if (strategy === 'noBottom') {
+      return hasOutOfMaxHorizontal || hasOutOfMinHorizontal || hasOutOfMinVertical
+    } else {
+      return hasOutOfMaxHorizontal || hasOutOfMinHorizontal || hasOutOfMaxVertical || hasOutOfMinVertical
+    }
   }
 
   getShapeCoordinates(shape: Shape) {

@@ -4,6 +4,8 @@ import type { Coordinate } from '@entities/types.ts'
 import { Arrow } from '@entities/objects/Arrow.ts'
 import { Collision } from '@entities/game/Collision.ts'
 
+const collisions = new Collision()
+
 export const render = () => {
   const shapes = Object.values(config.objects).flat(Infinity) as Shape[]
 
@@ -19,6 +21,10 @@ export const update = (delta: number) => {
   const dayPeriod = config.dayPeriod
 
   shapes.forEach((shape) => {
+    if (shape && shape.update && shape.hasCollision && collisions.checkFrameCollision(shape, 'noBottom')) {
+      shape.update(0)
+    }
+
     if (shape && shape.update) {
       shape.update(delta)
     }
@@ -30,11 +36,10 @@ export const update = (delta: number) => {
 }
 
 export const checkCollision = () => {
-  const collisions = new Collision()
   const shapes = Object.values(config.objects).flat(Infinity) as Shape[]
 
   shapes.forEach((shape) => {
-    if (shape && shape.canDelete && collisions.checkFrameCollision(shape)) {
+    if (shape && shape.canDelete && collisions.checkFrameCollision(shape, 'noTop')) {
       shape.setMarkForDelete(true)
     }
   })
