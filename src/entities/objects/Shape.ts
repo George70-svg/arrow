@@ -6,7 +6,6 @@ export type ShapeProps = {
   imgHeight: number
   markForDelete: boolean
   canDelete?: boolean
-  hasCollision?: boolean
 }
 
 export abstract class Shape {
@@ -17,7 +16,6 @@ export abstract class Shape {
   imgHeight
   markForDelete: boolean
   canDelete?: boolean = false
-  hasCollision?: boolean = false
 
   protected constructor(props: ShapeProps) {
     this.context = props.context
@@ -27,7 +25,6 @@ export abstract class Shape {
     this.imgHeight = props.imgHeight
     this.markForDelete = props.markForDelete
     this.canDelete = props.canDelete
-    this.hasCollision = props.hasCollision
   }
 
   setMarkForDelete(markForDelete: boolean) {

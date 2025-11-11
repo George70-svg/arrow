@@ -6,6 +6,7 @@ import cloudImg2 from '@/assets/images/clouds/Clouds_white/Shape2/cloud_shape2_1
 import cloudImg3 from '@/assets/images/clouds/Clouds_white/Shape3/cloud_shape3_1.png'
 import cloudImg4 from '@/assets/images/clouds/Clouds_white/Shape3/cloud_shape3_3.png'
 import cloudImg5 from '@/assets/images/clouds/Clouds_white/Shape4/cloud_shape4_1.png'
+import { Collision } from '@entities/game/Collision.ts'
 
 type CloudProps = {
   id: string
@@ -17,7 +18,7 @@ type CloudProps = {
   dayPeriod: DayPeriod
 }
 
-const cloudImages = [cloudImg1, cloudImg2, cloudImg3, cloudImg4, cloudImg5]
+const cloudImages = [cloudImg2, cloudImg3, cloudImg4, cloudImg5, cloudImg1, cloudImg2, cloudImg3, cloudImg4, cloudImg5]
 
 export class Cloud extends Shape {
   private readonly dayPeriod
@@ -35,17 +36,36 @@ export class Cloud extends Shape {
       canDelete: true,
     })
 
+    const randomImageNumber = Math.floor(Math.random() * 9)
     this.speed = props.speed
-    this.cloudImage.src = cloudImages[Math.floor(Math.random() * 5)]
+    this.cloudImage.src = cloudImages[randomImageNumber]
     this.dayPeriod = props.dayPeriod
   }
+
+  private collision = new Collision()
 
   get contrast() {
     const angleCoeff = this.dayPeriod.angleCoeff()
     return `contrast(${40 + angleCoeff * 60}%) brightness(${70 + angleCoeff * 30}%)`
   }
 
+  get hasCollision() {
+    return this.collision.checkFrameCollision(
+      {
+        x: this.position.x,
+        y: this.position.y,
+        width: this.cloudImage.width,
+        height: this.cloudImage.height,
+      },
+      'startImageWithRightFrame',
+    )
+  }
+
   update(delta: number) {
+    if (this.hasCollision) {
+      this.markForDelete = true
+    }
+
     const distance = this.speed * delta
     this.position.x += distance
   }

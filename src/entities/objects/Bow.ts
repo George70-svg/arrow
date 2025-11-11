@@ -8,6 +8,7 @@ import type { Coordinate, Direction } from '@entities/types.ts'
 import fullBow from '@/assets/images/bow/fullBow.png'
 import tensionBow from '@/assets/images/bow/tensionBow.png'
 import bow from '@/assets/images/bow/bow.png'
+import { Collision } from '@entities/game/Collision.ts'
 
 type BowProps = {
   id: string
@@ -40,7 +41,6 @@ export class Bow extends Shape {
       imgWidth: props.imgWidth,
       imgHeight: props.imgHeight,
       markForDelete: false,
-      hasCollision: true,
     })
 
     this.speed = props.speed
@@ -51,13 +51,31 @@ export class Bow extends Shape {
     this.currentBowImg.src = fullBow
   }
 
+  private collision = new Collision()
+
   private shot(mousePressedTime: number) {
     if (!config.objects.arrows.length) {
       createArrow(this.context, this.position, mousePressedTime, this.angle, this.minAngle, this.maxAngle)
     }
   }
 
+  get hasCollision() {
+    return this.collision.checkFrameCollision(
+      {
+        x: this.position.x,
+        y: this.position.y,
+        width: this.imgWidth,
+        height: this.imgHeight,
+      },
+      'all',
+    )
+  }
+
   public update(delta: number) {
+    if (this.hasCollision) {
+      return
+    }
+
     const pressedKeys = controller.getPressedKeys()
     const mouseCoordinates = controller.getMouseCoordinates()
     const mousePressedTime = controller.getMousePressedTime()

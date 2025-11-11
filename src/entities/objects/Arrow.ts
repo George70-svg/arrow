@@ -2,6 +2,7 @@ import { getArrowPath, getNextAngle, getNextPosition } from '@entities/utils/phy
 import { Shape } from '@entities/objects/Shape.ts'
 import type { ArrowPath, Coordinate } from '@entities/types.ts'
 import arrow from '@/assets/images/bow/arrow.png'
+import { Collision } from '@entities/game/Collision.ts'
 
 type ArrowProps = {
   id: string
@@ -48,7 +49,25 @@ export class Arrow extends Shape {
     this.arrowImg.src = arrow
   }
 
+  private collision = new Collision()
+
+  get hasCollision() {
+    return this.collision.checkFrameCollision(
+      {
+        x: this.position.x,
+        y: this.position.y,
+        width: this.imgWidth,
+        height: this.imgHeight,
+      },
+      'noTop',
+    )
+  }
+
   public update(delta: number) {
+    if (this.hasCollision) {
+      this.markForDelete = true
+    }
+
     this.position = getNextPosition(this.startPosition, this.position.x, this.arrowPath, delta, this.speed)
     this.angle = getNextAngle(this.startPosition.x, this.position.x, this.arrowPath.maxPathLength, this.startAngle)
   }

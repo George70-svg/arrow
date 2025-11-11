@@ -2,8 +2,8 @@ import config from '@entities/config/gameConfig.ts'
 import { Cloud } from '@entities/objects/Cloud.ts'
 
 const cloudNumber = 6
-const minSpeed = 0.025
-const maxSpeed = 0.05
+const minSpeed = 0.02
+const maxSpeed = 0.06
 
 export const createCloud = (context: CanvasRenderingContext2D) => {
   if (!config.dayPeriod) {

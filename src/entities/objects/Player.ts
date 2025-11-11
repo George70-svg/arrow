@@ -4,6 +4,7 @@ import { FrameDelay } from '@entities/game/FrameDelay.ts'
 import { Shape } from './Shape.ts'
 import type { Coordinate, Direction, SpriteConfig } from '../types.ts'
 import { SpriteFrame } from '@entities/game/SpriteFrame.ts'
+import { Collision } from '@entities/game/Collision.ts'
 
 type PlayerProps = {
   id: string
@@ -30,7 +31,6 @@ export class Player extends Shape {
       imgWidth: props.imgWidth,
       imgHeight: props.imgHeight,
       markForDelete: false,
-      hasCollision: true,
     })
 
     this.speed = props.speed
@@ -39,10 +39,25 @@ export class Player extends Shape {
 
   private spriteFrame = new SpriteFrame(this.currentSprite, this.imgWidth, this.imgHeight)
   private frameDelay = new FrameDelay()
+  private collision = new Collision()
+
+  get hasFrameCollision() {
+    return this.collision.checkFrameCollision(
+      {
+        x: this.position.x,
+        y: this.position.y,
+        width: this.imgWidth,
+        height: this.imgHeight,
+      },
+      'noBottom',
+    )
+  }
 
   public update(delta: number) {
     const pressedKeys = controller.getPressedKeys()
-    const distance = this.speed * delta
+    const length = this.speed * delta
+    // Если есть коллизия с границами экрана, то нужна "отматать" движение назад, иначе двигаться дальше
+    const distance = !this.hasFrameCollision ? length : -(length + 1)
     this.isMoving = false
 
     if (pressedKeys['KeyA']) {

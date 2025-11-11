@@ -2,6 +2,13 @@ export type Coordinate = { x: number; y: number }
 
 export type Direction = 'left' | 'right'
 
+export type ShapeParams = {
+  x: number
+  y: number
+  width: number
+  height: number
+}
+
 export type SpriteConfig = {
   image: HTMLImageElement
   frames: number

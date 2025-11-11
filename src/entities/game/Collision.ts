@@ -1,11 +1,10 @@
-import type { Shape } from '@entities/objects/Shape.ts'
-import type { CollisionMode } from '@entities/types.ts'
+import type { CollisionMode, ShapeParams } from '@entities/types.ts'
 import config from '@entities/config/gameConfig.ts'
 
 export class Collision {
   constructor() {}
 
-  checkCollision(shape1: Shape, shape2: Shape, mode: CollisionMode): boolean {
+  checkCollision(shape1: ShapeParams, shape2: ShapeParams, mode: CollisionMode): boolean {
     const shape1Coordinates = this.getShapeCoordinates(shape1)
     const shape2Coordinates = this.getShapeCoordinates(shape2)
 
@@ -29,32 +28,35 @@ export class Collision {
     }
   }
 
-  checkFrameCollision(shape: Shape, strategy: 'all' | 'noTop' | 'noBottom') {
+  checkFrameCollision(shape: ShapeParams, strategy: 'all' | 'noTop' | 'noBottom' | 'startImageWithRightFrame' | 'endImage') {
     const frameWidth = config.width
     const frameHeight = config.height
 
     const shapeCoordinates = this.getShapeCoordinates(shape)
 
-    const hasOutOfMaxHorizontal = shapeCoordinates.xMax >= frameWidth
-    const hasOutOfMinHorizontal = shapeCoordinates.xMin <= 0
-    const hasOutOfMaxVertical = shapeCoordinates.yMax >= frameHeight
-    const hasOutOfMinVertical = shapeCoordinates.yMin <= 0
+    const hasOutOfMaxHorizontal = shapeCoordinates.xMax > frameWidth
+    const hasOutOfMinHorizontal = shapeCoordinates.xMin < 0
+    const hasOutOfMaxVertical = shapeCoordinates.yMax > frameHeight
+    const hasOutOfMinVertical = shapeCoordinates.yMin < 0
 
     if (strategy === 'noTop') {
       return hasOutOfMaxHorizontal || hasOutOfMinHorizontal || hasOutOfMaxVertical
     } else if (strategy === 'noBottom') {
       return hasOutOfMaxHorizontal || hasOutOfMinHorizontal || hasOutOfMinVertical
+    } else if (strategy === 'startImageWithRightFrame') {
+      // когда расчет коллизи идет по левой границе картинки c правым краем экран
+      return shapeCoordinates.xMin >= frameWidth
     } else {
       return hasOutOfMaxHorizontal || hasOutOfMinHorizontal || hasOutOfMaxVertical || hasOutOfMinVertical
     }
   }
 
-  getShapeCoordinates(shape: Shape) {
+  getShapeCoordinates(shape: ShapeParams) {
     return {
-      xMin: shape.position.x,
-      xMax: shape.position.x + shape.imgWidth,
-      yMin: shape.position.y,
-      yMax: shape.position.y + shape.imgHeight,
+      xMin: shape.x,
+      xMax: shape.x + shape.width,
+      yMin: shape.y,
+      yMax: shape.y + shape.height,
     }
   }
 
