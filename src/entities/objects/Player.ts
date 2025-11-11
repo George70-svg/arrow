@@ -57,7 +57,7 @@ export class Player extends Shape {
     const pressedKeys = controller.getPressedKeys()
     const length = this.speed * delta
     // Если есть коллизия с границами экрана, то нужна "отматать" движение назад, иначе двигаться дальше
-    const distance = !this.hasFrameCollision ? length : -(length + 1)
+    const distance = !this.hasFrameCollision ? length : -length
     this.isMoving = false
 
     if (pressedKeys['KeyA']) {

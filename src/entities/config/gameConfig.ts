@@ -54,7 +54,6 @@ const config: GameConfig = {
 }
 
 export const initializeGame = (context: CanvasRenderingContext2D | null, backgroundContext: CanvasRenderingContext2D | null) => {
-  console.log('initializeGame')
   if (!context || !backgroundContext) {
     return
   }
@@ -86,8 +85,8 @@ export const initializeGame = (context: CanvasRenderingContext2D | null, backgro
   config.objects.player = [
     new Player({
       context: context,
-      id: crypto.randomUUID(),
-      startPosition: { x: 140, y: config.height - 32 },
+      id: 'player',
+      startPosition: { x: 140, y: config.height + 24 },
       imgWidth: 150,
       imgHeight: 150,
       speed: 0.3,
@@ -96,11 +95,8 @@ export const initializeGame = (context: CanvasRenderingContext2D | null, backgro
     new Bow({
       context: context,
       id: crypto.randomUUID(),
-      startPosition: { x: 170, y: config.height - 70 },
       imgWidth: 45,
       imgHeight: 45,
-      speed: 0.3,
-      startDirection: 'right',
       startAngle: -0.75,
       maxAngle: -85,
       minAngle: -20,

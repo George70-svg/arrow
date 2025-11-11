@@ -4,28 +4,23 @@ import controller from '@entities/game/Conroller.ts'
 import { createArrow } from '@entities/utils/utils.ts'
 import { getAngleRadian, getArrowPath, getNextPosition, normalizeRadianAngle } from '@entities/utils/physics.ts'
 import { Shape } from '@entities/objects/Shape.ts'
-import type { Coordinate, Direction } from '@entities/types.ts'
+import type { Player } from '@entities/objects/Player.ts'
+import type { Coordinate } from '@entities/types.ts'
 import fullBow from '@/assets/images/bow/fullBow.png'
 import tensionBow from '@/assets/images/bow/tensionBow.png'
 import bow from '@/assets/images/bow/bow.png'
-import { Collision } from '@entities/game/Collision.ts'
 
 type BowProps = {
   id: string
   context: CanvasRenderingContext2D
   imgWidth: number
   imgHeight: number
-  startPosition: Coordinate
-  startDirection: Direction
-  speed: number // скорость движения объекта лука при перемещении
   startAngle: number // начальный угол направления лука (в радианах)
   maxAngle: number // максимальный угол направения лука (в градусах)
   minAngle: number // минимальный угол направения лука (в градусах)
 }
 
 export class Bow extends Shape {
-  speed: number = 0
-  direction: Direction = 'right'
   currentBowImg = new Image()
   angle: number = 0 // угол в радианах
   maxAngle = 0 // угол в градусах
@@ -37,21 +32,18 @@ export class Bow extends Shape {
     super({
       id: props.id,
       context: props.context,
-      position: props.startPosition,
+      position: { x: 0, y: 0 },
       imgWidth: props.imgWidth,
       imgHeight: props.imgHeight,
       markForDelete: false,
     })
 
-    this.speed = props.speed
-    this.direction = props.startDirection
+    this.position = { x: 0, y: 0 }
     this.angle = props.startAngle
     this.minAngle = props.minAngle
     this.maxAngle = props.maxAngle
     this.currentBowImg.src = fullBow
   }
-
-  private collision = new Collision()
 
   private shot(mousePressedTime: number) {
     if (!config.objects.arrows.length) {
@@ -59,36 +51,26 @@ export class Bow extends Shape {
     }
   }
 
-  get hasCollision() {
-    return this.collision.checkFrameCollision(
-      {
-        x: this.position.x,
-        y: this.position.y,
-        width: this.imgWidth,
-        height: this.imgHeight,
-      },
-      'all',
-    )
+  get player() {
+    return config.objects.player.find((shape) => shape.id === 'player') as Player
   }
 
-  public update(delta: number) {
-    if (this.hasCollision) {
+  get showBow() {
+    // показываем лук только при движении игрока вправо
+    return this.player.direction === 'right'
+  }
+
+  public update() {
+    if (!this.showBow) {
       return
     }
 
     const pressedKeys = controller.getPressedKeys()
     const mouseCoordinates = controller.getMouseCoordinates()
     const mousePressedTime = controller.getMousePressedTime()
-    const distance = this.speed * delta
 
-    if (pressedKeys['KeyA']) {
-      this.position.x -= distance
-      this.direction = 'left'
-    }
-
-    if (pressedKeys['KeyD']) {
-      this.position.x += distance
-      this.direction = 'right'
+    if (this.player) {
+      this.position = { x: this.player.position.x + 20, y: this.player.position.y - 90 }
     }
 
     if (!config.objects.arrows.length) {
@@ -147,6 +129,10 @@ export class Bow extends Shape {
   }
 
   public render() {
+    if (!this.showBow) {
+      return
+    }
+
     if (this.mousePressedTime && this.mousePressedTime > config.arrow.startTensionTimeMs) {
       this.drawTrajectory(this.mousePressedTime)
     }
