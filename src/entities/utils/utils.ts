@@ -28,16 +28,6 @@ export const update = (delta: number) => {
   }
 }
 
-/*export const checkCollision = () => {
-  const shapes = Object.values(config.objects).flat(Infinity) as Shape[]
-
-  shapes.forEach((shape) => {
-    if (shape && shape.canDelete && collisions.checkFrameCollision(shape, 'noTop')) {
-      shape.setMarkForDelete(true)
-    }
-  })
-}*/
-
 export const deleteObjects = () => {
   const shapes = Object.values(config.objects).flat(Infinity) as Shape[]
   const markedShapes = shapes.filter((shape) => shape.markForDelete)

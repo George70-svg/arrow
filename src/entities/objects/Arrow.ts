@@ -3,6 +3,7 @@ import { Shape } from '@entities/objects/Shape.ts'
 import type { ArrowPath, Coordinate } from '@entities/types.ts'
 import arrow from '@/assets/images/bow/arrow.png'
 import { Collision } from '@entities/game/Collision.ts'
+import { ObjectRect } from '@entities/game/ObjectRect.ts'
 
 type ArrowProps = {
   id: string
@@ -50,6 +51,7 @@ export class Arrow extends Shape {
   }
 
   private collision = new Collision()
+  private rect = new ObjectRect(this.context)
 
   get hasCollision() {
     return this.collision.checkFrameCollision(
@@ -78,6 +80,9 @@ export class Arrow extends Shape {
     this.context.rotate(this.angle)
     // рисуем изображение так, чтобы его центр совпал с (0,0) — точкой вращения стрелы
     // по дефолту drawImage ставит левый верхний угол картинки в заданную точку, поэтому смещаем на половину размера
+
+    this.rect.draw(-this.imgWidth / 2, -this.imgHeight / 2, this.imgWidth, this.imgHeight)
+
     this.context.drawImage(this.arrowImg, -this.imgWidth / 2, -this.imgHeight / 2, this.imgWidth, this.imgHeight)
     this.context.restore() // восстанавливаем состояние (отменяем translate, rotate)
   }

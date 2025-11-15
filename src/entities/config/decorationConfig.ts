@@ -38,7 +38,7 @@ const createWall = (context: CanvasRenderingContext2D) => {
   config.objects.decorations.push(
     new Object({
       context: context,
-      id: crypto.randomUUID(),
+      id: 'wall',
       startPosition: { x: startX, y: startY - 185 },
       framePosition: { x: 1055, y: 498 },
       imgWidth: 56,

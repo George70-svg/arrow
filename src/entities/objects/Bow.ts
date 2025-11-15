@@ -9,6 +9,7 @@ import type { Coordinate } from '@entities/types.ts'
 import fullBow from '@/assets/images/bow/fullBow.png'
 import tensionBow from '@/assets/images/bow/tensionBow.png'
 import bow from '@/assets/images/bow/bow.png'
+import { ObjectRect } from '@entities/game/ObjectRect.ts'
 
 type BowProps = {
   id: string
@@ -44,6 +45,8 @@ export class Bow extends Shape {
     this.maxAngle = props.maxAngle
     this.currentBowImg.src = fullBow
   }
+
+  private rect = new ObjectRect(this.context)
 
   private shot(mousePressedTime: number) {
     if (!config.objects.arrows.length) {
@@ -142,6 +145,9 @@ export class Bow extends Shape {
     this.context.rotate(this.angle)
     // рисуем изображение так, чтобы его центр совпал с (0,0) — точкой вращения стрелы
     // по дефолту drawImage ставит левый верхний угол картинки в заданную точку, поэтому смещаем на половину размера
+
+    this.rect.draw(-this.imgWidth / 2, -this.imgHeight / 2, this.imgWidth, this.imgHeight)
+
     this.context.drawImage(this.currentBowImg, -this.imgWidth / 2, -this.imgHeight / 2, this.imgWidth, this.imgHeight)
     this.context.restore() // восстанавливаем состояние (отменяем translate, rotate)
   }

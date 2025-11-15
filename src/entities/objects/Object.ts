@@ -1,6 +1,7 @@
 import { Shape } from './Shape.ts'
 import type { Coordinate } from '../types.ts'
 import { SpriteImage } from '@entities/game/SpriteImage.ts'
+import { ObjectRect } from '@entities/game/ObjectRect.ts'
 
 type ObjectProps = {
   id: string
@@ -38,11 +39,14 @@ export class Object extends Shape {
   }
 
   private spriteImage
+  private rect = new ObjectRect(this.context)
 
   public update() {}
 
   public render() {
     const params = this.spriteImage.imageFromSprite()
+
+    this.rect.draw(this.position.x, this.position.y, params.sw, params.sh)
 
     this.context.drawImage(
       params.image,

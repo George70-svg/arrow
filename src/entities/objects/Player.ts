@@ -1,10 +1,13 @@
+// TODO: Плохо импортировать конфиг для класса
+import config from '@entities/config/gameConfig.ts'
 import { playerSprites } from '@entities/config/spriteConfig.ts'
 import controller from '@entities/game/Conroller.ts'
 import { FrameDelay } from '@entities/game/FrameDelay.ts'
-import { Shape } from './Shape.ts'
-import type { Coordinate, Direction, SpriteConfig } from '../types.ts'
 import { SpriteFrame } from '@entities/game/SpriteFrame.ts'
 import { Collision } from '@entities/game/Collision.ts'
+import { ObjectRect } from '@entities/game/ObjectRect.ts'
+import { Shape } from './Shape.ts'
+import type { Coordinate, Direction, SpriteConfig } from '../types.ts'
 
 type PlayerProps = {
   id: string
@@ -40,6 +43,7 @@ export class Player extends Shape {
   private spriteFrame = new SpriteFrame(this.currentSprite, this.imgWidth, this.imgHeight)
   private frameDelay = new FrameDelay()
   private collision = new Collision()
+  private rect = new ObjectRect(this.context, 'blue')
 
   get hasFrameCollision() {
     return this.collision.checkFrameCollision(
@@ -53,20 +57,36 @@ export class Player extends Shape {
     )
   }
 
+  get hasWallCollision() {
+    const wall = config.objects.decorations.find((item) => item.id === 'wall')
+
+    if (wall) {
+      return this.collision.checkCollision(
+        { x: this.position.x, y: this.position.y, width: this.imgWidth, height: this.imgHeight },
+        { x: wall.position.x, y: wall.position.y, width: wall.imgWidth, height: wall.imgHeight },
+        'notStrict',
+      )
+    }
+
+    return false
+  }
+
   public update(delta: number) {
     const pressedKeys = controller.getPressedKeys()
-    const length = this.speed * delta
-    // Если есть коллизия с границами экрана, то нужна "отматать" движение назад, иначе двигаться дальше
-    const distance = !this.hasFrameCollision ? length : -length
+    const distance = this.speed * delta
     this.isMoving = false
+
+    // Если есть коллизия с границами экрана, то нужна "отматать" движение назад, иначе двигаться дальше
+    if (this.hasFrameCollision || this.hasWallCollision) {
+      this.position.x = this.direction === 'left' ? this.position.x + 1 : this.position.x - 1
+      return
+    }
 
     if (pressedKeys['KeyA']) {
       this.position.x -= distance
       this.isMoving = true
       this.direction = 'left'
-    }
-
-    if (pressedKeys['KeyD']) {
+    } else if (pressedKeys['KeyD']) {
       this.position.x += distance
       this.isMoving = true
       this.direction = 'right'
@@ -80,10 +100,14 @@ export class Player extends Shape {
 
   public render() {
     this.context.save() // сохраняем текущее состояние Canvas
-    this.context.translate(this.position.x, this.position.y) // настраиваем точку вращения (центр объекта)
+    this.context.translate(this.position.x / 2, this.position.y / 2) // настраиваем точку вращения (центр объекта)
     if (this.direction === 'left') this.context.scale(-1, 1) // отразить по оси X
     const params = this.spriteFrame.frameParams(this.frame)
-    this.context.drawImage(...params) // теперь рисуем относительно новой системы координат, dx и dy будут равны 0 (центр от translate)
+    const [img, sx, sy, sw, sh, dx, dy, dw, dh] = params
+
+    this.rect.draw(dx, dy, dw, dh)
+
+    this.context.drawImage(img, sx, sy, sw, sh, dx, dy, dw, dh) // теперь рисуем относительно новой системы координат, dx и dy будут равны 0 (центр от translate)
     this.context.restore() // восстанавливаем состояние (отменяем translate, rotate и т.д.)
   }
 }

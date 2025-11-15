@@ -7,6 +7,7 @@ import cloudImg3 from '@/assets/images/clouds/Clouds_white/Shape3/cloud_shape3_1
 import cloudImg4 from '@/assets/images/clouds/Clouds_white/Shape3/cloud_shape3_3.png'
 import cloudImg5 from '@/assets/images/clouds/Clouds_white/Shape4/cloud_shape4_1.png'
 import { Collision } from '@entities/game/Collision.ts'
+import { ObjectRect } from '@entities/game/ObjectRect.ts'
 
 type CloudProps = {
   id: string
@@ -43,6 +44,7 @@ export class Cloud extends Shape {
   }
 
   private collision = new Collision()
+  private rect = new ObjectRect(this.context)
 
   get contrast() {
     const angleCoeff = this.dayPeriod.angleCoeff()
@@ -74,6 +76,9 @@ export class Cloud extends Shape {
     this.context.save()
     this.context.translate(this.position.x, this.position.y)
     this.context.filter = this.contrast
+
+    this.rect.draw(-this.cloudImage.width / 2, -this.cloudImage.height / 2, this.cloudImage.width, this.cloudImage.height)
+
     this.context.drawImage(
       this.cloudImage,
       -this.cloudImage.width / 2,
