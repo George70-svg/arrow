@@ -1,7 +1,7 @@
 import type { SpriteConfig } from '@entities/types.ts'
 import runImg from '@images/player/Run.png'
-import idleImg from '@images/player/Idle.png'
-import walkImg from '@images/player/Walk.png'
+import idleImg from '@images/player/Idle2.png'
+import walkImg from '@images/player/Walk2.png'
 import jumpImg from '@images/player/Jump.png'
 
 export const playerSprites: Record<string, SpriteConfig> = {

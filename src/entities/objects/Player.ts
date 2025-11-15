@@ -100,7 +100,7 @@ export class Player extends Shape {
 
   public render() {
     this.context.save() // сохраняем текущее состояние Canvas
-    this.context.translate(this.position.x / 2, this.position.y / 2) // настраиваем точку вращения (центр объекта)
+    this.context.translate(this.position.x, this.position.y) // настраиваем точку вращения (центр объекта)
     if (this.direction === 'left') this.context.scale(-1, 1) // отразить по оси X
     const params = this.spriteFrame.frameParams(this.frame)
     const [img, sx, sy, sw, sh, dx, dy, dw, dh] = params

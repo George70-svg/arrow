@@ -86,9 +86,9 @@ export const initializeGame = (context: CanvasRenderingContext2D | null, backgro
     new Player({
       context: context,
       id: 'player',
-      startPosition: { x: 140, y: config.height + 24 },
-      imgWidth: 150,
-      imgHeight: 150,
+      startPosition: { x: 140, y: config.height - 30 },
+      imgWidth: 100,
+      imgHeight: 100,
       speed: 0.3,
       startDirection: 'right',
     }),

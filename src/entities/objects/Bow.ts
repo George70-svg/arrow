@@ -73,7 +73,7 @@ export class Bow extends Shape {
     const mousePressedTime = controller.getMousePressedTime()
 
     if (this.player) {
-      this.position = { x: this.player.position.x + 20, y: this.player.position.y - 90 }
+      this.position = { x: this.player.position.x + 10, y: this.player.position.y - 40 }
     }
 
     if (!config.objects.arrows.length) {
