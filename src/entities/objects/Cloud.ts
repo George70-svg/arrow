@@ -77,7 +77,7 @@ export class Cloud extends Shape {
     this.context.translate(this.position.x, this.position.y)
     this.context.filter = this.contrast
 
-    this.rect.draw(-this.cloudImage.width / 2, -this.cloudImage.height / 2, this.cloudImage.width, this.cloudImage.height)
+    //this.rect.draw(-this.cloudImage.width / 2, -this.cloudImage.height / 2, this.cloudImage.width, this.cloudImage.height)
 
     this.context.drawImage(
       this.cloudImage,

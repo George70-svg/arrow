@@ -146,7 +146,7 @@ export class Bow extends Shape {
     // рисуем изображение так, чтобы его центр совпал с (0,0) — точкой вращения стрелы
     // по дефолту drawImage ставит левый верхний угол картинки в заданную точку, поэтому смещаем на половину размера
 
-    this.rect.draw(-this.imgWidth / 2, -this.imgHeight / 2, this.imgWidth, this.imgHeight)
+    //this.rect.draw(-this.imgWidth / 2, -this.imgHeight / 2, this.imgWidth, this.imgHeight)
 
     this.context.drawImage(this.currentBowImg, -this.imgWidth / 2, -this.imgHeight / 2, this.imgWidth, this.imgHeight)
     this.context.restore() // восстанавливаем состояние (отменяем translate, rotate)

@@ -46,7 +46,7 @@ export class Object extends Shape {
   public render() {
     const params = this.spriteImage.imageFromSprite()
 
-    this.rect.draw(this.position.x, this.position.y, params.sw, params.sh)
+    //this.rect.draw(this.position.x, this.position.y, params.sw, params.sh)
 
     this.context.drawImage(
       params.image,

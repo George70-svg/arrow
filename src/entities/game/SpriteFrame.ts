@@ -52,7 +52,7 @@ export class SpriteFrame {
 
   setSprite(sprite: SpriteConfig) {
     this.sprite = sprite
-    this.scaleFrame()
+    this.scale = this.scaleFrame()
   }
 
   // Возвращение параметров с учетом передвижения и направления для рисования
@@ -64,7 +64,7 @@ export class SpriteFrame {
       frameFromSprite.sx, // sx — смещение по X в спрайте
       frameFromSprite.sy, // sy — смещение по Y в спрайте
       frameFromSprite.sw, // sWidth — ширина кадра
-      frameFromSprite.sw, // sHeight — высота кадра
+      frameFromSprite.sh, // sHeight — высота кадра
       (-frameFromSprite.sw * this.scale.width) / 2, // dx — куда рисовать по X
       -frameFromSprite.sh * this.scale.height, // dy — куда рисовать по Y
       frameFromSprite.sw * this.scale.width, // dWidth — ширина отрисовки

@@ -1,7 +1,6 @@
 // TODO: Плохо импортировать конфиг для класса
 import config from '@entities/config/gameConfig.ts'
-import { playerSprites } from '@entities/config/spriteConfig.ts'
-import controller from '@entities/game/Conroller.ts'
+import { goblinSprites } from '@entities/config/spriteConfig.ts'
 import { FrameDelay } from '@entities/game/FrameDelay.ts'
 import { SpriteFrame } from '@entities/game/SpriteFrame.ts'
 import { Collision } from '@entities/game/Collision.ts'
@@ -9,7 +8,7 @@ import { ObjectRect } from '@entities/game/ObjectRect.ts'
 import { Shape } from './Shape.ts'
 import type { Coordinate, Direction, SpriteConfig } from '../types.ts'
 
-type PlayerProps = {
+type EnemyProps = {
   id: string
   context: CanvasRenderingContext2D
   imgWidth: number
@@ -19,14 +18,14 @@ type PlayerProps = {
   speed: number
 }
 
-export class Player extends Shape {
+export class Enemy extends Shape {
   speed: number = 0
   direction: Direction
-  currentSprite: SpriteConfig = playerSprites.idle
+  currentSprite: SpriteConfig = goblinSprites.walk
   frame: number = 0
   isMoving = false
 
-  constructor(props: PlayerProps) {
+  constructor(props: EnemyProps) {
     super({
       id: props.id,
       context: props.context,
@@ -45,18 +44,6 @@ export class Player extends Shape {
   private collision = new Collision()
   private rect = new ObjectRect(this.context, 'blue')
 
-  get hasFrameCollision() {
-    return this.collision.checkFrameCollision(
-      {
-        x: this.position.x,
-        y: this.position.y,
-        width: this.imgWidth,
-        height: this.imgHeight,
-      },
-      'noBottom',
-    )
-  }
-
   get hasWallCollision() {
     const wall = config.objects.decorations.find((item) => item.id === 'wall')
 
@@ -72,28 +59,16 @@ export class Player extends Shape {
   }
 
   public update(delta: number) {
-    const pressedKeys = controller.getPressedKeys()
     const distance = this.speed * delta
-    this.isMoving = false
+    this.isMoving = true
 
     // Если есть коллизия с границами экрана, то нужна "отматать" движение назад, иначе двигаться дальше
-    if (this.hasFrameCollision || this.hasWallCollision) {
-      this.position.x = this.direction === 'left' ? this.position.x + 1 : this.position.x - 1
-      return
-    }
-
-    if (pressedKeys['KeyA']) {
+    if (this.hasWallCollision) {
+      this.position.x += 0
+    } else {
       this.position.x -= distance
-      this.isMoving = true
-      this.direction = 'left'
-    } else if (pressedKeys['KeyD']) {
-      this.position.x += distance
-      this.isMoving = true
-      this.direction = 'right'
     }
 
-    this.currentSprite = this.isMoving ? playerSprites.walk : playerSprites.idle
-    this.spriteFrame.setSprite(this.currentSprite)
     this.frameDelay.update(delta, this.currentSprite)
     this.frame = this.frameDelay.frame
   }

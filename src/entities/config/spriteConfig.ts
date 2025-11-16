@@ -1,8 +1,13 @@
 import type { SpriteConfig } from '@entities/types.ts'
-import runImg from '@images/player/Run.png'
-import idleImg from '@images/player/Idle2.png'
-import walkImg from '@images/player/Walk2.png'
-import jumpImg from '@images/player/Jump.png'
+import playerRun from '@images/player/Run.png'
+import playerIdle from '@images/player/Idle2.png'
+import playerWalk from '@images/player/Walk2.png'
+import playerJump from '@images/player/Jump.png'
+
+import goblinIdle from '@images/goblin/Idle.png'
+import goblinWalk from '@images/goblin/Walk.png'
+import goblinRun from '@images/goblin/Run.png'
+import goblinAttack from '@images/goblin/Attack.png'
 
 export const playerSprites: Record<string, SpriteConfig> = {
   idle: {
@@ -27,7 +32,35 @@ export const playerSprites: Record<string, SpriteConfig> = {
   },
 }
 
-playerSprites.idle.image.src = idleImg
-playerSprites.walk.image.src = walkImg
-playerSprites.run.image.src = runImg
-playerSprites.jump.image.src = jumpImg
+export const goblinSprites: Record<string, SpriteConfig> = {
+  idle: {
+    image: new Image(),
+    frames: 8,
+    frameDelay: 100,
+  },
+  walk: {
+    image: new Image(),
+    frames: 10,
+    frameDelay: 100,
+  },
+  run: {
+    image: new Image(),
+    frames: 12,
+    frameDelay: 100,
+  },
+  attack: {
+    image: new Image(),
+    frames: 4,
+    frameDelay: 100,
+  },
+}
+
+playerSprites.idle.image.src = playerIdle
+playerSprites.walk.image.src = playerWalk
+playerSprites.run.image.src = playerRun
+playerSprites.jump.image.src = playerJump
+
+goblinSprites.idle.image.src = goblinIdle
+goblinSprites.walk.image.src = goblinWalk
+goblinSprites.run.image.src = goblinRun
+goblinSprites.attack.image.src = goblinAttack

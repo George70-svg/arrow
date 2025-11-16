@@ -6,12 +6,14 @@ import { initializeDecoration } from '@entities/config/decorationConfig.ts'
 import { DayPeriod } from '@entities/game/DayPeriod.ts'
 import { Background } from '@entities/objects/Background.ts'
 import { initializeClouds } from '@entities/config/cloudConfig.ts'
+import { Enemy } from '@entities/objects/Enemy.ts'
 
 // Важно что background, decorations и objects в отдельных объектах
 // Это влияет на поряд отрисовки на канвасе, потому что потом идет деструктуризация для общего render()
 export type GameConfig = {
   width: number
   height: number
+  showObjectRect: boolean
   dayPeriod: DayPeriod | null
   objects: {
     background: Shape[]
@@ -34,6 +36,7 @@ export type GameConfig = {
 const config: GameConfig = {
   width: 0,
   height: 0,
+  showObjectRect: true,
   dayPeriod: null,
   objects: {
     background: [],
@@ -87,7 +90,7 @@ export const initializeGame = (context: CanvasRenderingContext2D | null, backgro
       context: context,
       id: 'player',
       startPosition: { x: 140, y: config.height - 30 },
-      imgWidth: 100,
+      imgWidth: 75,
       imgHeight: 100,
       speed: 0.3,
       startDirection: 'right',
@@ -100,6 +103,15 @@ export const initializeGame = (context: CanvasRenderingContext2D | null, backgro
       startAngle: -0.75,
       maxAngle: -85,
       minAngle: -20,
+    }),
+    new Enemy({
+      context: context,
+      id: 'goblin',
+      startPosition: { x: config.width - 140, y: config.height - 30 },
+      imgWidth: 75,
+      imgHeight: 100,
+      speed: 0.1,
+      startDirection: 'left',
     }),
   ]
 
