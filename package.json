@@ -1,7 +1,8 @@
 {
   "name": "arrow",
+  "homepage": "https://George70-svg.github.io/arrow/",
   "private": true,
-  "version": "0.0.0",
+  "version": "0.8.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -10,10 +11,13 @@
     "lint": "eslint .",
     "format": "prettier --write .",
     "preview": "vite preview",
-    "prepare": "git config core.hooksPath .git-hooks || echo 'Not in a git repo'"
+    "prepare": "git config core.hooksPath .git-hooks || echo 'Not in a git repo'",
+    "predeploy": "yarn run build",
+    "deploy": "gh-pages -d dist"
   },
   "dependencies": {
     "classnames": "^2.5.1",
+    "gh-pages": "^6.3.0",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
     "react-router": "^7.9.3",
@@ -21,6 +25,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.36.0",
+    "@types/gh-pages": "^6",
     "@types/node": "^24.9.2",
     "@types/react": "^19.2.2",
     "@types/react-dom": "^19.2.2",
