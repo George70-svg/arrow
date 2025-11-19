@@ -3,13 +3,14 @@ import config from '@entities/config/gameConfig.ts'
 import controller from '@entities/game/Conroller.ts'
 import { createArrow } from '@entities/utils/utils.ts'
 import { getAngleRadian, getArrowPath, getNextPosition, normalizeRadianAngle } from '@entities/utils/physics.ts'
+import { Collision } from '@entities/game/Collision.ts'
 import { Shape } from '@entities/objects/Shape.ts'
 import type { Player } from '@entities/objects/Player.ts'
 import type { Coordinate } from '@entities/types.ts'
+import { ObjectRect } from '@entities/game/ObjectRect.ts'
 import fullBow from '@/assets/images/bow/fullBow.png'
 import tensionBow from '@/assets/images/bow/tensionBow.png'
 import bow from '@/assets/images/bow/bow.png'
-import { ObjectRect } from '@entities/game/ObjectRect.ts'
 
 type BowProps = {
   id: string
@@ -47,6 +48,7 @@ export class Bow extends Shape {
   }
 
   private rect = new ObjectRect(this.context)
+  private collision = new Collision()
 
   private shot(mousePressedTime: number) {
     if (!config.objects.arrows.length) {
@@ -119,6 +121,11 @@ export class Bow extends Shape {
 
     for (let x = this.position.x; x <= trajectoryLength; x += step) {
       const point = getNextPosition(this.position, x, arrowPath, 0, 0.5)
+
+      if (this.collision.checkWallCollision({ x: point.x, y: point.y, width: 1, height: 1 }, 'strict')) {
+        break
+      }
+
       points.push(point)
     }
 

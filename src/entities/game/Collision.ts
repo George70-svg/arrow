@@ -51,6 +51,42 @@ export class Collision {
     }
   }
 
+  // TODO: Дублируется логика
+  checkWallCollision(shape: ShapeParams, mode: CollisionMode): boolean {
+    const wall = config.objects.decorations.find((item) => item.id === 'wall')
+
+    if (wall) {
+      return this.checkCollision(
+        { x: shape.x, y: shape.y, width: shape.width, height: shape.height },
+        { x: wall.position.x, y: wall.position.y, width: wall.imgWidth, height: wall.imgHeight },
+        mode,
+      )
+    }
+
+    return false
+  }
+
+  // TODO: Дублируется логика
+  checkArrowCollision(shape: ShapeParams) {
+    const arrows = config.objects.arrows
+
+    if (arrows.length !== 0) {
+      for (const arrow of arrows) {
+        const hasCollision = this.checkCollision(
+          { x: shape.x, y: shape.y, width: shape.width, height: shape.height },
+          { x: arrow.position.x, y: arrow.position.y, width: arrow.imgWidth, height: arrow.imgHeight },
+          'strict',
+        )
+
+        if (hasCollision) {
+          return true
+        }
+      }
+    }
+
+    return false
+  }
+
   getShapeCoordinates(shape: ShapeParams) {
     return {
       xMin: shape.x,

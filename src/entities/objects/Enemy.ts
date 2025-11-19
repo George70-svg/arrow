@@ -1,5 +1,3 @@
-// TODO: Плохо импортировать конфиг для класса
-import config from '@entities/config/gameConfig.ts'
 import { goblinSprites } from '@entities/config/spriteConfig.ts'
 import { FrameDelay } from '@entities/game/FrameDelay.ts'
 import { SpriteFrame } from '@entities/game/SpriteFrame.ts'
@@ -45,22 +43,34 @@ export class Enemy extends Shape {
   private rect = new ObjectRect(this.context, 'blue')
 
   get hasWallCollision() {
-    const wall = config.objects.decorations.find((item) => item.id === 'wall')
+    return this.collision.checkWallCollision(
+      {
+        x: this.position.x,
+        y: this.position.y,
+        width: this.imgWidth,
+        height: this.imgHeight,
+      },
+      'notStrict',
+    )
+  }
 
-    if (wall) {
-      return this.collision.checkCollision(
-        { x: this.position.x, y: this.position.y, width: this.imgWidth, height: this.imgHeight },
-        { x: wall.position.x, y: wall.position.y, width: wall.imgWidth, height: wall.imgHeight },
-        'notStrict',
-      )
-    }
-
-    return false
+  get hasArrowCollision() {
+    return this.collision.checkArrowCollision({
+      x: this.position.x,
+      y: this.position.y,
+      width: this.imgWidth,
+      height: this.imgHeight,
+    })
   }
 
   public update(delta: number) {
     const distance = this.speed * delta
     this.isMoving = true
+
+    if (this.hasArrowCollision) {
+      console.log('hasArrowCollision')
+      this.setMarkForDelete(true)
+    }
 
     // Если есть коллизия с границами экрана, то нужна "отматать" движение назад, иначе двигаться дальше
     if (this.hasWallCollision) {

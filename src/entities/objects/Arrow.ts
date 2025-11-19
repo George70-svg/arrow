@@ -53,7 +53,7 @@ export class Arrow extends Shape {
   private collision = new Collision()
   private rect = new ObjectRect(this.context)
 
-  get hasCollision() {
+  get hasFrameCollision() {
     return this.collision.checkFrameCollision(
       {
         x: this.position.x,
@@ -65,8 +65,20 @@ export class Arrow extends Shape {
     )
   }
 
+  get hasWallCollision() {
+    return this.collision.checkWallCollision(
+      {
+        x: this.position.x,
+        y: this.position.y,
+        width: this.imgWidth,
+        height: this.imgHeight,
+      },
+      'strict',
+    )
+  }
+
   public update(delta: number) {
-    if (this.hasCollision) {
+    if (this.hasFrameCollision || this.hasWallCollision) {
       this.markForDelete = true
     }
 

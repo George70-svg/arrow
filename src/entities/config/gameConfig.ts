@@ -21,6 +21,7 @@ export type GameConfig = {
     clouds: Shape[]
     player: Shape[]
     arrows: Shape[]
+    enemies: Shape[]
   }
   arrow: {
     speed: number
@@ -44,6 +45,7 @@ const config: GameConfig = {
     clouds: [],
     player: [],
     arrows: [],
+    enemies: [],
   },
   arrow: {
     speed: 0.5,
@@ -104,10 +106,13 @@ export const initializeGame = (context: CanvasRenderingContext2D | null, backgro
       maxAngle: -85,
       minAngle: -20,
     }),
+  ]
+
+  config.objects.enemies = [
     new Enemy({
       context: context,
-      id: 'goblin',
-      startPosition: { x: config.width - 140, y: config.height - 30 },
+      id: crypto.randomUUID(),
+      startPosition: { x: config.width - 140, y: config.height - 28 },
       imgWidth: 75,
       imgHeight: 100,
       speed: 0.1,
@@ -117,6 +122,24 @@ export const initializeGame = (context: CanvasRenderingContext2D | null, backgro
 
   initializeClouds(backgroundContext)
   initializeDecoration(context)
+
+  setInterval(() => {
+    if (config.objects.enemies.length > 5) {
+      return
+    }
+
+    config.objects.enemies.push(
+      new Enemy({
+        context: context,
+        id: crypto.randomUUID(),
+        startPosition: { x: config.width - 140, y: config.height - 28 },
+        imgWidth: 75,
+        imgHeight: 100,
+        speed: 0.1,
+        startDirection: 'left',
+      }),
+    )
+  }, 5000)
 }
 
 export default config

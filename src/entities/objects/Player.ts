@@ -1,5 +1,3 @@
-// TODO: Плохо импортировать конфиг для класса
-import config from '@entities/config/gameConfig.ts'
 import { playerSprites } from '@entities/config/spriteConfig.ts'
 import controller from '@entities/game/Conroller.ts'
 import { FrameDelay } from '@entities/game/FrameDelay.ts'
@@ -58,17 +56,15 @@ export class Player extends Shape {
   }
 
   get hasWallCollision() {
-    const wall = config.objects.decorations.find((item) => item.id === 'wall')
-
-    if (wall) {
-      return this.collision.checkCollision(
-        { x: this.position.x, y: this.position.y, width: this.imgWidth, height: this.imgHeight },
-        { x: wall.position.x, y: wall.position.y, width: wall.imgWidth, height: wall.imgHeight },
-        'notStrict',
-      )
-    }
-
-    return false
+    return this.collision.checkWallCollision(
+      {
+        x: this.position.x,
+        y: this.position.y,
+        width: this.imgWidth,
+        height: this.imgHeight,
+      },
+      'notStrict',
+    )
   }
 
   public update(delta: number) {
@@ -80,16 +76,16 @@ export class Player extends Shape {
     if (this.hasFrameCollision || this.hasWallCollision) {
       this.position.x = this.direction === 'left' ? this.position.x + 1 : this.position.x - 1
       return
-    }
-
-    if (pressedKeys['KeyA']) {
-      this.position.x -= distance
-      this.isMoving = true
-      this.direction = 'left'
-    } else if (pressedKeys['KeyD']) {
-      this.position.x += distance
-      this.isMoving = true
-      this.direction = 'right'
+    } else {
+      if (pressedKeys['KeyA']) {
+        this.position.x -= distance
+        this.isMoving = true
+        this.direction = 'left'
+      } else if (pressedKeys['KeyD']) {
+        this.position.x += distance
+        this.isMoving = true
+        this.direction = 'right'
+      }
     }
 
     this.currentSprite = this.isMoving ? playerSprites.walk : playerSprites.idle
