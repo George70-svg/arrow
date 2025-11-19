@@ -3,7 +3,7 @@ import { Shape } from '@entities/objects/Shape.ts'
 import type { ArrowPath, Coordinate } from '@entities/types.ts'
 import arrow from '@/assets/images/bow/arrow.png'
 import { Collision } from '@entities/game/Collision.ts'
-import { ObjectRect } from '@entities/game/ObjectRect.ts'
+//import { ObjectRect } from '@entities/game/ObjectRect.ts'
 
 type ArrowProps = {
   id: string
@@ -51,7 +51,7 @@ export class Arrow extends Shape {
   }
 
   private collision = new Collision()
-  private rect = new ObjectRect(this.context)
+  //private rect = new ObjectRect(this.context)
 
   get hasFrameCollision() {
     return this.collision.checkFrameCollision(

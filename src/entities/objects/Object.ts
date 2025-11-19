@@ -1,7 +1,7 @@
 import { Shape } from './Shape.ts'
 import type { Coordinate } from '../types.ts'
 import { SpriteImage } from '@entities/game/SpriteImage.ts'
-import { ObjectRect } from '@entities/game/ObjectRect.ts'
+//import { ObjectRect } from '@entities/game/ObjectRect.ts'
 
 type ObjectProps = {
   id: string
@@ -39,7 +39,7 @@ export class Object extends Shape {
   }
 
   private spriteImage
-  private rect = new ObjectRect(this.context)
+  //private rect = new ObjectRect(this.context)
 
   public update() {}
 

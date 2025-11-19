@@ -7,7 +7,7 @@ import { Collision } from '@entities/game/Collision.ts'
 import { Shape } from '@entities/objects/Shape.ts'
 import type { Player } from '@entities/objects/Player.ts'
 import type { Coordinate } from '@entities/types.ts'
-import { ObjectRect } from '@entities/game/ObjectRect.ts'
+//import { ObjectRect } from '@entities/game/ObjectRect.ts'
 import fullBow from '@/assets/images/bow/fullBow.png'
 import tensionBow from '@/assets/images/bow/tensionBow.png'
 import bow from '@/assets/images/bow/bow.png'
@@ -47,7 +47,7 @@ export class Bow extends Shape {
     this.currentBowImg.src = fullBow
   }
 
-  private rect = new ObjectRect(this.context)
+  //private rect = new ObjectRect(this.context)
   private collision = new Collision()
 
   private shot(mousePressedTime: number) {

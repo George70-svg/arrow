@@ -2,7 +2,7 @@ import { goblinSprites } from '@entities/config/spriteConfig.ts'
 import { FrameDelay } from '@entities/game/FrameDelay.ts'
 import { SpriteFrame } from '@entities/game/SpriteFrame.ts'
 import { Collision } from '@entities/game/Collision.ts'
-import { ObjectRect } from '@entities/game/ObjectRect.ts'
+//import { ObjectRect } from '@entities/game/ObjectRect.ts'
 import { Shape } from './Shape.ts'
 import type { Coordinate, Direction, SpriteConfig } from '../types.ts'
 
@@ -40,7 +40,7 @@ export class Enemy extends Shape {
   private spriteFrame = new SpriteFrame(this.currentSprite, this.imgWidth, this.imgHeight)
   private frameDelay = new FrameDelay()
   private collision = new Collision()
-  private rect = new ObjectRect(this.context, 'blue')
+  //private rect = new ObjectRect(this.context, 'blue')
 
   get hasWallCollision() {
     return this.collision.checkWallCollision(
