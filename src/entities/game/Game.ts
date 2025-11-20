@@ -5,6 +5,7 @@ export class Game {
   protected context: CanvasRenderingContext2D | null = null
   protected backgroundContext: CanvasRenderingContext2D | null = null
   private boundLoop = this.loop.bind(this)
+  private onPauseChange?: (value: boolean) => void
   frameCb?: number
   lastTimestamp = 0
   isPause = false
@@ -37,15 +38,21 @@ export class Game {
   }
 
   public pause() {
+    if (this.isPause) return
+
     if (this.frameCb) {
       this.isPause = true
+      this.onPauseChange?.(true)
       cancelAnimationFrame(this.frameCb)
       this.frameCb = undefined
     }
   }
 
   public play() {
+    if (!this.isPause) return
+
     this.isPause = false
+    this.onPauseChange?.(false)
     this.lastTimestamp = performance.now()
     this.frameCb = requestAnimationFrame(this.boundLoop)
   }
@@ -60,5 +67,9 @@ export class Game {
 
   public get pauseStatus() {
     return this.isPause
+  }
+
+  public setPauseListener(cb: (value: boolean) => void) {
+    this.onPauseChange = cb
   }
 }

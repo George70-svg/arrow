@@ -1,13 +1,26 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
+import { Box, Modal, Typography } from '@mui/material'
 import config from '@entities/config/gameConfig.ts'
 import { Game } from '@entities/game/Game.ts'
 import styles from './GamePage.module.scss'
+
+const style = {
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: 400,
+  bgcolor: 'background.paper',
+  border: '2px solid #000',
+  boxShadow: 24,
+  p: 4,
+}
 
 export const GamePage = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const backgroundCanvasRef = useRef<HTMLCanvasElement>(null)
   const gameInstance = useRef<Game | null>(null)
-  //const [gameStatus, setGameStatus] = useState<'play' | 'pause'>('play')
+  const [isPaused, setIsPaused] = useState(false)
   const windowWidth = window.innerWidth - 1
   const windowHeight = window.innerHeight - 1
 
@@ -19,6 +32,7 @@ export const GamePage = () => {
 
     if (context && backgroundContext) {
       gameInstance.current = new Game(context, backgroundContext)
+      gameInstance.current.setPauseListener(setIsPaused)
       gameInstance.current.start()
     }
   }, [windowHeight, windowWidth])
@@ -30,6 +44,7 @@ export const GamePage = () => {
       }
 
       if (event.code === 'Escape') {
+        console.log('Escape')
         gameInstance.current.togglePause()
       }
     }
@@ -58,6 +73,17 @@ export const GamePage = () => {
         height={windowHeight}
         style={{ width: windowWidth, height: windowHeight }}
       />
+
+      <Modal open={isPaused} onClose={() => {}} disableEscapeKeyDown>
+        <Box sx={style}>
+          <Typography id="modal-modal-title" variant="h6" component="h2">
+            Text in a modal
+          </Typography>
+          <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+            Pause
+          </Typography>
+        </Box>
+      </Modal>
     </div>
   )
 }
