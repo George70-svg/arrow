@@ -7,6 +7,7 @@ export const GamePage = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const backgroundCanvasRef = useRef<HTMLCanvasElement>(null)
   const gameInstance = useRef<Game | null>(null)
+  //const [gameStatus, setGameStatus] = useState<'play' | 'pause'>('play')
   const windowWidth = window.innerWidth - 1
   const windowHeight = window.innerHeight - 1
 
@@ -21,6 +22,22 @@ export const GamePage = () => {
       gameInstance.current.start()
     }
   }, [windowHeight, windowWidth])
+
+  useEffect(() => {
+    const handler = (event: KeyboardEvent) => {
+      if (!gameInstance.current) {
+        return
+      }
+
+      if (event.code === 'Escape') {
+        gameInstance.current.togglePause()
+      }
+    }
+
+    window.addEventListener('keydown', handler)
+
+    return () => window.removeEventListener('keydown', handler)
+  }, [])
 
   return (
     <div className={styles.page}>

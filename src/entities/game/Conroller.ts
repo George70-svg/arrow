@@ -1,7 +1,7 @@
 import config from '@entities/config/gameConfig.ts'
 import type { Coordinate } from '@entities/types.ts'
 
-const availableButtonCodes = ['KeyA', 'KeyD', 'KeyW', 'KeyS', 'LBM']
+const availableButtonCodes = ['KeyA', 'KeyD', 'KeyW', 'KeyS', 'LBM', 'Escape']
 
 class Controller {
   private pressedKeys: Record<string, boolean> = {}
