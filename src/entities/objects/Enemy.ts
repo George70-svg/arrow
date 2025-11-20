@@ -73,6 +73,8 @@ export class Enemy extends Shape {
 
     // Если есть коллизия с границами экрана, то нужна "отматать" движение назад, иначе двигаться дальше
     if (this.hasWallCollision) {
+      this.currentSprite = goblinSprites.attack
+      this.spriteFrame.setSprite(this.currentSprite)
       this.position.x += 0
     } else {
       this.position.x -= distance

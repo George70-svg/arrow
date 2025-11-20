@@ -119,7 +119,7 @@ export const initializeGame = (
     new Enemy({
       context: context,
       id: crypto.randomUUID(),
-      startPosition: { x: config.width - 140, y: config.height - 28 },
+      startPosition: { x: config.width, y: config.height - 28 },
       imgWidth: 75,
       imgHeight: 100,
       speed: 0.1,
@@ -139,7 +139,7 @@ export const initializeGame = (
       new Enemy({
         context: context,
         id: crypto.randomUUID(),
-        startPosition: { x: config.width - 140, y: config.height - 28 },
+        startPosition: { x: config.width, y: config.height - 28 },
         imgWidth: 75,
         imgHeight: 100,
         speed: 0.1,

@@ -51,7 +51,7 @@ export const goblinSprites: Record<string, SpriteConfig> = {
   attack: {
     image: new Image(),
     frames: 4,
-    frameDelay: 100,
+    frameDelay: 50,
   },
 }
 
