@@ -3,6 +3,11 @@
   width: 100vw;
   height: 100vh;
   overflow: hidden;
+
+  background-image: url('../../../assets/images/background/backgroundDefault.png');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
 }
 
 .header {
@@ -19,3 +24,42 @@
   position: absolute;
   background: transparent;
 }
+
+.modal {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 600px;
+  height: 400px;
+  padding: 1rem;
+  background-color: #1e1e1e;
+  border-radius: var(--border-radius-s);
+
+  h2 {
+    text-align: center;
+    color: var(--background-color);
+  }
+}
+
+.buttonContainer {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.buttonItem {
+  color: var(--blue-color);
+  background-color: var(--background-color);
+  border: 1px solid black;
+  padding: 12px 24px;
+  font-size: 20px;
+  text-transform: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+

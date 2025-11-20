@@ -1,19 +1,31 @@
 import config, { initializeGame } from '@entities/config/gameConfig.ts'
 import { render, update, deleteObjects } from '@entities/utils/utils.ts'
+import { Controller } from '@entities/game/Conroller.ts'
+
+type GameProps = {
+  context: CanvasRenderingContext2D | null
+  backgroundContext: CanvasRenderingContext2D | null
+  isPause: boolean
+  onPauseChange: (value: boolean) => void
+}
 
 export class Game {
   protected context: CanvasRenderingContext2D | null = null
   protected backgroundContext: CanvasRenderingContext2D | null = null
   private boundLoop = this.loop.bind(this)
-  private onPauseChange?: (value: boolean) => void
+  private onPauseChange: (value: boolean) => void
   frameCb?: number
   lastTimestamp = 0
-  isPause = false
+  isPause: boolean
 
-  constructor(context: CanvasRenderingContext2D | null, backgroundContext: CanvasRenderingContext2D | null) {
-    this.context = context
-    this.backgroundContext = backgroundContext
+  constructor(props: GameProps) {
+    this.context = props.context
+    this.backgroundContext = props.backgroundContext
+    this.isPause = props.isPause
+    this.onPauseChange = props.onPauseChange
   }
+
+  private controller = new Controller()
 
   private loop(timestamp: number) {
     if (!this.context || !this.backgroundContext) {
@@ -26,14 +38,15 @@ export class Game {
     this.context.clearRect(0, 0, config.width, config.height) // Очистка холста
     update(delta)
     render()
-    //checkCollision()
     deleteObjects()
 
     this.frameCb = requestAnimationFrame(this.boundLoop)
   }
 
   public start() {
-    initializeGame(this.context, this.backgroundContext)
+    this.isPause = false
+    this.onPauseChange(false)
+    initializeGame(this.context, this.backgroundContext, this.controller)
     this.frameCb = requestAnimationFrame(this.boundLoop)
   }
 
@@ -41,8 +54,7 @@ export class Game {
     if (this.isPause) return
 
     if (this.frameCb) {
-      this.isPause = true
-      this.onPauseChange?.(true)
+      this.onPauseChange(true)
       cancelAnimationFrame(this.frameCb)
       this.frameCb = undefined
     }
@@ -50,9 +62,7 @@ export class Game {
 
   public play() {
     if (!this.isPause) return
-
-    this.isPause = false
-    this.onPauseChange?.(false)
+    this.onPauseChange(false)
     this.lastTimestamp = performance.now()
     this.frameCb = requestAnimationFrame(this.boundLoop)
   }
@@ -60,16 +70,10 @@ export class Game {
   public togglePause() {
     if (this.isPause) {
       this.play()
+      this.isPause = false
     } else {
       this.pause()
+      this.isPause = true
     }
-  }
-
-  public get pauseStatus() {
-    return this.isPause
-  }
-
-  public setPauseListener(cb: (value: boolean) => void) {
-    this.onPauseChange = cb
   }
 }

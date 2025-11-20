@@ -1,9 +1,9 @@
 import config from '@entities/config/gameConfig.ts'
 import type { Coordinate } from '@entities/types.ts'
 
-const availableButtonCodes = ['KeyA', 'KeyD', 'KeyW', 'KeyS', 'LBM', 'Escape']
+const availableButtonCodes = ['KeyA', 'KeyD', 'KeyW', 'KeyS', 'LBM']
 
-class Controller {
+export class Controller {
   private pressedKeys: Record<string, boolean> = {}
   private mouseCoordinates: Coordinate | null = null
   private startDate: Date | null = null
@@ -70,6 +70,3 @@ class Controller {
     clearInterval(this.intervalId)
   }
 }
-
-const controller = new Controller()
-export default controller

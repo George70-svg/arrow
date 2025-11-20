@@ -1,9 +1,9 @@
 // TODO: Плохо импортировать конфиг для класса
 import config from '@entities/config/gameConfig.ts'
-import controller from '@entities/game/Conroller.ts'
 import { createArrow } from '@entities/utils/utils.ts'
 import { getAngleRadian, getArrowPath, getNextPosition, normalizeRadianAngle } from '@entities/utils/physics.ts'
 import { Collision } from '@entities/game/Collision.ts'
+import type { Controller } from '@entities/game/Conroller.ts'
 import { Shape } from '@entities/objects/Shape.ts'
 import type { Player } from '@entities/objects/Player.ts'
 import type { Coordinate } from '@entities/types.ts'
@@ -20,6 +20,7 @@ type BowProps = {
   startAngle: number // начальный угол направления лука (в радианах)
   maxAngle: number // максимальный угол направения лука (в градусах)
   minAngle: number // минимальный угол направения лука (в градусах)
+  controller: Controller
 }
 
 export class Bow extends Shape {
@@ -29,6 +30,7 @@ export class Bow extends Shape {
   minAngle = 0 // угол в градусах
   trajectoryColor = '#ffffff'
   mousePressedTime = 0
+  controller: Controller
 
   constructor(props: BowProps) {
     super({
@@ -45,6 +47,7 @@ export class Bow extends Shape {
     this.minAngle = props.minAngle
     this.maxAngle = props.maxAngle
     this.currentBowImg.src = fullBow
+    this.controller = props.controller
   }
 
   //private rect = new ObjectRect(this.context)
@@ -70,9 +73,9 @@ export class Bow extends Shape {
       return
     }
 
-    const pressedKeys = controller.getPressedKeys()
-    const mouseCoordinates = controller.getMouseCoordinates()
-    const mousePressedTime = controller.getMousePressedTime()
+    const pressedKeys = this.controller.getPressedKeys()
+    const mouseCoordinates = this.controller.getMouseCoordinates()
+    const mousePressedTime = this.controller.getMousePressedTime()
 
     if (this.player) {
       this.position = { x: this.player.position.x + 10, y: this.player.position.y - 40 }
@@ -106,7 +109,7 @@ export class Bow extends Shape {
       // сбрасываю таймер именно здесь, поскольку условие - кнопка отпущена и таймер идет
       // если сбросить таймер на момент отпускания кнопки, то условие бессмысленно
       // поэтому сначал нужно выполнить метод и только потом сбросить таймер
-      controller.resetTimer()
+      this.controller.resetTimer()
     }
   }
 

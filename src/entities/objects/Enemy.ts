@@ -68,7 +68,6 @@ export class Enemy extends Shape {
     this.isMoving = true
 
     if (this.hasArrowCollision) {
-      console.log('hasArrowCollision')
       this.setMarkForDelete(true)
     }
 

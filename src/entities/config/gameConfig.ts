@@ -1,11 +1,12 @@
+import { initializeDecoration } from '@entities/config/decorationConfig.ts'
+import { initializeClouds } from '@entities/config/cloudConfig.ts'
 import type { Shape } from '@entities/objects/Shape.ts'
+import type { Controller } from '@entities/game/Conroller.ts'
 import { Player } from '../objects/Player.ts'
 import { Bow } from '@entities/objects/Bow.ts'
 import { Sun } from '@entities/objects/Sun.ts'
-import { initializeDecoration } from '@entities/config/decorationConfig.ts'
 import { DayPeriod } from '@entities/game/DayPeriod.ts'
 import { Background } from '@entities/objects/Background.ts'
-import { initializeClouds } from '@entities/config/cloudConfig.ts'
 import { Enemy } from '@entities/objects/Enemy.ts'
 
 // Важно что background, decorations и objects в отдельных объектах
@@ -58,7 +59,11 @@ const config: GameConfig = {
   },
 }
 
-export const initializeGame = (context: CanvasRenderingContext2D | null, backgroundContext: CanvasRenderingContext2D | null) => {
+export const initializeGame = (
+  context: CanvasRenderingContext2D | null,
+  backgroundContext: CanvasRenderingContext2D | null,
+  controller: Controller,
+) => {
   if (!context || !backgroundContext) {
     return
   }
@@ -96,6 +101,7 @@ export const initializeGame = (context: CanvasRenderingContext2D | null, backgro
       imgHeight: 100,
       speed: 0.3,
       startDirection: 'right',
+      controller,
     }),
     new Bow({
       context: context,
@@ -105,6 +111,7 @@ export const initializeGame = (context: CanvasRenderingContext2D | null, backgro
       startAngle: -0.75,
       maxAngle: -85,
       minAngle: -20,
+      controller,
     }),
   ]
 

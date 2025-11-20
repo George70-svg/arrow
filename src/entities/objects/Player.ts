@@ -1,8 +1,8 @@
 import { playerSprites } from '@entities/config/spriteConfig.ts'
-import controller from '@entities/game/Conroller.ts'
 import { FrameDelay } from '@entities/game/FrameDelay.ts'
 import { SpriteFrame } from '@entities/game/SpriteFrame.ts'
 import { Collision } from '@entities/game/Collision.ts'
+import type { Controller } from '@entities/game/Conroller.ts'
 //import { ObjectRect } from '@entities/game/ObjectRect.ts'
 import { Shape } from './Shape.ts'
 import type { Coordinate, Direction, SpriteConfig } from '../types.ts'
@@ -15,6 +15,7 @@ type PlayerProps = {
   startPosition: Coordinate
   startDirection: Direction
   speed: number
+  controller: Controller
 }
 
 export class Player extends Shape {
@@ -23,6 +24,7 @@ export class Player extends Shape {
   currentSprite: SpriteConfig = playerSprites.idle
   frame: number = 0
   isMoving = false
+  controller: Controller
 
   constructor(props: PlayerProps) {
     super({
@@ -36,6 +38,7 @@ export class Player extends Shape {
 
     this.speed = props.speed
     this.direction = props.startDirection
+    this.controller = props.controller
   }
 
   private spriteFrame = new SpriteFrame(this.currentSprite, this.imgWidth, this.imgHeight)
@@ -68,7 +71,7 @@ export class Player extends Shape {
   }
 
   public update(delta: number) {
-    const pressedKeys = controller.getPressedKeys()
+    const pressedKeys = this.controller.getPressedKeys()
     const distance = this.speed * delta
     this.isMoving = false
 
