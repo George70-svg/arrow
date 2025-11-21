@@ -49,8 +49,8 @@ const config: GameConfig = {
     enemies: [],
   },
   arrow: {
-    speed: 0.5,
-    heightCoeff: 4, // коэффициент высоты полета
+    speed: 0.6,
+    heightCoeff: 3, // коэффициент высоты полета
     widthCoeff: 0.4, // коэффициент длины полета
     angleStartCoeff: 0.4, // начальный коэффициент результат деления текущего угла на максимальный
     startTensionTimeMs: 400, // время после которого срабатывает расчет натяжения (мс)
@@ -122,7 +122,7 @@ export const initializeGame = (
       startPosition: { x: config.width, y: config.height - 28 },
       imgWidth: 75,
       imgHeight: 100,
-      speed: 0.1,
+      speed: 0.05,
       startDirection: 'left',
     }),
   ]
@@ -142,7 +142,7 @@ export const initializeGame = (
         startPosition: { x: config.width, y: config.height - 28 },
         imgWidth: 75,
         imgHeight: 100,
-        speed: 0.1,
+        speed: 0.05,
         startDirection: 'left',
       }),
     )

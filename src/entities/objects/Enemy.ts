@@ -68,7 +68,9 @@ export class Enemy extends Shape {
     this.isMoving = true
 
     if (this.hasArrowCollision) {
-      this.setMarkForDelete(true)
+      setTimeout(() => {
+        this.setMarkForDelete(true)
+      }, 1500)
     }
 
     // Если есть коллизия с границами экрана, то нужна "отматать" движение назад, иначе двигаться дальше
