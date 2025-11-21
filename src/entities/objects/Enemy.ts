@@ -22,6 +22,7 @@ export class Enemy extends Shape {
   currentSprite: SpriteConfig = goblinSprites.walk
   frame: number = 0
   isMoving = false
+  markForDied = false
 
   constructor(props: EnemyProps) {
     super({
@@ -68,17 +69,21 @@ export class Enemy extends Shape {
     this.isMoving = true
 
     if (this.hasArrowCollision) {
+      this.markForDied = true
+      this.currentSprite = goblinSprites.died
+      this.spriteFrame.setSprite(this.currentSprite)
+      this.position.x += 0
       setTimeout(() => {
         this.setMarkForDelete(true)
-      }, 1500)
+      }, 360)
     }
 
-    // Если есть коллизия с границами экрана, то нужна "отматать" движение назад, иначе двигаться дальше
     if (this.hasWallCollision) {
       this.currentSprite = goblinSprites.attack
       this.spriteFrame.setSprite(this.currentSprite)
-      this.position.x += 0
-    } else {
+    }
+
+    if (!this.hasArrowCollision && !this.hasWallCollision && !this.markForDied) {
       this.position.x -= distance
     }
 

@@ -9,6 +9,8 @@ import goblinWalk from '@images/goblin/Walk.png'
 import goblinRun from '@images/goblin/Run.png'
 import goblinAttack from '@images/goblin/Attack.png'
 
+import explosion from '@images/explosion/explosion.png'
+
 export const playerSprites: Record<string, SpriteConfig> = {
   idle: {
     image: new Image(),
@@ -53,6 +55,11 @@ export const goblinSprites: Record<string, SpriteConfig> = {
     frames: 4,
     frameDelay: 50,
   },
+  died: {
+    image: new Image(),
+    frames: 7,
+    frameDelay: 70,
+  },
 }
 
 playerSprites.idle.image.src = playerIdle
@@ -64,3 +71,4 @@ goblinSprites.idle.image.src = goblinIdle
 goblinSprites.walk.image.src = goblinWalk
 goblinSprites.run.image.src = goblinRun
 goblinSprites.attack.image.src = goblinAttack
+goblinSprites.died.image.src = explosion
