@@ -34,7 +34,7 @@
   flex-direction: column;
   justify-content: space-between;
   width: 600px;
-  height: 400px;
+  height: fit-content;
   padding: 1rem;
   background-color: #1e1e1e;
   border-radius: var(--border-radius-s);
@@ -50,6 +50,10 @@
     text-align: center;
     color: var(--background-color);
   }
+}
+
+.controls {
+  width: 100%;
 }
 
 .buttonContainer {

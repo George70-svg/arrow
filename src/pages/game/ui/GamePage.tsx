@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { Box, Modal } from '@mui/material'
 import config from '@entities/config/gameConfig.ts'
 import { Game } from '@entities/game/Game.ts'
+import controlsImg from '@images/interface/controls.png'
 import styles from './GamePage.module.scss'
 
 export const GamePage = () => {
@@ -70,13 +71,17 @@ export const GamePage = () => {
 
       <Modal open={isPause} onClose={() => {}} disableEscapeKeyDown>
         <Box className={styles.modal}>
-          <h2>Menu</h2>
-
           {!isNewGame && (
             <div className={styles.score}>
               <h3>Итоговый счет: {score}</h3>
             </div>
           )}
+
+          <img className={styles.controls} src={controlsImg} alt="controls" />
+
+          <br />
+          <br />
+          <br />
 
           <div className={styles.buttonContainer}>
             {isNewGame && (
