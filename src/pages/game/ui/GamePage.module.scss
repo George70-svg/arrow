@@ -46,7 +46,8 @@
 }
 
 .score {
-  margin: 2rem 0;
+  margin-top: 2rem;
+
   h3 {
     text-align: center;
     color: var(--background-color);
@@ -61,6 +62,7 @@
   display: flex;
   justify-content: center;
   gap: 1rem;
+  margin-top: 2rem;
 }
 
 .buttonItem {
