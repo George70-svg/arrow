@@ -1,7 +1,4 @@
 //import { ObjectRect } from '@entities/game/ObjectRect.ts'
-//import { goblinSprites } from '@entities/config/spriteConfig.ts'
-//import { zombieSprites } from '@entities/config/spriteConfig.ts'
-import { orcSprites } from '@entities/config/spriteConfig.ts'
 import { FrameDelay } from '@entities/game/FrameDelay.ts'
 import { SpriteFrame } from '@entities/game/SpriteFrame.ts'
 import { Collision } from '@entities/game/Collision.ts'
@@ -16,12 +13,15 @@ type EnemyProps = {
   startPosition: Coordinate
   startDirection: Direction
   speed: number
+  spriteConfig: Record<string, SpriteConfig>
 }
 
 export class Enemy extends Shape {
   speed: number = 0
   direction: Direction
-  currentSprite: SpriteConfig = orcSprites.walk
+  spriteConfig: Record<string, SpriteConfig>
+  currentSprite: SpriteConfig
+  private spriteFrame: SpriteFrame
   frame: number = 0
   isMoving = false
   markForDied = false
@@ -38,9 +38,11 @@ export class Enemy extends Shape {
 
     this.speed = props.speed
     this.direction = props.startDirection
+    this.spriteConfig = props.spriteConfig
+    this.currentSprite = props.spriteConfig.walk
+    this.spriteFrame = new SpriteFrame(this.currentSprite, this.imgWidth, this.imgHeight)
   }
 
-  private spriteFrame = new SpriteFrame(this.currentSprite, this.imgWidth, this.imgHeight)
   private frameDelay = new FrameDelay()
   private collision = new Collision()
   //private rect = new ObjectRect(this.context, 'blue')
@@ -72,7 +74,7 @@ export class Enemy extends Shape {
 
     if (this.hasArrowCollision) {
       this.markForDied = true
-      this.currentSprite = orcSprites.died
+      this.currentSprite = this.spriteConfig.died
       this.spriteFrame.setSprite(this.currentSprite)
       this.position.x += 0
       setTimeout(() => {
@@ -81,7 +83,7 @@ export class Enemy extends Shape {
     }
 
     if (this.hasWallCollision) {
-      this.currentSprite = orcSprites.attack
+      this.currentSprite = this.spriteConfig.attack
       this.spriteFrame.setSprite(this.currentSprite)
     }
 

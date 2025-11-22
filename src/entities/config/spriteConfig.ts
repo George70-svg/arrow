@@ -12,7 +12,7 @@ import goblinAttack from '@images/goblin/Attack.png'
 import zombieWalk from '@images/zombie/Walk.png'
 import zombieAttack from '@images/zombie/Attack.png'
 
-import orcWalc from '@images/orc/Walk.png'
+import orcWalk from '@images/orc/Walk.png'
 import orcAttack from '@images/orc/Attack.png'
 
 import explosion from '@images/finish/finish.png'
@@ -119,6 +119,6 @@ zombieSprites.walk.image.src = zombieWalk
 zombieSprites.attack.image.src = zombieAttack
 zombieSprites.died.image.src = explosion
 
-orcSprites.walk.image.src = orcWalc
+orcSprites.walk.image.src = orcWalk
 orcSprites.attack.image.src = orcAttack
 orcSprites.died.image.src = explosion

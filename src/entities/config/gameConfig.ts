@@ -7,7 +7,7 @@ import { Bow } from '@entities/objects/Bow.ts'
 import { Sun } from '@entities/objects/Sun.ts'
 import { DayPeriod } from '@entities/game/DayPeriod.ts'
 import { Background } from '@entities/objects/Background.ts'
-import { Enemy } from '@entities/objects/Enemy.ts'
+import { createZombie } from '@entities/config/enemyConfig.ts'
 
 // Важно что background, decorations и objects в отдельных объектах
 // Это влияет на поряд отрисовки на канвасе, потому что потом идет деструктуризация для общего render()
@@ -115,17 +115,7 @@ export const initializeGame = (
     }),
   ]
 
-  config.objects.enemies = [
-    new Enemy({
-      context: context,
-      id: crypto.randomUUID(),
-      startPosition: { x: config.width, y: config.height - 28 },
-      imgWidth: 75,
-      imgHeight: 100,
-      speed: 0.05,
-      startDirection: 'left',
-    }),
-  ]
+  config.objects.enemies = [createZombie(context, config.width, config.height - 28)]
 
   initializeClouds(backgroundContext)
   initializeDecoration(context)
@@ -135,17 +125,8 @@ export const initializeGame = (
       return
     }
 
-    config.objects.enemies.push(
-      new Enemy({
-        context: context,
-        id: crypto.randomUUID(),
-        startPosition: { x: config.width, y: config.height - 28 },
-        imgWidth: 75,
-        imgHeight: 100,
-        speed: 0.05,
-        startDirection: 'left',
-      }),
-    )
+    const enemy = createZombie(context, config.width, config.height - 28)
+    config.objects.enemies.push(enemy)
   }, 5000)
 }
 
