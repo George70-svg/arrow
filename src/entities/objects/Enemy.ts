@@ -1,9 +1,10 @@
+//import { ObjectRect } from '@entities/game/ObjectRect.ts'
 //import { goblinSprites } from '@entities/config/spriteConfig.ts'
-import { zombieSprites } from '@entities/config/spriteConfig.ts'
+//import { zombieSprites } from '@entities/config/spriteConfig.ts'
+import { orcSprites } from '@entities/config/spriteConfig.ts'
 import { FrameDelay } from '@entities/game/FrameDelay.ts'
 import { SpriteFrame } from '@entities/game/SpriteFrame.ts'
 import { Collision } from '@entities/game/Collision.ts'
-//import { ObjectRect } from '@entities/game/ObjectRect.ts'
 import { Shape } from './Shape.ts'
 import type { Coordinate, Direction, SpriteConfig } from '../types.ts'
 
@@ -20,7 +21,7 @@ type EnemyProps = {
 export class Enemy extends Shape {
   speed: number = 0
   direction: Direction
-  currentSprite: SpriteConfig = zombieSprites.walk
+  currentSprite: SpriteConfig = orcSprites.walk
   frame: number = 0
   isMoving = false
   markForDied = false
@@ -71,7 +72,7 @@ export class Enemy extends Shape {
 
     if (this.hasArrowCollision) {
       this.markForDied = true
-      this.currentSprite = zombieSprites.died
+      this.currentSprite = orcSprites.died
       this.spriteFrame.setSprite(this.currentSprite)
       this.position.x += 0
       setTimeout(() => {
@@ -80,7 +81,7 @@ export class Enemy extends Shape {
     }
 
     if (this.hasWallCollision) {
-      this.currentSprite = zombieSprites.attack
+      this.currentSprite = orcSprites.attack
       this.spriteFrame.setSprite(this.currentSprite)
     }
 

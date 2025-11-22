@@ -12,6 +12,9 @@ import goblinAttack from '@images/goblin/Attack.png'
 import zombieWalk from '@images/zombie/Walk.png'
 import zombieAttack from '@images/zombie/Attack.png'
 
+import orcWalc from '@images/orc/Walk.png'
+import orcAttack from '@images/orc/Attack.png'
+
 import explosion from '@images/finish/finish.png'
 
 export const playerSprites: Record<string, SpriteConfig> = {
@@ -83,6 +86,24 @@ export const zombieSprites: Record<string, SpriteConfig> = {
   },
 }
 
+export const orcSprites: Record<string, SpriteConfig> = {
+  walk: {
+    image: new Image(),
+    frames: 7,
+    frameDelay: 100,
+  },
+  attack: {
+    image: new Image(),
+    frames: 4,
+    frameDelay: 50,
+  },
+  died: {
+    image: new Image(),
+    frames: 7,
+    frameDelay: 70,
+  },
+}
+
 playerSprites.idle.image.src = playerIdle
 playerSprites.walk.image.src = playerWalk
 playerSprites.run.image.src = playerRun
@@ -97,3 +118,7 @@ goblinSprites.died.image.src = explosion
 zombieSprites.walk.image.src = zombieWalk
 zombieSprites.attack.image.src = zombieAttack
 zombieSprites.died.image.src = explosion
+
+orcSprites.walk.image.src = orcWalc
+orcSprites.attack.image.src = orcAttack
+orcSprites.died.image.src = explosion
