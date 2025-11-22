@@ -94,7 +94,7 @@ export const orcSprites: Record<string, SpriteConfig> = {
   },
   attack: {
     image: new Image(),
-    frames: 4,
+    frames: 7,
     frameDelay: 50,
   },
   died: {
