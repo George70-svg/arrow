@@ -71,17 +71,13 @@ export const GamePage = () => {
 
       <Modal open={isPause} onClose={() => {}} disableEscapeKeyDown>
         <Box className={styles.modal}>
+          <img className={styles.controls} src={controlsImg} alt="controls" />
+
           {!isNewGame && (
             <div className={styles.score}>
               <h3>Итоговый счет: {score}</h3>
             </div>
           )}
-
-          <img className={styles.controls} src={controlsImg} alt="controls" />
-
-          <br />
-          <br />
-          <br />
 
           <div className={styles.buttonContainer}>
             {isNewGame && (

@@ -116,6 +116,8 @@ export const initializeGame = (
     }),
   ]
 
+  config.objects.enemies.push(create['zombie'](context, config.width, config.height - 28, setScore))
+
   initializeClouds(backgroundContext)
   initializeDecoration(context)
 
