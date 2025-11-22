@@ -17,6 +17,9 @@ export const update = (delta: number) => {
   const shapes = Object.values(config.objects).flat(Infinity) as Shape[]
   const dayPeriod = config.dayPeriod
 
+  // TODO: ОЧЕНЬ ПЛОХО для 60 FPS
+  // config.objects.background.forEach(o => o.update(delta));
+
   shapes.forEach((shape) => {
     if (shape && shape.update) {
       shape.update(delta)

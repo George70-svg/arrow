@@ -10,6 +10,7 @@ export const GamePage = () => {
   const gameInstance = useRef<Game | null>(null)
   const [isPause, onPauseChange] = useState(true)
   const [isNewGame, setNewGame] = useState(true)
+  const [score, setScore] = useState(0)
   const windowWidth = window.innerWidth - 1
   const windowHeight = window.innerHeight - 1
 
@@ -21,7 +22,7 @@ export const GamePage = () => {
     config.height = windowHeight
 
     if (context && backgroundContext) {
-      gameInstance.current = new Game({ context, backgroundContext, isPause, onPauseChange })
+      gameInstance.current = new Game({ context, backgroundContext, isPause, onPauseChange, setScore })
       gameInstance.current.start()
     }
   }
@@ -70,6 +71,12 @@ export const GamePage = () => {
       <Modal open={isPause} onClose={() => {}} disableEscapeKeyDown>
         <Box className={styles.modal}>
           <h2>Menu</h2>
+
+          {!isNewGame && (
+            <div className={styles.score}>
+              <h3>Итоговый счет: {score}</h3>
+            </div>
+          )}
 
           <div className={styles.buttonContainer}>
             {isNewGame && (

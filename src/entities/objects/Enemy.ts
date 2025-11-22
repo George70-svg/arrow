@@ -14,6 +14,7 @@ type EnemyProps = {
   startDirection: Direction
   speed: number
   spriteConfig: Record<string, SpriteConfig>
+  onDied: (value: number) => void
 }
 
 export class Enemy extends Shape {
@@ -25,6 +26,7 @@ export class Enemy extends Shape {
   frame: number = 0
   isMoving = false
   markForDied = false
+  onDied: (value: number) => void
 
   constructor(props: EnemyProps) {
     super({
@@ -41,6 +43,7 @@ export class Enemy extends Shape {
     this.spriteConfig = props.spriteConfig
     this.currentSprite = props.spriteConfig.walk
     this.spriteFrame = new SpriteFrame(this.currentSprite, this.imgWidth, this.imgHeight)
+    this.onDied = props.onDied
   }
 
   private frameDelay = new FrameDelay()
@@ -73,10 +76,16 @@ export class Enemy extends Shape {
     this.isMoving = true
 
     if (this.hasArrowCollision) {
-      this.markForDied = true
       this.currentSprite = this.spriteConfig.died
       this.spriteFrame.setSprite(this.currentSprite)
       this.position.x += 0
+
+      if (!this.markForDied) {
+        this.onDied(1)
+      }
+
+      this.markForDied = true
+
       setTimeout(() => {
         this.setMarkForDelete(true)
       }, 360)

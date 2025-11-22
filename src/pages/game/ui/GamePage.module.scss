@@ -45,6 +45,13 @@
   }
 }
 
+.score {
+  h3 {
+    text-align: center;
+    color: var(--background-color);
+  }
+}
+
 .buttonContainer {
   display: flex;
   justify-content: center;

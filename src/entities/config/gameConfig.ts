@@ -7,7 +7,7 @@ import { Bow } from '@entities/objects/Bow.ts'
 import { Sun } from '@entities/objects/Sun.ts'
 import { DayPeriod } from '@entities/game/DayPeriod.ts'
 import { Background } from '@entities/objects/Background.ts'
-import { createZombie } from '@entities/config/enemyConfig.ts'
+import { create, enemies } from '@entities/config/enemyConfig.ts'
 
 // Важно что background, decorations и objects в отдельных объектах
 // Это влияет на поряд отрисовки на канвасе, потому что потом идет деструктуризация для общего render()
@@ -63,6 +63,7 @@ export const initializeGame = (
   context: CanvasRenderingContext2D | null,
   backgroundContext: CanvasRenderingContext2D | null,
   controller: Controller,
+  setScore: (score: number) => void,
 ) => {
   if (!context || !backgroundContext) {
     return
@@ -115,8 +116,6 @@ export const initializeGame = (
     }),
   ]
 
-  config.objects.enemies = [createZombie(context, config.width, config.height - 28)]
-
   initializeClouds(backgroundContext)
   initializeDecoration(context)
 
@@ -125,7 +124,10 @@ export const initializeGame = (
       return
     }
 
-    const enemy = createZombie(context, config.width, config.height - 28)
+    const n = Math.floor(Math.random() * 3)
+    const enemyType = enemies[n]
+    const enemyCallback = create[enemyType]
+    const enemy = enemyCallback(context, config.width, config.height - 28, setScore)
     config.objects.enemies.push(enemy)
   }, 5000)
 }

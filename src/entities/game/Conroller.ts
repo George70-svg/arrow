@@ -69,4 +69,10 @@ export class Controller {
     this.mousePressedTimeMs = null
     clearInterval(this.intervalId)
   }
+
+  // TODO: добавить методы отпискм
+  /*public destroy() {
+    window.removeEventListener('keydown', this.handleKeyDown);
+    // ...
+  }*/
 }
