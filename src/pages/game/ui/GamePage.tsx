@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { Box, Modal } from '@mui/material'
 import config from '@entities/config/gameConfig.ts'
 import { Game } from '@entities/game/Game.ts'
-import controlsImg from '@images/interface/controls.png'
+import controlsImg from '@images/interface/controls.webp'
 import styles from './GamePage.module.scss'
 
 export const GamePage = () => {

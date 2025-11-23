@@ -3,7 +3,7 @@ import type { DayPeriod } from '@entities/game/DayPeriod.ts'
 import { lerpColor } from '@entities/utils/physics.ts'
 import { createCloud } from '@entities/config/cloudConfig.ts'
 import type { RGBObject } from '@entities/types.ts'
-import backgroundImage from '@images/background/background.png'
+import backgroundImage from '@images/background/background.webp'
 import startImage from '../../assets/images/environment/stars.png'
 
 type BackgroundProps = {

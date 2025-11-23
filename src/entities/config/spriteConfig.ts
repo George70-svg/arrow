@@ -1,7 +1,7 @@
 import type { SpriteConfig } from '@entities/types.ts'
 import playerRun from '@images/player/Run.png'
-import playerIdle from '@images/player/Idle2.png'
-import playerWalk from '@images/player/Walk2.png'
+import playerIdle from '@/assets/images/player/Idle.png'
+import playerWalk from '@/assets/images/player/Walk.png'
 import playerJump from '@images/player/Jump.png'
 
 import goblinIdle from '@images/goblin/Idle.png'
