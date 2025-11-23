@@ -69,20 +69,18 @@ export const GamePage = () => {
         style={{ width: windowWidth, height: windowHeight }}
       />
 
+      <div className={styles.gameScore}>
+        <h2>Score: {score}</h2>
+      </div>
+
       <Modal open={isPause} onClose={() => {}} disableEscapeKeyDown>
         <Box className={styles.modal}>
           <img className={styles.controls} src={controlsImg} alt="controls" />
 
-          {!isNewGame && (
-            <div className={styles.score}>
-              <h3>Итоговый счет: {score}</h3>
-            </div>
-          )}
-
           <div className={styles.buttonContainer}>
             {isNewGame && (
               <button className={styles.buttonItem} onClick={startGame}>
-                Start
+                Play
               </button>
             )}
             {!isNewGame && (

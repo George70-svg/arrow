@@ -10,12 +10,6 @@
   background-position: center;
 }
 
-.header {
-  position: absolute;
-  top: 0;
-  left: 0;
-}
-
 .backgroundCanvas {
   position: absolute;
 }
@@ -23,6 +17,16 @@
 .gameCanvas {
   position: absolute;
   background: transparent;
+}
+
+.gameScore {
+  position: absolute;
+  top: 5px;
+  left: 10px;
+
+  h2 {
+    color: var(--background-color);
+  }
 }
 
 .modal {
@@ -43,19 +47,19 @@
     text-align: center;
     color: var(--background-color);
   }
-}
 
-.score {
-  margin-top: 2rem;
+  .score {
+    margin-top: 2rem;
 
-  h3 {
-    text-align: center;
-    color: var(--background-color);
+    h3 {
+      text-align: center;
+      color: var(--background-color);
+    }
   }
-}
 
-.controls {
-  width: 100%;
+  .controls {
+    width: 100%;
+  }
 }
 
 .buttonContainer {
