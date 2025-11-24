@@ -5,6 +5,7 @@ export class Collision {
   constructor() {}
 
   checkCollision(shape1: ShapeParams, shape2: ShapeParams, mode: CollisionMode): boolean {
+    //TODO: Создаю много объектов
     const shape1Coordinates = this.getShapeCoordinates(shape1)
     const shape2Coordinates = this.getShapeCoordinates(shape2)
 
@@ -72,13 +73,23 @@ export class Collision {
 
     if (arrows.length !== 0) {
       for (const arrow of arrows) {
+        if (arrow.markForDelete) {
+          continue
+        }
+
         const hasCollision = this.checkCollision(
           { x: shape.x, y: shape.y, width: shape.width, height: shape.height },
-          { x: arrow.position.x, y: arrow.position.y, width: arrow.imgWidth, height: arrow.imgHeight },
+          {
+            x: arrow.position.x,
+            y: arrow.position.y,
+            width: arrow.imgWidth,
+            height: arrow.imgHeight,
+          },
           'strict',
         )
 
         if (hasCollision) {
+          arrow.setMarkForDelete()
           return true
         }
       }

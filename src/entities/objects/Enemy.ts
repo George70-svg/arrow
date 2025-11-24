@@ -87,7 +87,7 @@ export class Enemy extends Shape {
       this.markForDied = true
 
       setTimeout(() => {
-        this.setMarkForDelete(true)
+        this.setMarkForDelete()
       }, 360)
     }
 

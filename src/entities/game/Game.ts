@@ -47,7 +47,7 @@ export class Game {
     update(delta)
     render()
     deleteObjects()
-    this.enemies.update(this.lastTimestamp, this.score)
+    this.enemies.update(delta, this.score)
 
     this.frameCb = requestAnimationFrame(this.boundLoop)
   }

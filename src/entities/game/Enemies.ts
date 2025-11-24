@@ -1,5 +1,6 @@
 import { type GameConfig } from '@entities/config/gameConfig.ts'
 import { create } from '@entities/config/enemyConfig.ts'
+import { type Level, levelConfig } from '@entities/config/levelConfig.ts'
 
 type EnemiesProps = {
   score: number
@@ -13,6 +14,8 @@ export class Enemies {
   config: GameConfig
   context: CanvasRenderingContext2D
   lastTimestamp = 0
+  currentLevelIdx = 0
+  nextSpawnDelay = 0
   setScore: (value: number) => void
 
   constructor(props: EnemiesProps) {
@@ -22,56 +25,51 @@ export class Enemies {
     this.setScore = props.setScore
   }
 
-  update(timestamp: number, score: number) {
-    const randomTime = Math.floor(Math.random() * 10000)
-    const time = randomTime > 3000 ? randomTime : 3000
-    const delta = timestamp - this.lastTimestamp
+  update(delta: number, score: number) {
+    this.checkLevel(score)
+    this.lastTimestamp += delta
 
-    if (time < delta) {
-      this.lastTimestamp = timestamp
-      this.createEnemy(score)
+    if (this.lastTimestamp > this.nextSpawnDelay) {
+      this.spawnEnemy()
+      this.lastTimestamp = 0
     }
   }
 
-  createEnemy(score: number) {
-    const level = this.getLevel(score)
+  checkLevel(score: number) {
+    const nextLevelIndex = this.currentLevelIdx + 1
 
-    if (level === 1) {
-      const enemyCallback = create.zombie
-      const enemy = enemyCallback(this.context, this.config.width, this.config.height - 28, this.setScore)
-      this.config.objects.enemies.push(enemy)
+    if (nextLevelIndex < levelConfig.length) {
+      if (levelConfig[nextLevelIndex].minScore < score) {
+        this.currentLevelIdx += 1
+      }
     }
-
-    if (level > 1) {
-      const enemyCallback = create.orc
-      const enemy = enemyCallback(this.context, this.config.width, this.config.height - 28, this.setScore)
-      this.config.objects.enemies.push(enemy)
-    }
-
-    /*if (level === 3) {
-    }
-
-    if (level === 4) {
-    }*/
   }
 
-  getLevel(score: number) {
-    if (score < 6) {
-      return 1
+  spawnEnemy() {
+    const currentLevel = levelConfig[this.currentLevelIdx]
+    const [min, max] = currentLevel.spawnTime
+    this.nextSpawnDelay = Math.random() * (max - min) + min
+    const enemyType = this.getEnemyFromPercent(currentLevel)
+    const createEnemy = create[enemyType.type]
+    const enemy = createEnemy(this.context, this.config.width, this.config.height - 28, this.setScore)
+    this.config.objects.enemies.push(enemy)
+  }
+
+  getEnemyFromPercent(level: Level) {
+    const totalPercent = level.enemies.reduce((acc, item) => {
+      return acc + item.percent
+    }, 0)
+
+    let randomNumber = Math.random() * totalPercent
+
+    for (const enemy of level.enemies) {
+      if (randomNumber < enemy.percent) {
+        return enemy
+      }
+
+      randomNumber -= enemy.percent
     }
 
-    if (score >= 6 && score < 12) {
-      return 2
-    }
-
-    if (score >= 12 && score < 20) {
-      return 3
-    }
-
-    if (score >= 20) {
-      return 4
-    }
-
-    return 4
+    return level.enemies[0]
   }
 }

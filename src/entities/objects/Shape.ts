@@ -27,8 +27,8 @@ export abstract class Shape {
     this.canDelete = props.canDelete
   }
 
-  setMarkForDelete(markForDelete: boolean) {
-    this.markForDelete = markForDelete
+  setMarkForDelete() {
+    this.markForDelete = true
   }
 
   update?(delta: number): void
