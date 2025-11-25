@@ -5,21 +5,21 @@ export class Collision {
   constructor() {}
 
   checkCollision(shape1: ShapeParams, shape2: ShapeParams, mode: CollisionMode): boolean {
-    //TODO: Создаю много объектов
-    const shape1Coordinates = this.getShapeCoordinates(shape1)
-    const shape2Coordinates = this.getShapeCoordinates(shape2)
+    const shape1XMin = shape1.x
+    const shape1XMax = shape1.x + shape1.width
+    const shape1YMin = shape1.y
+    const shape1YMax = shape1.y + shape1.height
+
+    const shape2XMin = shape2.x
+    const shape2XMax = shape2.x + shape2.width
+    const shape2YMin = shape2.y
+    const shape2YMax = shape2.y + shape2.height
 
     // Проверяю есть ли горизантольное пересечение
-    const hasHorizontalCollision = this.isIntervalsIntersect(
-      [shape1Coordinates.xMin, shape1Coordinates.xMax],
-      [shape2Coordinates.xMin, shape2Coordinates.xMax],
-    )
+    const hasHorizontalCollision = this.isIntervalsIntersect(shape1XMin, shape1XMax, shape2XMin, shape2XMax)
 
     // Проверяю есть ли вертикальное пересечение
-    const hasVerticalCollision = this.isIntervalsIntersect(
-      [shape1Coordinates.yMin, shape1Coordinates.yMax],
-      [shape2Coordinates.yMin, shape2Coordinates.yMax],
-    )
+    const hasVerticalCollision = this.isIntervalsIntersect(shape1YMin, shape1YMax, shape2YMin, shape2YMax)
 
     // В зависимости от режима выбираем правило оценки пересечений
     if (mode === 'strict') {
@@ -33,12 +33,15 @@ export class Collision {
     const frameWidth = config.width
     const frameHeight = config.height
 
-    const shapeCoordinates = this.getShapeCoordinates(shape)
+    const xMin = shape.x
+    const xMax = shape.x + shape.width
+    const yMin = shape.y
+    const yMax = shape.y + shape.height
 
-    const hasOutOfMaxHorizontal = shapeCoordinates.xMax > frameWidth
-    const hasOutOfMinHorizontal = shapeCoordinates.xMin < 0
-    const hasOutOfMaxVertical = shapeCoordinates.yMax > frameHeight
-    const hasOutOfMinVertical = shapeCoordinates.yMin < 0
+    const hasOutOfMaxHorizontal = xMax > frameWidth
+    const hasOutOfMinHorizontal = xMin < 0
+    const hasOutOfMaxVertical = yMax > frameHeight
+    const hasOutOfMinVertical = yMin < 0
 
     if (strategy === 'noTop') {
       return hasOutOfMaxHorizontal || hasOutOfMinHorizontal || hasOutOfMaxVertical
@@ -46,13 +49,13 @@ export class Collision {
       return hasOutOfMaxHorizontal || hasOutOfMinHorizontal || hasOutOfMinVertical
     } else if (strategy === 'startImageWithRightFrame') {
       // когда расчет коллизи идет по левой границе картинки c правым краем экран
-      return shapeCoordinates.xMin >= frameWidth
+      return xMin >= frameWidth
     } else {
       return hasOutOfMaxHorizontal || hasOutOfMinHorizontal || hasOutOfMaxVertical || hasOutOfMinVertical
     }
   }
 
-  // TODO: Дублируется логика
+  // TODO: Дублирование логики
   checkWallCollision(shape: ShapeParams, mode: CollisionMode): boolean {
     const wall = config.objects.decorations.find((item) => item.id === 'wall')
 
@@ -67,7 +70,7 @@ export class Collision {
     return false
   }
 
-  // TODO: Дублируется логика
+  // TODO: Дублирование логики
   checkArrowCollision(shape: ShapeParams) {
     const arrows = config.objects.arrows
 
@@ -98,19 +101,7 @@ export class Collision {
     return false
   }
 
-  getShapeCoordinates(shape: ShapeParams) {
-    return {
-      xMin: shape.x,
-      xMax: shape.x + shape.width,
-      yMin: shape.y,
-      yMax: shape.y + shape.height,
-    }
-  }
-
-  isIntervalsIntersect(range1: [number, number], range2: [number, number]) {
-    const [x1min, x1max] = range1
-    const [x2min, x2max] = range2
-
-    return Math.max(x1min, x2min) < Math.min(x1max, x2max)
+  isIntervalsIntersect(min1: number, max1: number, min2: number, max2: number) {
+    return Math.max(min1, min2) < Math.min(max1, max2)
   }
 }

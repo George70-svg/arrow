@@ -1,30 +1,30 @@
 import config from '@entities/config/gameConfig.ts'
-import type { Shape } from '@entities/objects/Shape.ts'
 import type { Coordinate } from '@entities/types.ts'
 import { Arrow } from '@entities/objects/Arrow.ts'
 
-export const render = () => {
-  const shapes = Object.values(config.objects).flat(Infinity) as Shape[]
+const objectKeys: (keyof typeof config.objects)[] = ['background', 'clouds', 'decorations', 'arrows', 'enemies', 'player']
 
-  shapes.forEach((shape) => {
-    if (shape) {
-      shape.render()
+export const render = () => {
+  for (const key of objectKeys) {
+    const group = config.objects[key]
+    for (let i = 0; i < group.length; i++) {
+      group[i].render()
     }
-  })
+  }
 }
 
 export const update = (delta: number) => {
-  const shapes = Object.values(config.objects).flat(Infinity) as Shape[]
   const dayPeriod = config.dayPeriod
 
-  // TODO: ОЧЕНЬ ПЛОХО для 60 FPS
-  // config.objects.background.forEach(o => o.update(delta));
-
-  shapes.forEach((shape) => {
-    if (shape && shape.update) {
-      shape.update(delta)
+  for (const key of objectKeys) {
+    const group = config.objects[key]
+    for (let i = 0; i < group.length; i++) {
+      const shape = group[i]
+      if (shape.update) {
+        shape.update(delta)
+      }
     }
-  })
+  }
 
   if (dayPeriod) {
     dayPeriod.update()
@@ -32,13 +32,18 @@ export const update = (delta: number) => {
 }
 
 export const deleteObjects = () => {
-  const shapes = Object.values(config.objects).flat(Infinity) as Shape[]
-  const markedShapes = shapes.filter((shape) => shape.markForDelete)
-  const objectKeys = Object.keys(config.objects) as (keyof typeof config.objects)[]
+  for (const key of objectKeys) {
+    const group = config.objects[key]
+    let hasDeadObjects = false
+    for (let i = 0; i < group.length; i++) {
+      if (group[i].markForDelete) {
+        hasDeadObjects = true
+        break
+      }
+    }
 
-  if (markedShapes.length) {
-    for (const key of objectKeys) {
-      config.objects[key] = config.objects[key].filter((shape) => !shape.markForDelete)
+    if (hasDeadObjects) {
+      config.objects[key] = group.filter((shape) => !shape.markForDelete)
     }
   }
 }

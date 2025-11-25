@@ -13,7 +13,6 @@ import { Background } from '@entities/objects/Background.ts'
 export type GameConfig = {
   width: number
   height: number
-  showObjectRect: boolean
   dayPeriod: DayPeriod | null
   objects: {
     background: Shape[]
@@ -34,10 +33,9 @@ export type GameConfig = {
   }
 }
 
-const config: GameConfig = {
+export const initialConfig: GameConfig = {
   width: 0,
   height: 0,
-  showObjectRect: true,
   dayPeriod: null,
   objects: {
     background: [],
@@ -57,6 +55,8 @@ const config: GameConfig = {
     trajectoryLengthCoeff: 1, // коэффициент длины дуги траектории, т.е. сколько дуги отображаем (0 - 1.0)
   },
 }
+
+const config: GameConfig = { ...initialConfig }
 
 export const initializeGame = (
   context: CanvasRenderingContext2D | null,
@@ -116,6 +116,16 @@ export const initializeGame = (
 
   initializeClouds(backgroundContext)
   initializeDecoration(context)
+}
+
+export const resetGameConfig = () => {
+  config.objects.background = []
+  config.objects.enemies = []
+  config.objects.arrows = []
+  config.objects.decorations = []
+  config.objects.player = []
+  config.objects.clouds = []
+  config.dayPeriod = null
 }
 
 export default config

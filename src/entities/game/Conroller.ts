@@ -12,44 +12,50 @@ export class Controller {
   private intervalId: ReturnType<typeof setInterval> | undefined = undefined
 
   constructor() {
-    window.addEventListener('keydown', (event: KeyboardEvent) => {
-      if (availableButtonCodes.includes(event.code)) {
-        this.pressedKeys[event.code] = true
-      }
-    })
+    window.addEventListener('keydown', this.handleKeydown)
+    window.addEventListener('keyup', this.handleKeyup)
+    window.addEventListener('mousemove', this.handleMousemove)
+    window.addEventListener('mousedown', this.handleMousedown)
+    window.addEventListener('mouseup', this.handleMouseup)
+  }
 
-    window.addEventListener('keyup', (event: KeyboardEvent) => {
-      if (availableButtonCodes.includes(event.code)) {
-        this.pressedKeys[event.code] = false
-      }
-    })
+  private handleKeydown = (event: KeyboardEvent) => {
+    if (availableButtonCodes.includes(event.code)) {
+      this.pressedKeys[event.code] = true
+    }
+  }
 
-    window.addEventListener('mousemove', (event: MouseEvent) => {
-      this.mouseCoordinates = { x: event.x, y: event.y }
-    })
+  private handleKeyup = (event: KeyboardEvent) => {
+    if (availableButtonCodes.includes(event.code)) {
+      this.pressedKeys[event.code] = false
+    }
+  }
 
-    window.addEventListener('mousedown', () => {
-      this.pressedKeys['LBM'] = true
+  private handleMousemove = (event: MouseEvent) => {
+    this.mouseCoordinates = { x: event.x, y: event.y }
+  }
 
-      // определяем начальное время начала нажатия кнопки
-      if (!this.startDate) {
-        this.startDate = new Date()
-      }
+  private handleMousedown = () => {
+    this.pressedKeys['LBM'] = true
 
-      // если кнопка уже была нажата (есть время начала нажатия), то тогда рассчитывем время нажатия
-      if (this.startDate) {
-        const startDate = this.startDate
-        this.intervalId = setInterval(() => {
-          if (!this.mousePressedTimeMs || this.mousePressedTimeMs < config.arrow.maxTensionTimeMs) {
-            this.mousePressedTimeMs = Date.now() - startDate.getTime()
-          }
-        }, this.updateIntervalMs)
-      }
-    })
+    // определяем начальное время начала нажатия кнопки
+    if (!this.startDate) {
+      this.startDate = new Date()
+    }
 
-    window.addEventListener('mouseup', () => {
-      this.pressedKeys['LBM'] = false
-    })
+    // если кнопка уже была нажата (есть время начала нажатия), то тогда рассчитывем время нажатия
+    if (this.startDate) {
+      const startDate = this.startDate
+      this.intervalId = setInterval(() => {
+        if (!this.mousePressedTimeMs || this.mousePressedTimeMs < config.arrow.maxTensionTimeMs) {
+          this.mousePressedTimeMs = Date.now() - startDate.getTime()
+        }
+      }, this.updateIntervalMs)
+    }
+  }
+
+  private handleMouseup = () => {
+    this.pressedKeys['LBM'] = false
   }
 
   public getPressedKeys() {
@@ -70,9 +76,18 @@ export class Controller {
     clearInterval(this.intervalId)
   }
 
-  // TODO: добавить методы отпискм
-  /*public destroy() {
-    window.removeEventListener('keydown', this.handleKeyDown);
-    // ...
-  }*/
+  public destroy() {
+    window.removeEventListener('keydown', this.handleKeydown)
+    window.removeEventListener('keyup', this.handleKeyup)
+    window.removeEventListener('mousemove', this.handleMousemove)
+    window.removeEventListener('mousedown', this.handleMousedown)
+    window.removeEventListener('mouseup', this.handleMouseup)
+
+    if (this.intervalId) {
+      clearInterval(this.intervalId)
+      this.intervalId = undefined
+    }
+
+    this.pressedKeys = {}
+  }
 }

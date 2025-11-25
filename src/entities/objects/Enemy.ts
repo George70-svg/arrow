@@ -15,6 +15,7 @@ type EnemyProps = {
   speed: number
   spriteConfig: Record<string, SpriteConfig>
   onDied: (value: number) => void
+  onGameOver: () => void
 }
 
 export class Enemy extends Shape {
@@ -27,6 +28,7 @@ export class Enemy extends Shape {
   isMoving = false
   markForDied = false
   onDied: (value: number) => void
+  onGameOver: () => void
 
   constructor(props: EnemyProps) {
     super({
@@ -44,6 +46,7 @@ export class Enemy extends Shape {
     this.currentSprite = props.spriteConfig.walk
     this.spriteFrame = new SpriteFrame(this.currentSprite, this.imgWidth, this.imgHeight)
     this.onDied = props.onDied
+    this.onGameOver = props.onGameOver
   }
 
   private frameDelay = new FrameDelay()
@@ -94,6 +97,10 @@ export class Enemy extends Shape {
     if (this.hasWallCollision) {
       this.currentSprite = this.spriteConfig.attack
       this.spriteFrame.setSprite(this.currentSprite)
+
+      setTimeout(() => {
+        this.onGameOver()
+      }, 500)
     }
 
     if (!this.hasArrowCollision && !this.hasWallCollision && !this.markForDied) {

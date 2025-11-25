@@ -9,23 +9,39 @@ export const GamePage = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const backgroundCanvasRef = useRef<HTMLCanvasElement>(null)
   const gameInstance = useRef<Game | null>(null)
-  const [isPause, onPauseChange] = useState(true)
-  const [isNewGame, setNewGame] = useState(true)
-  const [score, setScore] = useState(0)
   const windowWidth = window.innerWidth - 1
   const windowHeight = window.innerHeight - 1
 
+  const [isPause, setPause] = useState(true)
+  const [gameState, setGameState] = useState<'start' | 'playing' | 'gameOver'>('start')
+  const [score, setScore] = useState(0)
+
   const startGame = () => {
-    setNewGame(false)
+    if (gameInstance.current) {
+      gameInstance.current.destroy()
+    }
+
+    setGameState('start')
+    setPause(false)
+    setScore(0)
+
     const context = canvasRef.current?.getContext('2d')
     const backgroundContext = backgroundCanvasRef.current?.getContext('2d')
+
     config.width = windowWidth
     config.height = windowHeight
 
     if (context && backgroundContext) {
-      gameInstance.current = new Game({ context, backgroundContext, isPause, onPauseChange, setScore })
+      gameInstance.current = new Game({ context, backgroundContext, isPause, setPause, setScore, onGameOver: handleGameOver })
       gameInstance.current.start()
     }
+  }
+
+  const handleGameOver = () => {
+    gameInstance.current?.destroy()
+    gameInstance.current = null
+    setGameState('gameOver')
+    setPause(true) // Открываем модалку
   }
 
   const continueGame = () => {
@@ -49,6 +65,18 @@ export const GamePage = () => {
 
     return () => window.removeEventListener('keydown', handler)
   }, [])
+
+  const getModalContent = () => {
+    if (gameState === 'start') {
+      return { title: 'Archer Game', buttonText: 'Play', action: startGame }
+    }
+
+    if (gameState === 'gameOver') {
+      return { title: 'Game over', buttonText: 'Play again', action: startGame }
+    }
+
+    return { title: 'Pause', buttonText: 'Continue', action: continueGame }
+  }
 
   return (
     <div className={styles.page}>
@@ -75,19 +103,13 @@ export const GamePage = () => {
 
       <Modal open={isPause} onClose={() => {}} disableEscapeKeyDown>
         <Box className={styles.modal}>
+          <h2 className={styles.title}>{getModalContent().title}</h2>
           <img className={styles.controls} src={controlsImg} alt="controls" />
 
           <div className={styles.buttonContainer}>
-            {isNewGame && (
-              <button className={styles.buttonItem} onClick={startGame}>
-                Play
-              </button>
-            )}
-            {!isNewGame && (
-              <button className={styles.buttonItem} onClick={continueGame}>
-                Continue
-              </button>
-            )}
+            <button className={styles.buttonItem} onClick={getModalContent().action}>
+              {getModalContent().buttonText}
+            </button>
           </div>
         </Box>
       </Modal>

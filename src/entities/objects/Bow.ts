@@ -1,4 +1,4 @@
-// TODO: Плохо импортировать конфиг для класса
+// TODO: Плохое решение импортировать конфиг для класса, внешняя зависимость
 import config from '@entities/config/gameConfig.ts'
 import { createArrow } from '@entities/utils/utils.ts'
 import { getAngleRadian, getArrowPath, getNextPosition, normalizeRadianAngle } from '@entities/utils/physics.ts'

@@ -7,6 +7,7 @@ type EnemiesProps = {
   config: GameConfig
   context: CanvasRenderingContext2D
   setScore: (value: number) => void
+  onGameOver: () => void
 }
 
 export class Enemies {
@@ -17,12 +18,14 @@ export class Enemies {
   currentLevelIdx = 0
   nextSpawnDelay = 0
   setScore: (value: number) => void
+  onGameOver: () => void
 
   constructor(props: EnemiesProps) {
     this.score = props.score
     this.config = props.config
     this.context = props.context
     this.setScore = props.setScore
+    this.onGameOver = props.onGameOver
   }
 
   update(delta: number, score: number) {
@@ -51,7 +54,7 @@ export class Enemies {
     this.nextSpawnDelay = Math.random() * (max - min) + min
     const enemyType = this.getEnemyFromPercent(currentLevel)
     const createEnemy = create[enemyType.type]
-    const enemy = createEnemy(this.context, this.config.width, this.config.height - 28, this.setScore)
+    const enemy = createEnemy(this.context, this.config.width, this.config.height - 28, this.setScore, this.onGameOver)
     this.config.objects.enemies.push(enemy)
   }
 

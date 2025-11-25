@@ -4,9 +4,22 @@ import { goblinSprites, orcSprites, zombieSprites } from '@entities/config/sprit
 export const enemies = ['zombie', 'goblin', 'orc'] as const
 
 export type EnemyType = (typeof enemies)[number]
-type EnemyCallback = (context: CanvasRenderingContext2D, x: number, y: number, setScore: (value: number) => void) => Enemy
 
-const createZombie = (context: CanvasRenderingContext2D, x: number, y: number, setScore: (value: number) => void) => {
+type EnemyCallback = (
+  context: CanvasRenderingContext2D,
+  x: number,
+  y: number,
+  setScore: (value: number) => void,
+  onGameOver: () => void,
+) => Enemy
+
+const createZombie = (
+  context: CanvasRenderingContext2D,
+  x: number,
+  y: number,
+  setScore: (value: number) => void,
+  onGameOver: () => void,
+) => {
   return new Enemy({
     context: context,
     id: crypto.randomUUID(),
@@ -17,10 +30,11 @@ const createZombie = (context: CanvasRenderingContext2D, x: number, y: number, s
     startDirection: 'left',
     spriteConfig: zombieSprites,
     onDied: setScore,
+    onGameOver: onGameOver,
   })
 }
 
-const createOrc = (context: CanvasRenderingContext2D, x: number, y: number, setScore: (value: number) => void) => {
+const createOrc = (context: CanvasRenderingContext2D, x: number, y: number, setScore: (value: number) => void, onGameOver: () => void) => {
   return new Enemy({
     context: context,
     id: crypto.randomUUID(),
@@ -31,10 +45,17 @@ const createOrc = (context: CanvasRenderingContext2D, x: number, y: number, setS
     startDirection: 'left',
     spriteConfig: orcSprites,
     onDied: setScore,
+    onGameOver: onGameOver,
   })
 }
 
-const createGoblin = (context: CanvasRenderingContext2D, x: number, y: number, setScore: (value: number) => void) => {
+const createGoblin = (
+  context: CanvasRenderingContext2D,
+  x: number,
+  y: number,
+  setScore: (value: number) => void,
+  onGameOver: () => void,
+) => {
   return new Enemy({
     context: context,
     id: crypto.randomUUID(),
@@ -45,6 +66,7 @@ const createGoblin = (context: CanvasRenderingContext2D, x: number, y: number, s
     startDirection: 'left',
     spriteConfig: goblinSprites,
     onDied: setScore,
+    onGameOver: onGameOver,
   })
 }
 
