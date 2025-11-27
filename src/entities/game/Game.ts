@@ -16,7 +16,7 @@ export class Game {
   protected context: CanvasRenderingContext2D
   protected backgroundContext: CanvasRenderingContext2D
   private boundLoop = this.loop.bind(this)
-  private onPauseChange: (value: boolean) => void
+  private setPause: (value: boolean) => void
   protected setScore: (value: number) => void
   protected setGameOver: () => void
   private isGameOver = false
@@ -32,7 +32,7 @@ export class Game {
     this.context = props.context
     this.backgroundContext = props.backgroundContext
     this.isPause = props.isPause
-    this.onPauseChange = props.setPause
+    this.setPause = props.setPause
     this.setScore = props.setScore
     this.setGameOver = props.onGameOver
 
@@ -68,7 +68,7 @@ export class Game {
 
   public start() {
     this.isPause = false
-    this.onPauseChange(false)
+    this.setPause(false)
     this.isGameOver = false
     initializeGame(this.context, this.backgroundContext, this.controller)
     this.lastTimestamp = performance.now()
@@ -81,7 +81,7 @@ export class Game {
     }
 
     this.isPause = true
-    this.onPauseChange(true)
+    this.setPause(true)
 
     if (this.frameCb) {
       cancelAnimationFrame(this.frameCb)
@@ -95,7 +95,7 @@ export class Game {
     }
 
     this.isPause = false
-    this.onPauseChange(false)
+    this.setPause(false)
 
     this.lastTimestamp = performance.now()
     this.frameCb = requestAnimationFrame(this.boundLoop)

@@ -41,7 +41,7 @@ export const GamePage = () => {
     gameInstance.current?.destroy()
     gameInstance.current = null
     setGameState('gameOver')
-    setPause(true) // Открываем модалку
+    setPause(true)
   }
 
   const continueGame = () => {
@@ -57,6 +57,7 @@ export const GamePage = () => {
       }
 
       if (event.code === 'Escape') {
+        setGameState('playing')
         gameInstance.current.togglePause()
       }
     }
