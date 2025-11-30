@@ -2,11 +2,13 @@
 
 link: https://george70-svg.github.io/arrow/
 
+`yarn dev` - For start
+
 ## 2D game on canvas
 
 ### The game is written in pure JS/TS. The interface is in React
 
-`yarn dev` - For start 
+The game loop is written in the main class Game. All game objects are inherited from the abstract class Shape. Separate classes for collision calculations, the controller, animation sprites, and day/night cycles have been implemented. To reduce bundle size, large images were converted to webp format
 
 ### Stack:
 1) React/TypeScript
