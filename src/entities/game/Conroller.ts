@@ -10,6 +10,7 @@ export class Controller {
   private mousePressedTimeMs: number | null = null
   private updateIntervalMs = 20
   private intervalId: ReturnType<typeof setInterval> | undefined = undefined
+  private isDisabled = false
 
   constructor() {
     window.addEventListener('keydown', this.handleKeydown)
@@ -17,6 +18,10 @@ export class Controller {
     window.addEventListener('mousemove', this.handleMousemove)
     window.addEventListener('mousedown', this.handleMousedown)
     window.addEventListener('mouseup', this.handleMouseup)
+  }
+
+  public setDisabled = (status: boolean) => {
+    this.isDisabled = status
   }
 
   private handleKeydown = (event: KeyboardEvent) => {
@@ -36,6 +41,10 @@ export class Controller {
   }
 
   private handleMousedown = () => {
+    if (this.isDisabled) {
+      return
+    }
+
     this.pressedKeys['LBM'] = true
 
     // определяем начальное время начала нажатия кнопки
@@ -55,6 +64,10 @@ export class Controller {
   }
 
   private handleMouseup = () => {
+    if (this.isDisabled) {
+      return
+    }
+
     this.pressedKeys['LBM'] = false
   }
 

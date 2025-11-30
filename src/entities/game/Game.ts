@@ -43,6 +43,8 @@ export class Game {
       setScore: this.addScore,
       onGameOver: this.onGameOver,
     })
+
+    this.controller.setDisabled(false)
   }
 
   private loop(timestamp: number) {
@@ -82,6 +84,7 @@ export class Game {
 
     this.isPause = true
     this.setPause(true)
+    this.controller.setDisabled(true)
 
     if (this.frameCb) {
       cancelAnimationFrame(this.frameCb)
@@ -96,6 +99,7 @@ export class Game {
 
     this.isPause = false
     this.setPause(false)
+    this.controller.setDisabled(false)
 
     this.lastTimestamp = performance.now()
     this.frameCb = requestAnimationFrame(this.boundLoop)
