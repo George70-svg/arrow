@@ -2,7 +2,24 @@
 
 link: https://george70-svg.github.io/arrow/
 
-Баги:
-1) Если кликать в меню паузы и потом войти в игру, то лук начнет бесконечно стрелять сам
-2) Если нажать один Continue в меню паузы, то после снятия паузы сразу же будет выстрел
-3) Если стрелять прямо над крепостью, то траектория показывает что стрела перелетит за крепость, но на самом деле исчезнет при коллизии с крепостью
+## 2D game on canvas
+
+### The game is written in pure JS/TS. The interface is in React
+
+`yarn dev` - For start 
+
+### Stack:
+1) React/TypeScript
+2) Vite
+3) Eslint
+4) Prettier
+5) FSD
+6) SCSS/CSS module
+
+### Work has been carried out on performance
+
+Before:
+![img.png](img.png)
+
+After:
+![img_1.png](img_1.png)
