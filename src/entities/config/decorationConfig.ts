@@ -12,7 +12,7 @@ export const initializeDecoration = (context: CanvasRenderingContext2D) => {
 
 // создаем объекты земли
 const createLand = (context: CanvasRenderingContext2D) => {
-  for (let i = -1; i <= 25; i++) {
+  for (let i = -1; i <= 30; i++) {
     config.objects.decorations.push(
       new Object({
         context: context,
@@ -152,7 +152,7 @@ const createField = (context: CanvasRenderingContext2D) => {
   const startY = config.height - 95
 
   // трава
-  for (let i = 0; i <= 15; i++) {
+  for (let i = 0; i <= 25; i++) {
     config.objects.decorations.push(
       new Object({
         context: context,
@@ -309,6 +309,66 @@ const createField = (context: CanvasRenderingContext2D) => {
       context: context,
       id: crypto.randomUUID(),
       startPosition: { x: startX + 1250, y: startY - 100 },
+      framePosition: { x: 832, y: 443 },
+      imgWidth: 152,
+      imgHeight: 168,
+      frameWidth: 152,
+      frameHeight: 168,
+      sprite: itemsImg,
+    }),
+  )
+
+  // среднее дерево
+  config.objects.decorations.push(
+    new Object({
+      context: context,
+      id: crypto.randomUUID(),
+      startPosition: { x: startX + 1450, y: startY - 75 },
+      framePosition: { x: 690, y: 470 },
+      imgWidth: 124,
+      imgHeight: 141,
+      frameWidth: 124,
+      frameHeight: 141,
+      sprite: itemsImg,
+    }),
+  )
+
+  // куст
+  config.objects.decorations.push(
+    new Object({
+      context: context,
+      id: crypto.randomUUID(),
+      startPosition: { x: startX + 1550, y: startY + 25 },
+      framePosition: { x: 455, y: 569 },
+      imgWidth: 98,
+      imgHeight: 42,
+      frameWidth: 98,
+      frameHeight: 42,
+      sprite: itemsImg,
+    }),
+  )
+
+  // куст
+  config.objects.decorations.push(
+    new Object({
+      context: context,
+      id: crypto.randomUUID(),
+      startPosition: { x: startX + 1700, y: startY + 25 },
+      framePosition: { x: 575, y: 569 },
+      imgWidth: 98,
+      imgHeight: 42,
+      frameWidth: 98,
+      frameHeight: 42,
+      sprite: itemsImg,
+    }),
+  )
+
+  // большое дерево
+  config.objects.decorations.push(
+    new Object({
+      context: context,
+      id: crypto.randomUUID(),
+      startPosition: { x: startX + 1900, y: startY - 100 },
       framePosition: { x: 832, y: 443 },
       imgWidth: 152,
       imgHeight: 168,
